@@ -1,7 +1,181 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="com.crm.dao.StudentsMapper">
-  
-  </mapper>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crm.dao.StudentsMapper">
+	<resultMap type="Students" id="studentMap">
+		<id column="s_id" property="s_id"></id>
+		<result column="s_name" property="s_name"/>
+		<result column="s_age" property="s_age"/>
+		<result column="s_sex" property="s_sex"/>
+		<result column="s_phone" property="s_phone"/>
+		<result column="s_state" property="s_state"/>
+		<result column="s_education" property="s_education"/>
+		<result column="s_stuclass" property="s_stuclass"/>
+		<result column="s_msgsource" property="s_msgsource"/>
+		<result column="s_sourceurl" property="s_sourceurl"/>
+		<result column="s_sourcekeyword" property="s_sourcekeyword"/>
+		<result column="s_address" property="s_address"/>
+		<result column="s_qq" property="s_qq"/>
+		<result column="s_weixin" property="s_weixin"/>
+		<result column="s_content" property="s_content"/>
+		<result column="s_createtime" property="s_createtime"/>
+		<result column="s_isvalid" property="s_isvalid"/>
+		<result column="s_record" property="s_record"/>
+		<result column="s_isreturnvist" property="s_isreturnvist"/>
+		<result column="s_firstvisittime" property="s_firstvisittime"/>
+		<result column="s_ishome" property="s_ishome"/>
+		<result column="s_hometime" property="s_hometime"/>
+		<result column="s_lostvalid" property="s_lostvalid"/>
+		<result column="s_ispay" property="s_ispay"/>
+		<result column="s_paytime" property="s_paytime"/>
+		<result column="s_money" property="s_money"/>
+		<result column="s_isreturnmoney" property="s_isreturnmoney"/>
+		<result column="s_isinclass" property="s_isinclass"/>
+		<result column="s_inclasstime" property="s_inclasstime"/>
+		<result column="s_inclasscontent" property="s_inclasscontent"/>
+		<result column="s_isdel" property="s_isdel"/>
+		<result column="s_frompart" property="s_frompart"/>
+		<result column="s_concern" property="s_concern"/>
+		<result column="s_isbaobei" property="s_isbaobei"/>
+		<result column="s_userid" property="s_userid"/>
+		<result column="s_returnmoneycontent" property="s_returnmoneycontent"/>
+
+	</resultMap>
+	<select id="selectStu" parameterType="fenye" resultMap="studentMap">
+		select * from students
+	<where>
+		<if test="s_name !=null and s_name !=''">
+			and s_name like "%"#{s_name}"%"
+		</if>
+		<if test="s_phone !=null and s_phone !=''">
+			and s_phone=#{s_phone}
+		</if>
+		<if test="s_ispay !=null and s_ispay !=''">
+			and s_ispay=#{s_ispay}
+		</if>
+		<if test="s_isvalid !=null and s_isvalid !=''">
+			and s_isvalid=#{s_isvalid}
+		</if>
+		<if test="s_isreturnvist !=null and s_isreturnvist !=''">
+			and s_isreturnvist=#{s_isreturnvist}
+		</if>
+		<if test="s_qq !=null and s_qq !=''">
+			and s_qq=#{s_qq}
+		</if>
+		<if test="s_createtime !=null and s_createtime !=''">
+			and s_createtime=#{s_createtime}
+		</if>
+		<if test="s_hometime !=null and s_hometime !=''">
+			and s_hometime=#{s_hometime}
+		</if>
+		<if test="s_firstvisittime !=null and s_firstvisittime !=''">
+			and s_firstvisittime=#{s_firstvisittime}
+		</if>
+		<if test="s_paytime !=null and s_paytime !=''">
+			and s_paytime=#{s_paytime}
+		</if>
+		<if test="s_inclasstime !=null and s_inclasstime !=''">
+			and s_inclasstime=#{s_inclasstime}
+		</if>
+		
+	</where>
+		limit #{page},#{pageSize}
+	</select>
+
+	<select id="selectCount" parameterType="fenye" resultType="int">
+		select count(s_id) from students
+	<where>
+		<if test="s_name!=null and s_name!=''">
+			and s_name like "%"#{s_name}"%"
+		</if>
+		<if test="s_phone!=null and s_phone!=''">
+			and s_phone=#{s_phone}
+		</if>
+		<if test="s_ispay!=null and s_ispay!=''">
+			and s_ispay=#{s_ispay}
+		</if>
+		<if test="s_isvalid!=null and s_isvalid!=''">
+			and s_isvalid=#{s_isvalid}
+		</if>
+		<if test="s_isreturnvist!=null and s_isreturnvist!=''">
+			and s_isreturnvist=#{s_isreturnvist}
+		</if>
+		<if test="s_qq!=null and s_qq!=''">
+			and s_qq=#{s_qq}
+		</if>
+		<if test="s_createtime !=null and s_createtime !=''">
+			and s_createtime=#{s_createtime}
+		</if>
+		<if test="s_hometime !=null and s_hometime !=''">
+			and s_hometime=#{s_hometime}
+		</if>
+		<if test="s_firstvisittime !=null and s_firstvisittime !=''">
+			and s_firstvisittime=#{s_firstvisittime}
+		</if>
+		<if test="s_paytime !=null and s_paytime !=''">
+			and s_paytime=#{s_paytime}
+		</if>
+		<if test="s_inclasstime !=null and s_inclasstime !=''">
+			and s_inclasstime=#{s_inclasstime}
+		</if>
+	</where>
+	</select>
+	
+	<insert id="insertStu" parameterType="students">
+		insert into students(s_name,s_sex,s_age,s_phone,s_education,s_state,s_msgsource,s_sourceurl,s_sourcekeyword,s_qq,s_weixin,s_isbaobei,s_content)
+		value(#{s_name},#{s_sex},#{s_age},#{s_phone},#{s_education},#{s_state},#{s_msgsource},#{s_sourceurl},#{s_sourcekeyword},#{s_qq},#{s_weixin},#{s_isbaobei},#{s_content})
+	</insert>
+	
+	<delete id="deleteStu" parameterType="int">
+		delete from students where s_id=#{s_id}
+	</delete>
+	
+	<update id="updateStu" parameterType="students">
+		update students
+		<set>
+			<if test="s_name !=null and s_name !=''">
+				s_name=#{s_name},		
+			</if>
+			<if test="s_sex !=null and s_sex !=''">
+				s_sex=#{s_sex},			
+			</if>
+			<if test="s_age !=null and s_age !=''">
+				s_age=#{s_age},			
+			</if>
+			<if test="s_phone !=null and s_phone !=''">
+				s_phone=#{s_phone},			
+			</if>
+			<if test="s_state !=null and s_state !=''">
+				s_state=#{s_state},			
+			</if>
+			<if test="s_education !=null and s_education !=''">
+				s_education=#{s_education},			
+			</if>
+			<if test="s_msgsource !=null and s_msgsource !=''">
+				s_msgsource=#{s_msgsource},			
+			</if>
+			<if test="s_sourceurl !=null and s_sourceurl !=''">
+				s_sourceurl=#{s_sourceurl},			
+			</if>
+			<if test="s_address !=null and s_address !=''">
+				s_address=#{s_address},			
+			</if>
+			<if test="s_concern !=null and s_concern !=''">
+				s_concern=#{s_concern},			
+			</if>
+			<if test="s_frompart !=null and s_frompart !=''">
+				s_frompart=#{s_frompart},			
+			</if>
+			<if test="s_qq !=null and s_qq !=''">
+				s_qq=#{s_qq},			
+			</if>
+			<if test="s_weixin !=null and s_weixin !=''">
+				s_weixin=#{s_weixin},			
+			</if>
+			<if test="s_isbaobei !=null and s_isbaobei !=''">
+				s_isbaobei=#{s_isbaobei},			
+			</if>
+		
+		</set>
+			where s_id=#{s_id}
+	</update>
+</mapper>
