@@ -39,10 +39,19 @@
   			select count(1) from users <include refid="us"></include>
   		</select>
   		<select id="selectUsers" parameterType="fenye" resultType="users">
-  			select * from users limit 
+  			select * from users  
   			<include refid="us"></include>
-  			#{page},#{pageSize}
+  			limit #{page},#{pageSize}
   		</select>
+  		<update id="updateUsersU_lastlogintime" parameterType="users">
+  			update users
+  			<set>
+  				u_lastlogintime=#{u_lastlogintime},
+  			</set>
+  			<where>
+  				u_loginname=#{u_loginname}
+  			</where>
+  		</update>
   		<update id="updateResetU_password" parameterType="int">
   			update users
   			<set>
@@ -52,7 +61,7 @@
   				u_id=#{u_id}
   			</where>
   		</update>
-  		<update id="updatelockUsers">
+  		<update id="updatelockUsers" parameterType="int">
   			update users
   			<set>
   				u_islockout=1,
@@ -61,7 +70,31 @@
   				u_id=#{u_id}
   			</where>
   		</update>
-  		<update id="updateUnlockUsers">
+  		<update id="updateu_locktime" parameterType="users">
+  			update users
+  			<set>
+  				u_locktime=#{u_locktime},
+  			</set>
+  			<where>
+  				u_id=#{u_id}
+  			</where>
+  		</update>
+  		<update id="updateUsers" parameterType="users">
+  			update users
+  			<set>
+  				<if test="u_protectemail != null and u_protectemail != ''">
+  					u_protectemail=#{u_protectemail},
+  				</if>
+  				<if test="u_protectmtel != null and u_protectmtel != ''">
+  				u_protectmtel=#{u_protectmtel},
+  			</if>
+  			</set>
+  						
+  			<where>
+  				u_id=#{u_id}
+  			</where>
+  		</update>
+  		<update id="updateUnlockUsers" parameterType="int">
   			update users
   			<set>
   				u_islockout=0,
@@ -83,4 +116,12 @@
   		<delete id="deleteUserRoles" parameterType="int">
   			delete from userroles where ur_userid=#{0} and ur_roleid=#{1}
   		</delete>
+  		
+  		<insert id="insertUsers" parameterType="users">
+  			insert into users(u_loginname,u_password,u_islockout,u_createtime,u_protectemail,u_protectmtel) values(#{u_loginname},#{u_password},#{u_islockout},#{u_createtime},#{u_protectemail},#{u_protectmtel})
+  		</insert>
+  		
+  		<select id="selectUsersIsExect" parameterType="users" resultType="users">
+  			select * from users where u_loginname=#{u_loginname}
+  		</select>
   </mapper>

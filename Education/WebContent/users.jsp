@@ -21,8 +21,10 @@
 				$("#dg").datagrid({
 					url: 'selectUsers', //数据接口的地址
 					method:'post',
+					pagination:true,
+					singleSelect:true,
 					toolbar:'#usertb',
-					queryParams: { //要发送的参数列表												
+					queryParams:{ //要发送的参数列表												
 						u_loginname: $("#u_loginname").textbox("getValue"),
 						Minu_createtime: $("#Minu_createtime").datebox ("getValue"),
 						Maxu_createtime: $("#Maxu_createtime").datebox("getValue"),
@@ -60,33 +62,49 @@
 			}
 			//点击新增窗体保存按钮
 			function submitUserForm() {
-				var flag = $("#adduserForm").form("validate");
-				var ename = $("#ename").val();
-				var pwd = $("#pwd").val();
-				var email = $("#email").val();
-				var mtel = $("#mtel").val();
-				var token = "1dd8841f-7f39-4986-b798-cff41410f31b";
-				if(!(/^1(3|5|7|8)\d{9}$/.test(mtel))) {
-					alert("手机号码有误，请从新输入！");
-					return false;
-				}
-				if(flag) {
-					$.post(
-						"http://stuapi.ysd3g.com/api/CreateUser", {
-							loginName: ename,
-							pwd: pwd,
-							email: email,
-							mtel: mtel,
-							token: token
+				var u_loginname = $("#insertu_loginname").val();
+				
+				$.post(
+						"selectUsersIsExect", {
+							u_loginname: u_loginname														
 						},
-						function(addInfo) {
-							if(addInfo.success) {
-								alert("新增成功");
-								$("#adduser_window").window("close");
-								$("#dg").datagrid("reload"); //通过调用reload方法，让datagrid刷新显示数据
+						function(res) {
+							if(res==null||res=="") {
+								var flag = $("#adduserForm").form("validate");
+								var u_loginname = $("#insertu_loginname").val();
+								var u_islockout=0;				
+								/* var u_createtime=new Date();
+								alert(u_createtime); */
+								var u_password = $("#insertu_password").val();
+								var u_protectemail = $("#insertu_protectemail").val();
+								var u_protectmtel = $("#insertu_protectmtel").val();
+								
+								if(!(/^1(3|5|7|8)\d{9}$/.test(u_protectmtel))) {
+									alert("手机号码有误，请从新输入！");
+									return false;
+								}
+								if(flag) {
+									$.post(
+										"insertUsers", {
+											u_loginname: u_loginname,
+											u_islockout: u_islockout,
+											u_password: u_password,
+											u_protectemail: u_protectemail
+											
+										},
+										function(res) {
+											if(res>0) {
+												alert("新增成功");
+												$("#adduser_window").window("close");
+												$("#dg").datagrid("reload"); //通过调用reload方法，让datagrid刷新显示数据
+											}
+										}, "json");
+								}
+							}else{
+								alert("用户名重复");
 							}
 						}, "json");
-				}
+				
 			}
 
 			function updateInfo(index) {
@@ -104,25 +122,23 @@
 
 			function submitupdateUserForm() {
 				var flag = $("#updateuserForm").form("validate");
-				var ename = $("#ename_1").val();
-				var email = $("#email_1").val();
-				var mtel = $("#mtel_1").val();
-				if(!(/^1(3|5|7|8)\d{9}$/.test(mtel))) {
+				var u_id = $("#updateu_id").val();
+				var u_protectemail = $("#u_protectemail").val();
+				var u_protectmtel = $("#updateu_protectmtel").val();
+				if(!(/^1(3|5|7|8)\d{9}$/.test(u_protectmtel))) {
 					alert("手机号码有误，请从新输入！");
 					return false;
 				}
-				if(flag) {
-				var token = "1dd8841f-7f39-4986-b798-cff41410f31b";
+				if(flag) {				
 				$.post(
-					"http://stuapi.ysd3g.com/api/UpdateUser", {
-						loginName: ename,
-						email: email,
-						mtel: mtel,
-						token: token
+					"updateUsers", {
+						u_id: u_id,
+						u_protectemail: u_protectemail,
+						u_protectmtel: u_protectmtel						
 					},
 					function(res) {
 						//alert(res.success);
-						if(res.success) {
+						if(res>0) {
 							alert("修改成功"); //此处建议修改为$.messager.alert()方法，请查阅帮助文档，自行修改。
 							$("#updateuser_window").window("close");
 							$("#dg").datagrid("reload");
@@ -296,7 +312,7 @@
 		</script>
 </head>
 <body>
-	<table name="center" class="easyui-datagrid" id="dg" title="用户列表"  data-options="rownumbers:true,singleSelect:true,pagination:true">
+	<table name="center" class="easyui-datagrid" id="dg" title="用户列表">
 			<thead>
 				<tr>
 					<th data-options="field:'u_id',width:80">编号</th>
@@ -336,49 +352,30 @@
 				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="searchUserInfo()">查找</a>
 			</div>
 		</div>
- 		<!--<div id="usertb" style="padding:5px; height:auto">
-			<div style="margin-bottom:5px">
-				
-				起止时间: <input class="easyui-datebox" id="StartSj" style="width:80px">-<input class="easyui-datebox" id="EndSj" style="width:80px">
-				<span>是否锁定：</span>
-				<select id="SJ" class="easyui-combobox" name="SJ" style="height:auto;">
-				    <option value="">请选择</option>
-				    <option value="CreateTime">创建时间</option>
-				    <option value="LastLoginTime">最后登录时间</option>
-				   </select>
-				   <span>排序：</span>
-				<select id="ord" class="easyui-combobox" name="orderBy" style="height:auto;">
-				    <option value="">请选择</option>
-				    <option value="">创建时间</option>
-				    <option value="">最后登录时间</option>
-				</select>   
-				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="searchUserInfo()">查找</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addInfo()">新增</a>
-			</div>
-		</div>-->
+ 		
 		<!--新增-->
 		<div id="adduser_window" class="easyui-window" title="新增用户信息" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:500px;height:300px;padding:10px;">
 			<form id="adduserForm">
 				<table cellpadding="5">
 					<tr>
 						<td>用户名:</td>
-						<td><input class="easyui-textbox" type="text" name="name" id="ename" data-options="required:true,validType:'length[3,12]'"></input>
+						<td><input class="easyui-textbox" type="text" name="u_loginname" id="insertu_loginname" data-options="required:true,validType:'length[2,12]'"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>密码:</td>
-						<td><input class="easyui-textbox" type="password" id="pwd" name="pwd" data-options="required:true,validType:'length[6,12]'"></input>
+						<td><input class="easyui-textbox" type="password" id="insertu_password" name="u_password" data-options="required:true,validType:'length[6,12]'"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>Email:</td>
-						<td><input class="easyui-textbox" type="text" name="email" id="email" data-options="required:true,validType:'email'"></input>
+						<td><input class="easyui-textbox" type="text" name="u_protectemail" id="insertu_protectemail" data-options="required:true,validType:'email'"></input>
 						</td>
 					</tr>
 
 					<tr>
 						<td>手机号:</td>
-						<td><input type="text" class="easyui-numberbox" id="mtel" name="mtel" data-options="required:true"></td>
+						<td><input type="text" class="easyui-numberbox" id="insertu_protectmtel" name="u_protectmtel" data-options="required:true"></td>
 					</tr>
 				</table>
 			</form>
@@ -392,8 +389,13 @@
 			<form id="updateuserForm">
 				<table cellpadding="5">
 					<tr>
+						<td>编号:</td>
+						<td><input class="easyui-textbox" type="text" name="u_id"  id="updateu_id" data-options="required:true" style="display:none;"></input>
+						</td>
+					</tr>
+					<tr>
 						<td>用户名:</td>
-						<td><input class="easyui-textbox" type="text" name="LoginName" readonly id="ename_1" data-options="required:true"></input>
+						<td><input class="easyui-textbox" type="text" name="u_loginname" readonly disabled="disabled" id="updateu_loginname" data-options="required:true"></input>
 						</td>
 					</tr>
 					<!--<tr>
@@ -403,13 +405,13 @@
 					</tr>-->
 					<tr>
 						<td>Email:</td>
-						<td><input class="easyui-textbox" type="text" name="ProtectEMail" id="email_1" data-options="required:true,validType:'email'"></input>
+						<td><input class="easyui-textbox" type="text" name="u_protectemail" id="updateu_protectemail" data-options="required:true,validType:'email'"></input>
 						</td>
 					</tr>
 
 					<tr>
 						<td>手机号:</td>
-						<td><input type="text" class="easyui-numberbox" id="mtel_1" name="ProtectMTel" data-options="required:true"></td>
+						<td><input type="text" class="easyui-numberbox" id="updateu_protectmtel" name="u_protectmtel" data-options="required:true"></td>
 					</tr>
 				</table>
 			</form>

@@ -58,6 +58,31 @@ public class UsersServiceImpl implements UsersService{
 		// TODO Auto-generated method stub
 		return usersMapper.deleteUserRoles(ur_userid, ur_roleid);
 	}
+	@Override
+	public Integer insertUsers(Users users) {
+		// TODO Auto-generated method stub
+		return usersMapper.insertUsers(users);
+	}
+	@Override
+	public Integer updateUsersU_lastlogintime(Users users) {
+		// TODO Auto-generated method stub
+		return usersMapper.updateUsersU_lastlogintime(users);
+	}
+	@Override
+	public Integer updateu_locktime(Users users) {
+		// TODO Auto-generated method stub
+		return usersMapper.updateu_locktime(users);
+	}
+	@Override
+	public List<Users> selectUsersIsExect(Users users) {
+		// TODO Auto-generated method stub
+		return usersMapper.selectUsersIsExect(users);
+	}
+	@Override
+	public Integer updateUsers(Users users) {
+		// TODO Auto-generated method stub
+		return usersMapper.updateUsers(users);
+	}
 
 	
 }

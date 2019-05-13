@@ -1,6 +1,8 @@
 package com.crm.Controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,8 @@ import com.crm.util.TreeModel;
 public class ModulesController {
 	@Autowired
 	private ModulesService modulesService;
+	@Autowired
+	private UsersService usersService;
 	@RequestMapping(value="/ModulesAll",method=RequestMethod.POST)
 	@ResponseBody
 	public ArrayList<TreeModel> selectModules(Users users) {
@@ -33,6 +37,10 @@ public class ModulesController {
                tree.add(node);
 		   }
 		   root = TreeNode.getTree(tree); */
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+		System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
+		users.setU_lastlogintime(df.format(new Date()));
+		usersService.updateUsersU_lastlogintime(users);
 		return modulesService.selectModules(users);	
 }
 }
