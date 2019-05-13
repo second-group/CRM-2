@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.crm.dao.RolesMapper">
+  		<select id="selectRolesCount" parameterType="fenye" resultType="int">
+  			select count(1) from roles
+  		</select>
+  		
+  		<select id="selectRolesAll" parameterType="fenye" resultType="roles">
+  			select * from roles limit #{page},#{pageSize}
+  		</select>
+  		<select id="selectRolesExict" parameterType="fenye" resultType="roles">
+  			select * from roles <where>r_name=#{r_name}</where>
+  		</select>
+  		<insert id="insertRoles" parameterType="roles">
+  			insert into roles(r_name) values(#{r_name})
+  		</insert>
+  		<update id="updateRoles" parameterType="roles">
+  			update roles
+  			<set>
+  				<if test="r_name != null and r_name != ''">
+  					r_name=#{r_name},
+  				</if>
+  			</set>
+  			<where>
+  				r_id=#{r_id}
+  			</where>
+  		</update>
+  		<delete id="deleteRoles" parameterType="roles">
+  			delete from roles <where>r_id=#{r_id}</where>
+  		</delete>
+  		<select id="selectRolesModules" parameterType="roles" resultType="modules">
+  			select m.m_id,m.m_name,m.m_parentid,m.m_path,m.m_weight from roles r INNER JOIN rolemodules rm INNER JOIN modules m on r.r_id=rm.rm_roleid and rm.rm_moduleid=m.m_id 		
+  		</select>
+  		<insert id="insertRolesModules" parameterType="roleModules">
+  			insert into rolemodules(rm_roleid,rm_moduleid) values(#{rm_roleid},#{rm_moduleid})
+  		</insert>
+  </mapper>

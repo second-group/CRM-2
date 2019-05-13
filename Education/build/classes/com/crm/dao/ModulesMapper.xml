@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.crm.dao.ModulesMapper">
+  		<select id="selectModules" parameterType="users" resultType="modules">
+  			select m.m_id,m.m_name,m.m_parentid,m.m_path,m.m_weight from users u INNER JOIN userroles ur INNER JOIN roles r INNER JOIN  rolemodules rm INNER JOIN modules m on u.u_id=ur.ur_userid and r.r_id = rm.rm_roleid 
+			and m.m_id = rm.rm_moduleid and r.r_id = ur.ur_roleid
+			<where>u.u_loginname=#{u_loginname} and u.u_password=#{u_password} and u_islockout =0 </where> 
+  		</select>
+  </mapper>
