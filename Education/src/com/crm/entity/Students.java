@@ -15,6 +15,20 @@ public class Students {
 	private Integer s_sex;
 	private String s_phone;
 	private String s_state;
+	private String s_education;
+	private String s_stuclass;
+	public String getS_stuclass() {
+		return s_stuclass;
+	}
+	public void setS_stuclass(String s_stuclass) {
+		this.s_stuclass = s_stuclass;
+	}
+	public String getS_education() {
+		return s_education;
+	}
+	public void setS_education(String s_education) {
+		this.s_education = s_education;
+	}
 	private String s_msgsource;
 	private String s_sourceurl;
 	private String s_sourcekeyword;
