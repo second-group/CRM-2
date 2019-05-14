@@ -11,4 +11,6 @@ public interface StudentsService {
 	Integer updateStu(Students students);
 	
 	Integer insertStu(Students students);
+	
+	Fenye<Students> selectStudent(Fenye<Students> fenye);
 }

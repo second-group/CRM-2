@@ -38,8 +38,43 @@
 		<result column="s_isbaobei" property="s_isbaobei"/>
 		<result column="s_userid" property="s_userid"/>
 		<result column="s_returnmoneycontent" property="s_returnmoneycontent"/>
-
+		<result  column="u_loginname" property="users.u_loginname"/>
 	</resultMap>
+	<sql id="studentsql">
+		<if test="s_name !=null and s_name !=''">
+			and s_name like "%"#{s_name}"%"
+		</if>
+		<if test="s_phone !=null and s_phone !=''">
+			and s_phone=#{s_phone}
+		</if>
+		<if test="s_ispay !=null and s_ispay !=''">
+			and s_ispay=#{s_ispay}
+		</if>
+		<if test="s_isvalid !=null and s_isvalid !=''">
+			and s_isvalid=#{s_isvalid}
+		</if>
+		<if test="s_isreturnvist !=null and s_isreturnvist !=''">
+			and s_isreturnvist=#{s_isreturnvist}
+		</if>
+		<if test="s_qq !=null and s_qq !=''">
+			and s_qq=#{s_qq}
+		</if>
+		<if test="s_createtime !=null and s_createtime !=''">
+			and s_createtime=#{s_createtime}
+		</if>
+		<if test="s_hometime !=null and s_hometime !=''">
+			and s_hometime=#{s_hometime}
+		</if>
+		<if test="s_firstvisittime !=null and s_firstvisittime !=''">
+			and s_firstvisittime=#{s_firstvisittime}
+		</if>
+		<if test="s_paytime !=null and s_paytime !=''">
+			and s_paytime=#{s_paytime}
+		</if>
+		<if test="s_inclasstime !=null and s_inclasstime !=''">
+			and s_inclasstime=#{s_inclasstime}
+		</if>
+	</sql>
 	<select id="selectStu" parameterType="fenye" resultMap="studentMap">
 		select * from students
 	<where>
@@ -119,7 +154,20 @@
 		</if>
 	</where>
 	</select>
-	
+	<select id="selectStudent" parameterType="fenye" resultMap="studentMap">
+		SELECT students.*,users.u_loginname from students INNER JOIN users 
+		<where>
+			students.s_userid=users.u_id
+			<include refid="studentsql"></include>
+		</where> 
+	</select>
+	<select id="selectStudentTotal" parameterType="fenye" resultType="int">
+		SELECT count(s_id) from students INNER JOIN users 
+		<where>
+			students.s_userid=users.u_id
+			<include refid="studentsql"></include>
+		</where> 
+	</select>
 	<insert id="insertStu" parameterType="students">
 		insert into students(s_name,s_sex,s_age,s_phone,s_education,s_state,s_msgsource,s_sourceurl,s_sourcekeyword,s_qq,s_weixin,s_isbaobei,s_content)
 		value(#{s_name},#{s_sex},#{s_age},#{s_phone},#{s_education},#{s_state},#{s_msgsource},#{s_sourceurl},#{s_sourcekeyword},#{s_qq},#{s_weixin},#{s_isbaobei},#{s_content})

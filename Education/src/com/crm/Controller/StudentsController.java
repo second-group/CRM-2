@@ -47,4 +47,14 @@ public class StudentsController {
 		return studentsService.insertStu(students);
 	}
 	
+	@RequestMapping(value="/selectStudent",method=RequestMethod.POST)
+	@ResponseBody
+	public Fenye<Students> selectStudent(Fenye<Students> fenye,Integer rows,Integer page) {
+		System.out.println(page);
+		System.out.println(rows);
+		System.out.println(fenye);
+		fenye.setPage((page-1)*rows);
+		fenye.setPageSize(rows);
+		return studentsService.selectStudent(fenye);	
+	}
 }
