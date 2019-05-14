@@ -14,7 +14,7 @@ import com.crm.entity.Roles;
 import com.crm.util.TreeModel;
 import com.crm.util.TreeNode;
 @Service
-public class selectRolesImpl implements RolesService{
+public class RolesServiceImpl implements RolesService{
 	@Autowired
 	private RolesMapper rolesMapper;
 	@Override

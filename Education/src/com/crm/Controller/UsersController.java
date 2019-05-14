@@ -26,7 +26,7 @@ public class UsersController {
 		fenye.setUsers(users);
 		fenye.setPage(((page-1)*rows));
 		fenye.setPageSize(rows);
-		System.out.println(usersService.selectUsers(fenye)+"结果");
+	/*	System.out.println(usersService.selectUsers(fenye)+"结果");*/
 		return usersService.selectUsers(fenye);		
 	}
 	
@@ -39,9 +39,9 @@ public class UsersController {
 	@RequestMapping(value="/updatelockUsers",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer updatelockUsers(@RequestParam(value="u_id")Integer u_id,Users users) {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
-		System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
-		users.setU_id(u_id);
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+		/*System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
+*/		users.setU_id(u_id);
 		users.setU_locktime(df.format(new Date()));
 		usersService.updateu_locktime(users);
 		return usersService.updatelockUsers(u_id);		
@@ -86,14 +86,14 @@ public class UsersController {
 	@RequestMapping(value="/selectUsersIsExect",method=RequestMethod.POST)
 	@ResponseBody
 	public List<Users> selectUsersIsExect(Users users) {
-		System.out.println(users+"是否存在");
+		/*System.out.println(users+"是否存在");*/
 		return usersService.selectUsersIsExect(users);		
 	}
 	
 	@RequestMapping(value="/insertUsers",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer insertUsers(Users users) {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 		System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
 		users.setU_createtime(df.format(new Date()));
 		return usersService.insertUsers(users);		

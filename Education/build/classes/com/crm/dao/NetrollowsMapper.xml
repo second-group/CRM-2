@@ -3,5 +3,38 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.crm.dao.NetrollowsMapper">
+  		<sql id="Net">
+			<where>
+				<if test="netrollows.n_studentname!='' and netrollows.n_studentname!=null">
+					and n_studentname like "%"#{netrollows.n_studentname}"%" 
+				</if>
+				<if test="netrollows.n_content!='' and netrollows.n_content!=null">
+					and n_content like "%"#{netrollows.n_content}"%" 
+				</if>
+				
+				<if test="netrollows.n_followtime!='' and netrollows.n_followtime!=null">
+					and n_followtime &gt;= #{netrollows.n_followtime} 
+				</if>
+				<if test="netrollows.n_nextfollowtime!='' and netrollows.n_nextfollowtime!=null">
+					and n_nextfollowtime &lt;= #{netrollows.n_nextfollowtime} 
+				</if>
+				<if test="netrollows.n_followtype!='' and netrollows.n_followtype!=null">
+					and n_followtype like "%"#{netrollows.n_followtype}"%" 
+				</if>
+			</where>
+		</sql>
   
+	  	<select id="SelectNet" parameterType="fenye" resultType="netrollows">
+	  		select * from netrollows
+	  		<include refid="Net"></include>
+	  		
+	  	</select>
+	  	
+	  	<select id="SelectNetCount" parameterType="fenye" resultType="int">
+	  		select count(1) from netrollows
+	  		<include refid="Net"></include>
+	  	</select>
+	  	<insert id="InsertNet" parameterType="netrollows">
+	  		insert into netrollows (n_studentid,n_studentname,n_followtime,n_nextfollowtime,n_content,n_userid,n_followtype,n_createtime,n_followstate) value(#{n_studentid},#{n_studentname},#{n_followtime},#{n_nextfollowtime},#{n_content},#{n_userid},#{n_followtype},#{n_createtime},#{n_followstate})
+	  	</insert>
   </mapper>

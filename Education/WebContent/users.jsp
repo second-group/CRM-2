@@ -29,7 +29,7 @@
 						Minu_createtime: $("#Minu_createtime").datebox ("getValue"),
 						Maxu_createtime: $("#Maxu_createtime").datebox("getValue"),
 						u_islockout: $("#u_islockout").textbox("getValue"),
-						u_createtime:$("#orderBy").combobox("getValue"),
+						orderBy:$("#orderBy").combobox("getValue"),
 						u_lastlogintime:$("#orderBy").combobox("getValue")
 					} 
 				});
