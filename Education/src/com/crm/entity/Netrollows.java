@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Netrollows {
 	private Integer n_id;
-	private Integer studentid;
+	private Integer n_studentid;
 	private String n_studentname;
 	private String n_followtime;
 	private String n_nextfollowtime;
@@ -19,12 +19,12 @@ public class Netrollows {
 	private String n_followtype;
 	private String n_createtime;
 	private Integer n_followstate;
-	public Netrollows(Integer n_id, Integer studentid, String n_studentname, String n_followtime,
+	public Netrollows(Integer n_id, Integer n_studentid, String n_studentname, String n_followtime,
 			String n_nextfollowtime, String n_content, Integer n_userid, String n_followtype, String n_createtime,
 			Integer n_followstate) {
 		super();
 		this.n_id = n_id;
-		this.studentid = studentid;
+		this.n_studentid = n_studentid;
 		this.n_studentname = n_studentname;
 		this.n_followtime = n_followtime;
 		this.n_nextfollowtime = n_nextfollowtime;
@@ -43,11 +43,11 @@ public class Netrollows {
 	public void setN_id(Integer n_id) {
 		this.n_id = n_id;
 	}
-	public Integer getStudentid() {
-		return studentid;
+	public Integer getN_studentid() {
+		return n_studentid;
 	}
-	public void setStudentid(Integer studentid) {
-		this.studentid = studentid;
+	public void setN_studentid(Integer n_studentid) {
+		this.n_studentid = n_studentid;
 	}
 	public String getN_studentname() {
 		return n_studentname;
@@ -99,7 +99,7 @@ public class Netrollows {
 	}
 	@Override
 	public String toString() {
-		return "Netrollows [n_id=" + n_id + ", studentid=" + studentid + ", n_studentname=" + n_studentname
+		return "Netrollows [n_id=" + n_id + ", n_studentid=" + n_studentid + ", n_studentname=" + n_studentname
 				+ ", n_followtime=" + n_followtime + ", n_nextfollowtime=" + n_nextfollowtime + ", n_content="
 				+ n_content + ", n_userid=" + n_userid + ", n_followtype=" + n_followtype + ", n_createtime="
 				+ n_createtime + ", n_followstate=" + n_followstate + "]";
