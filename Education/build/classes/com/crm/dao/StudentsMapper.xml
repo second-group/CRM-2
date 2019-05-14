@@ -178,4 +178,85 @@
 		</set>
 			where s_id=#{s_id}
 	</update>
+	
+	
+	<!-- 以下是咨询师 -->
+		<select id="SelectStu" parameterType="fenye" resultType="students">
+			select * from students
+			
+		</select>
+		
+		<select id="SelectStuCount" parameterType="fenye" resultType="int">
+			select count(1) from students
+		</select>
+		
+		
+		<update id="UpdateStu" parameterType="students">
+			update students
+		<set>
+			
+			<if test="s_userid!=null and s_userid!=''">
+				s_userid=#{s_userid},			
+			</if>
+			<if test="s_curriculum!=null and s_curriculum!=''">
+				s_curriculum=#{s_curriculum},			
+			</if>
+			<if test="s_record!=null and s_record!=''">
+				s_record=#{s_record},			
+			</if>
+			<if test="s_isvalid!=null and s_isvalid!=''">
+				s_isvalid=#{s_isvalid},		
+			</if>
+			<if test="s_lostvalid!=null and s_lostvalid!=''">
+				s_lostvalid=#{s_lostvalid},			
+			</if>
+			<if test="s_isreturnvist!=null and s_isreturnvist!=''">
+				s_isreturnvist=#{s_isreturnvist},			
+			</if>
+			<if test="s_firstvisittime!=null and s_firstvisittime!=''">
+				s_firstvisittime=#{s_firstvisittime},			
+			</if>
+			<if test="s_ishome!=null and s_ishome!=''">
+				s_ishome=#{s_ishome},			
+			</if>
+			<if test="s_hometime!=null and s_hometime!=''">
+				s_hometime=#{s_hometime},			
+			</if>
+			<if test="s_premoney!=null and s_premoney!=''">
+				s_premoney=#{s_premoney},			
+			</if>
+			<if test="s_premoneytime!=null and s_premoneytime!=''">
+				s_premoneytime=#{s_premoneytime},			
+			</if>
+			<if test="s_ispay!=null and s_ispay!=''">
+				s_ispay=#{s_ispay},			
+			</if>
+			<if test="s_paytime!=null and s_paytime!=''">
+				s_paytime=#{s_paytime},			
+			</if>
+			<if test="s_money!=null and s_money!=''">
+				s_money=#{s_money},			
+			</if>
+			<if test="s_isreturnmoney!=null and s_isreturnmoney!=''">
+				s_isreturnmoney=#{s_isreturnmoney},			
+			</if>
+			<if test="s_returnmoneycontent!=null and s_returnmoneycontent!=''">
+				s_returnmoneycontent=#{s_returnmoneycontent},			
+			</if>
+			<if test="s_isinclass!=null and s_isinclass!=''">
+				s_isinclass=#{s_isinclass},			
+			</if>
+			<if test="s_inclasstime!=null and s_inclasstime!=''">
+				s_inclasstime=#{s_inclasstime},			
+			</if>
+			<if test="s_inclasscontent!=null and s_inclasscontent!=''">
+				s_inclasscontent=#{s_inclasscontent},			
+			</if>
+			<if test="s_content!=null and s_content!=''">
+				s_content=#{s_content},			
+			</if>
+		
+		</set>
+			where s_id=#{s_id}
+	</update>
 </mapper>

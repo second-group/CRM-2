@@ -1,5 +1,11 @@
 package com.crm.service;
 
-public interface NetrollowsService {
+import com.crm.entity.Fenye;
+import com.crm.entity.Netrollows;
 
+public interface NetrollowsService {
+	
+	Fenye<Netrollows> SelectNet(Fenye<Netrollows> fenye);
+	
+	Integer InsertNet(Netrollows netrollows);
 }
