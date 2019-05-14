@@ -135,7 +135,7 @@
 			<if test="s_name !=null and s_name !=''">
 				s_name=#{s_name},		
 			</if>
-			<if test="s_sex !=null and s_sex !=''">
+			<if test="s_sex >=0">
 				s_sex=#{s_sex},			
 			</if>
 			<if test="s_age !=null and s_age !=''">
@@ -171,7 +171,7 @@
 			<if test="s_weixin !=null and s_weixin !=''">
 				s_weixin=#{s_weixin},			
 			</if>
-			<if test="s_isbaobei !=null and s_isbaobei !=''">
+			<if test="s_isbaobei >=0">
 				s_isbaobei=#{s_isbaobei},			
 			</if>
 		

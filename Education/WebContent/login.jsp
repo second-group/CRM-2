@@ -11,7 +11,7 @@
 <script src="js/img_ver.js"></script>
 <script type="text/javascript">
 function btnLogin(){
-	alert(1);
+	
 /* var flag=$("#login").form("validate"); */  //使用validate验证表单的所有验证是否全部通过，通过为true，否则为false
 var u_loginname=$("#u_loginname").val();  //获取表单中的用户名。注意：验证框可以使用jQuery的val方法获取，如果是textbox，则需要通过$("#ename").textbox("getValue"); 来获取
 var u_password=$("#u_password").val();   //获取用户密码

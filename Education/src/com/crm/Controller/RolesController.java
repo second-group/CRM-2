@@ -12,17 +12,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crm.entity.Fenye;
+import com.crm.entity.Modules;
 import com.crm.entity.RoleModules;
 import com.crm.entity.Roles;
 import com.crm.entity.Users;
+import com.crm.service.ModulesService;
 import com.crm.service.RolesService;
 import com.crm.util.TreeModel;
+import com.crm.util.TreeNode;
 
 @Controller
 public class RolesController {
 	@Autowired
 	private RolesService rolesService;
-	
+	@Autowired
+	private ModulesService modulesService;
 	@RequestMapping(value="/selectRolesAll",method=RequestMethod.POST)
 	@ResponseBody
 	public Fenye<Roles> selectRolesAll(Fenye<Roles> fenye,Integer page,Integer rows){
@@ -36,7 +40,7 @@ public class RolesController {
 	@RequestMapping(value="/selectRolesExict",method=RequestMethod.POST)
 	@ResponseBody
 	public List<Roles> selectRolesExict(Roles roles){
-		System.out.println(rolesService.selectRolesExict(roles)+"roles");
+		/*System.out.println(rolesService.selectRolesExict(roles)+"roles");*/
 		return rolesService.selectRolesExict(roles);
 		
 	}
@@ -69,7 +73,12 @@ public class RolesController {
 	@RequestMapping(value="/selectRolesModules",method=RequestMethod.POST)
 	@ResponseBody
 	public ArrayList<TreeModel> selectRolesModules(Roles roles) {
-		return rolesService.selectRolesModules(roles);	
+		ArrayList<TreeModel> totalList=modulesService.selectModulesAll();
+		ArrayList<TreeModel> Roleslist=rolesService.selectRolesModules(roles);		
+/*		System.out.println(TreeNode.checkTree(totalList, Roleslist));
+		System.out.println(totalList+"分配角色权限");*/
+		return TreeNode.checkTree(totalList, Roleslist);
+		
 	}
 	
 	
