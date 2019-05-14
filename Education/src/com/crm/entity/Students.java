@@ -348,15 +348,12 @@ public class Students {
 	public String toString() {
 		return "Students [s_id=" + s_id + ", s_name=" + s_name + ", s_age=" + s_age + ", s_sex=" + s_sex + ", s_phone="
 				+ s_phone + ", s_state=" + s_state + ", s_education=" + s_education + ", s_stuclass=" + s_stuclass
-<<<<<<< HEAD
 				+ ", users=" + users + ", s_msgsource=" + s_msgsource + ", s_sourceurl=" + s_sourceurl
 				+ ", s_sourcekeyword=" + s_sourcekeyword + ", s_address=" + s_address + ", s_qq=" + s_qq + ", s_weixin="
 				+ s_weixin + ", s_content=" + s_content + ", s_createtime=" + s_createtime + ", s_isvalid=" + s_isvalid
-=======
 				+ ", s_msgsource=" + s_msgsource + ", s_sourceurl=" + s_sourceurl + ", s_sourcekeyword="
 				+ s_sourcekeyword + ", s_address=" + s_address + ", s_qq=" + s_qq + ", s_weixin=" + s_weixin
 				+ ", s_content=" + s_content + ", s_createtime=" + s_createtime + ", s_isvalid=" + s_isvalid
->>>>>>> master
 				+ ", s_record=" + s_record + ", s_isreturnvist=" + s_isreturnvist + ", s_firstvisittime="
 				+ s_firstvisittime + ", s_ishome=" + s_ishome + ", s_hometime=" + s_hometime + ", s_lostvalid="
 				+ s_lostvalid + ", s_ispay=" + s_ispay + ", s_paytime=" + s_paytime + ", s_money=" + s_money

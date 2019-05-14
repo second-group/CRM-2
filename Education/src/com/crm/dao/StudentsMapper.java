@@ -16,7 +16,7 @@ public interface StudentsMapper {
 	Integer updateStu(Students students);
 	
 	Integer insertStu(Students students);
-<<<<<<< HEAD
+
 	
 	//咨询师经理
 	List<Students> selectStudent(Fenye<Students> fenye);
@@ -25,7 +25,7 @@ public interface StudentsMapper {
 	
 	Integer updateStudent(Students  students);
 	
-=======
+
 	//下面是咨询师
 	/**
 	 * 多条件分页查询
@@ -48,5 +48,4 @@ public interface StudentsMapper {
 	 * @return
 	 */
 	Integer UpdateStu(Students students);
->>>>>>> master
 }

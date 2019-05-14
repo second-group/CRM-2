@@ -11,10 +11,10 @@ public interface StudentsService {
 	Integer updateStu(Students students);
 	
 	Integer insertStu(Students students);
-<<<<<<< HEAD
+
 	
 	Fenye<Students> selectStudent(Fenye<Students> fenye);
-=======
+
 	//以下是咨询师
 	/**
 	 * 多条件分页查询
@@ -31,5 +31,5 @@ public interface StudentsService {
 	 * @return
 	 */
 	Integer UpdateStu(Students students);
->>>>>>> master
+
 }

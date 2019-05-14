@@ -48,7 +48,7 @@ public class StudentsController {
 		return studentsService.insertStu(students);
 	}
 	
-<<<<<<< HEAD
+
 	@RequestMapping(value="/selectStudent",method=RequestMethod.POST)
 	@ResponseBody
 	public Fenye<Students> selectStudent(Fenye<Students> fenye,Integer rows,Integer page) {
@@ -59,7 +59,7 @@ public class StudentsController {
 		fenye.setPageSize(rows);
 		return studentsService.selectStudent(fenye);	
 	}
-=======
+
 	
 	@RequestMapping(value="/SelectStu",method=RequestMethod.POST)
 	@ResponseBody
@@ -78,5 +78,5 @@ public class StudentsController {
 		return studentsService.UpdateStu(students);
 	}
 	
->>>>>>> master
+
 }
