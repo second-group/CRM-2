@@ -150,7 +150,7 @@
 					var data = $("#dg").datagrid("getData"); //获取datagrid对应的json对象集合（再来一遍）。
 					var row = data.rows[index]; //获取第index行对应的json对象（再来一遍）。
 					r_id=row.r_id;
-					alert(r_id);
+					/* alert(r_id); */
 	                myTree();
 	                $("#diaSetRigh").dialog({
 	                    closed: false,

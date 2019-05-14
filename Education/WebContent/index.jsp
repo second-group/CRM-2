@@ -16,7 +16,7 @@
 	 		
 	 		$('#tt').tree({
 	 			onClick: function(node){
-	 				alert(node.m_path);
+	 				
 	 				var flag = $("#ta").tabs('exists', node.text);
 	                var isLeaf = $('#m_id').tree('isLeaf',node.target); //是否是叶子节点
 	                if (isLeaf) {//只有叶子节点才会在选项卡中创建选项页（每个选项页对应1个功能）

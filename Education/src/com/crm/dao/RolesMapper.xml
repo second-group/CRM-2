@@ -31,7 +31,8 @@
   			delete from roles <where>r_id=#{r_id}</where>
   		</delete>
   		<select id="selectRolesModules" parameterType="roles" resultType="modules">
-  			select m.m_id,m.m_name,m.m_parentid,m.m_path,m.m_weight from roles r INNER JOIN rolemodules rm INNER JOIN modules m on r.r_id=rm.rm_roleid and rm.rm_moduleid=m.m_id 		
+  			select m.m_id,m.m_name,m.m_parentid,m.m_path,m.m_weight from roles r INNER JOIN rolemodules rm INNER JOIN modules m on r.r_id=rm.rm_roleid and rm.rm_moduleid=m.m_id 
+  	 		<where>r.r_id=#{r_id}</where> 
   		</select>
   		<insert id="insertRolesModules" parameterType="roleModules">
   			insert into rolemodules(rm_roleid,rm_moduleid) values(#{rm_roleid},#{rm_moduleid})
