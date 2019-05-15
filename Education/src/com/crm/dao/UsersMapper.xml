@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.crm.dao.UsersMapper">
+  	<!-- 	<select id="selectModules" parameterType="users" resultType="modules">
+  			select m.m_id,m.m_name,m.m_parentid,m.m_path,m.m_weight from users u INNER JOIN userroles ur INNER JOIN roles r INNER JOIN  rolemodules rm INNER JOIN modules m on u.u_id=ur.ur_userid and r.r_id = rm.rm_roleid 
+			and m.m_id = rm.rm_moduleid and r.r_id = ur.ur_roleid
+			where u.u_loginname=#{邝成坤} and u.u_password=#{107521} and u_islockout =#{0} 
+  		</select> -->
+  		<sql id="us">
+  			<where>
+  			<if test="users != null">
+  				<if test="users.u_loginname != null and users.u_loginname != ''">
+  					and u_loginname like "%"#{users.u_loginname}"%"
+  				</if>
+  				<if test="Minu_createtime != null and Minu_createtime != ''">
+  					and u_createtime &gt;=#{Minu_createtime}
+  				</if>
+  				<if test="Maxu_createtime != null and Maxu_createtime != ''">
+  					and u_createtime &lt;=#{Maxu_createtime}
+  				</if>
+  				<if test="users.u_islockout !=null and users.u_islockout != ''">
+  					and u_islockout = #{users.u_islockout}
+  				</if>
+  			<!-- 	<if test="users.u_islockout !=null and users.u_islockout != ''">
+  					and u_islockout = #{users.u_islockout}
+  				</if> -->
+  				<if test="users.u_createtime != null and users.u_createtime != ''">
+  					order by #{users.u_createtime}
+  				</if>
+  				<if test="users.u_lastlogintime != null and users.u_lastlogintime != ''">
+  					order by #{users.u_lastlogintime}
+  				</if>
+  			</if>
+  			</where>
+  		</sql>
+  		<select id="selectUsersCount" parameterType="fenye" resultType="int">
+  			select count(1) from users <include refid="us"></include>
+  		</select>
+  		<select id="selectUsers" parameterType="fenye" resultType="users">
+  			select * from users  
+  			<include refid="us"></include>
+  			limit #{page},#{pageSize}
+  		</select>
+  		<update id="updateUsersU_lastlogintime" parameterType="users">
+  			update users
+  			<set>
+  				u_lastlogintime=#{u_lastlogintime},
+  			</set>
+  			<where>
+  				u_loginname=#{u_loginname}
+  			</where>
+  		</update>
+  		<update id="updateResetU_password" parameterType="int">
+  			update users
+  			<set>
+  				u_password=123456,
+  			</set>
+  			<where>
+  				u_id=#{u_id}
+  			</where>
+  		</update>
+  		<update id="updatelockUsers" parameterType="int">
+  			update users
+  			<set>
+  				u_islockout=1,
+  			</set>
+  			<where>
+  				u_id=#{u_id}
+  			</where>
+  		</update>
+  		<update id="updateu_locktime" parameterType="users">
+  			update users
+  			<set>
+  				u_locktime=#{u_locktime},
+  			</set>
+  			<where>
+  				u_id=#{u_id}
+  			</where>
+  		</update>
+  		<update id="updateUsers" parameterType="users">
+  			update users
+  			<set>
+  				<if test="u_protectemail != null and u_protectemail != ''">
+  					u_protectemail=#{u_protectemail},
+  				</if>
+  				<if test="u_protectmtel != null and u_protectmtel != ''">
+  				u_protectmtel=#{u_protectmtel},
+  			</if>
+  			</set>
+  						
+  			<where>
+  				u_id=#{u_id}
+  			</where>
+  		</update>
+  		<update id="updateUnlockUsers" parameterType="int">
+  			update users
+  			<set>
+  				u_islockout=0,
+  			</set>
+  			<where>
+  				u_id=#{u_id}
+  			</where>
+  		</update>
+  		<select id="selectUsersRole" parameterType="int" resultType="roles">
+  			select r.r_id,r.r_name from users u INNER JOIN userroles ur INNER JOIN roles r on u.u_id=ur.ur_userid and ur.ur_roleid=r.r_id 
+  			<where>u.u_id=#{u_id}</where> 
+  		</select>
+  		<select id="selectRoles" resultType="roles">
+  			select * from roles
+  		</select>
+  		<insert id="insertUserRoles" parameterType="int">
+  			insert into userroles(ur_userid,ur_roleid) values(#{0},#{1})
+  		</insert>
+  		<delete id="deleteUserRoles" parameterType="int">
+  			delete from userroles where ur_userid=#{0} and ur_roleid=#{1}
+  		</delete>
+  		
+  		<insert id="insertUsers" parameterType="users">
+  			insert into users(u_loginname,u_password,u_islockout,u_createtime,u_protectemail,u_protectmtel) values(#{u_loginname},#{u_password},#{u_islockout},#{u_createtime},#{u_protectemail},#{u_protectmtel})
+  		</insert>
+  		
+  		<select id="selectUsersIsExect" parameterType="users" resultType="users">
+  			select * from users where u_loginname=#{u_loginname}
+  		</select>
+  		
+  </mapper>
