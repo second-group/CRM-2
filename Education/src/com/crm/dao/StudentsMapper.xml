@@ -85,7 +85,48 @@
 			and s_name like "%"#{s_name}"%"
 		</if>
 		<if test="s_phone !=null and s_phone !=''">
-			and s_phone=#{s_phone}
+			and s_phone like "%"#{s_phone}"%"
+		</if>
+		<if test="s_ispay !=null">
+			and s_ispay=#{s_ispay}
+		</if>
+		<if test="s_isvalid !=null">
+			and s_isvalid=#{s_isvalid}
+		</if>
+		<if test="s_isreturnvist !=null">
+			and s_isreturnvist=#{s_isreturnvist}
+		</if>
+		<if test="s_qq !=null and s_qq !=''">
+			and s_qq like "%"#{s_qq}"%"
+		</if>
+		<if test="s_createtime !=null and s_createtime !=''">
+			and s_createtime like "%"#{s_createtime}"%"
+		</if>
+		<if test="s_hometime !=null and s_hometime !=''">
+			and s_hometime like "%"#{s_hometime}"%"
+		</if>
+		<if test="s_firstvisittime !=null and s_firstvisittime !=''">
+			and s_firstvisittime like "%"#{s_firstvisittime}"%"
+		</if>
+		<if test="s_paytime !=null and s_paytime !=''">
+			and s_paytime like "%"#{s_paytime}"%"
+		</if>
+		<if test="s_inclasstime !=null and s_inclasstime !=''">
+			and s_inclasstime like "%"#{s_inclasstime}"%"
+		</if>
+		
+	</where>
+		limit #{page},#{pageSize}
+	</select>
+
+	<select id="selectCount" parameterType="fenye" resultType="int">
+		select count(s_id) from students
+		<where>
+		<if test="s_name !=null and s_name !=''">
+			and s_name like "%"#{s_name}"%"
+		</if>
+		<if test="s_phone !=null and s_phone !=''">
+			and s_phone like "%"#{s_phone}"%"
 		</if>
 		<if test="s_ispay !=null and s_ispay !=''">
 			and s_ispay=#{s_ispay}
@@ -97,64 +138,24 @@
 			and s_isreturnvist=#{s_isreturnvist}
 		</if>
 		<if test="s_qq !=null and s_qq !=''">
-			and s_qq=#{s_qq}
+			and s_qq like "%"#{s_qq}"%"
 		</if>
 		<if test="s_createtime !=null and s_createtime !=''">
-			and s_createtime=#{s_createtime}
+			and s_createtime like "%"#{s_createtime}"%"
 		</if>
 		<if test="s_hometime !=null and s_hometime !=''">
-			and s_hometime=#{s_hometime}
+			and s_hometime like "%"#{s_hometime}"%"
 		</if>
 		<if test="s_firstvisittime !=null and s_firstvisittime !=''">
-			and s_firstvisittime=#{s_firstvisittime}
+			and s_firstvisittime like "%"#{s_firstvisittime}"%"
 		</if>
 		<if test="s_paytime !=null and s_paytime !=''">
-			and s_paytime=#{s_paytime}
+			and s_paytime like "%"#{s_paytime}"%"
 		</if>
 		<if test="s_inclasstime !=null and s_inclasstime !=''">
-			and s_inclasstime=#{s_inclasstime}
+			and s_inclasstime like "%"#{s_inclasstime}"%"
 		</if>
 		
-	</where>
-		limit #{page},#{pageSize}
-	</select>
-
-	<select id="selectCount" parameterType="fenye" resultType="int">
-		select count(s_id) from students
-	<where>
-		<if test="s_name!=null and s_name!=''">
-			and s_name like "%"#{s_name}"%"
-		</if>
-		<if test="s_phone!=null and s_phone!=''">
-			and s_phone=#{s_phone}
-		</if>
-		<if test="s_ispay!=null and s_ispay!=''">
-			and s_ispay=#{s_ispay}
-		</if>
-		<if test="s_isvalid!=null and s_isvalid!=''">
-			and s_isvalid=#{s_isvalid}
-		</if>
-		<if test="s_isreturnvist!=null and s_isreturnvist!=''">
-			and s_isreturnvist=#{s_isreturnvist}
-		</if>
-		<if test="s_qq!=null and s_qq!=''">
-			and s_qq=#{s_qq}
-		</if>
-		<if test="s_createtime !=null and s_createtime !=''">
-			and s_createtime=#{s_createtime}
-		</if>
-		<if test="s_hometime !=null and s_hometime !=''">
-			and s_hometime=#{s_hometime}
-		</if>
-		<if test="s_firstvisittime !=null and s_firstvisittime !=''">
-			and s_firstvisittime=#{s_firstvisittime}
-		</if>
-		<if test="s_paytime !=null and s_paytime !=''">
-			and s_paytime=#{s_paytime}
-		</if>
-		<if test="s_inclasstime !=null and s_inclasstime !=''">
-			and s_inclasstime=#{s_inclasstime}
-		</if>
 	</where>
 	</select>
 	<!-- 咨询师经理 查询所有咨询师-->
