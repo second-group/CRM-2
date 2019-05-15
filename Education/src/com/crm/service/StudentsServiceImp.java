@@ -2,8 +2,8 @@ package com.crm.service;
 
 import java.util.List;
 
-import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.crm.dao.StudentsMapper;
@@ -12,7 +12,7 @@ import com.crm.entity.Students;
 
 @Service
 public class StudentsServiceImp implements StudentsService {
-	@Resource
+	@Autowired
 	private StudentsMapper studentsMapper;
 
 	@Override
@@ -42,4 +42,37 @@ public class StudentsServiceImp implements StudentsService {
 		// TODO Auto-generated method stub
 		return studentsMapper.insertStu(students);
 	}
+
+
+	@Override
+	public Fenye<Students> selectStudent(Fenye<Students> fenye) {
+		List<Students> selectStudent = studentsMapper.selectStudent(fenye);
+		Integer selectStudentTotal = studentsMapper.selectStudentTotal(fenye);
+		fenye.setRows(selectStudent);
+		fenye.setTotal(selectStudentTotal);
+		return fenye;
+	}
+
+	
+	//以下是咨询师
+	public Fenye<Students> SelectStu(Fenye<Students> fenye) {
+		List<Students> selectStu = studentsMapper.SelectStu(fenye);
+		Integer selectStuCount = studentsMapper.SelectStuCount(fenye);
+		fenye.setRows(selectStu);
+		fenye.setTotal(selectStuCount);
+		return fenye;
+	}
+
+	
+	public Integer UpdateStu(Students students) {
+		
+		return studentsMapper.UpdateStu(students);
+	}
+
+	@Override
+	public Integer updateStudent(Students students) {
+		
+		return studentsMapper.updateStudent(students);
+	}
+
 }

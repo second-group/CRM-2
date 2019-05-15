@@ -110,7 +110,12 @@ public class UsersController {
 		users.setU_createtime(df.format(new Date()));
 		return usersService.insertUsers(users);		
 	}
-	
+	@RequestMapping(value="/selectALLUsers",method=RequestMethod.POST)
+	@ResponseBody
+	public List<Users> selectUsersByStudent(){
+		
+		return usersService.selectUsersByStudent();
+	}
 	
 	
 	

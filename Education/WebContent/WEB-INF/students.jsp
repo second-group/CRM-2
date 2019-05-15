@@ -12,6 +12,7 @@
 <script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 	$(function(){
+		shezhidongtai();
 		init();
 	})
 	function init(){
@@ -39,7 +40,6 @@
 		
 	}
 	function formattercaozuo(value,row,index){
-		
 		return "<a href='javascript:void(0)' onclick='lookstus("+index+")'>查看</a> <a href='javascript:void(0)' onclick='updatestu("+index+")'>修改</a>  <a href='javascript:void(0)' onclick='deletestu("+index+")'>删除</a>"
 	}
 	 function formattersex(value,row,index) {
@@ -91,16 +91,24 @@
 	}
 	function updatestu(index){
 		var arr=$("#stuste").datagrid("getData");//获取数据表格加载完成时返回的数据
-		var row=arr.rows[index];//根据我们所选中的行的下标获取选中行的数据
+		 var row= $('#stuste').datagrid("getRows")[index];  
+		 var row=arr.rows[index];//根据我们所选中的行的下标获取选中行的数据 */
+		/*  $("#updates_sex").combobox('setValue',row.s_sex==1?"男":"女"); */
+		 alert(row.s_sex); 
 		$("#stu-xiugai-form").form("load",row);//把我们获取的行中的数据填充但form表单中去
 		$("#stu-xiugai-dialog").dialog("open");//打开我们的窗口			
-		
+		$("#updates_sex").combobox('setValue',row.s_sex);  
+		$("#updates_isbaobei").combobox('setValue',row.s_isbaobei);  
 	}
 	function updateSub(){
+		 var s_sex=$("#updates_sex").combobox('getValue')=="男"?"1":"0";
+		 var s_isbaobei=$("#updates_isbaobei").combobox('getValue')=="是"?"1":"0";
+		var s_sex=$("#updates_sex").combobox("getValue");
+		 alert(s_sex);
 		$.post("updatestu",{
 			s_id:$("#updates_id").val(),
 			s_name:$("#updates_name").val(),
-			s_sex:$("#updates_sex").val(),
+			s_sex:$("#updates_sex").combobox("getValue"),
 			s_age:$("#updates_age").val(),
 			s_phone:$("#updates_phone").val(),
 			s_education:$("#updates_education").val(),
@@ -113,7 +121,7 @@
 			s_frompart:$("#updates_frompart").val(),
 			s_qq:$("#updates_qq").val(),
 			s_weixin:$("#updates_weixin").val(),
-			s_isbaobei:$("#updates_isbaobei").val()
+			s_isbaobei:$("#updates_isbaobei").combobox("getValue")
 		},function(res){
 			if(res>0){
 				//修改成功
@@ -139,7 +147,7 @@
 			datatype:"json",//格式
 			data:{//传递的参数
 				"s_name":$("#inserts_name").val(),
-				"s_sex":$("#inserts_sex").val(),
+				"s_sex":$("#inserts_sex").combobox("getValue"),
 				"s_age":$("#inserts_age").val(),
 				"s_phone":$("#inserts_phone").val(),
 				"s_education":$("#inserts_education").val(),
@@ -149,7 +157,7 @@
 				"s_sourcekeyword":$("#inserts_sourcekeyword").val(),
 				"s_qq":$("#inserts_qq").val(),
 				"s_weixin":$("#inserts_weixin").val(),
-				"s_isbaobei":$("#inserts_isbaobei").val(),
+				"s_isbaobei":$("#inserts_isbaobei").combobox("getValue"),
 				"s_content":$("#inserts_content").val()
 				
 			},
@@ -162,14 +170,61 @@
 			}
 		})		
 	}
+	function zixunshi(value,row,index){
+		return row.users.u_loginname;
+	}
 	//添加的重置操作方法
 	function insertReset(){
 		$("#stu-tianjia-form").form("reset")
 	}
-</script>
+	
+	function shezhidongtai() {
+	    var createGridHeaderContextMenu = function(e, field) {
+	        e.preventDefault();
+	        var grid = $(this);
+	        var headerContextMenu = this.headerContextMenu;
+	        if (!headerContextMenu) {
+	            var tmenu = $('<div style="width:100px;"></div>').appendTo('body');
+	            var fields = grid.datagrid('getColumnFields');
+	            for (var i = 0; i < fields.length; i++) {
+	                var fildOption = grid.datagrid('getColumnOption', fields[i]);
+	                if (!fildOption.hidden) {
+	                    $('<div iconCls="icon-ok" field="' + fields[i] + '"/>').html(fildOption.title).appendTo(tmenu)
+	                } else {
+	                    $('<div iconCls="icon-empty" field="' + fields[i] + '"/>').html(fildOption.title).appendTo(tmenu)
+	                }
+	            }
+	            headerContextMenu = this.headerContextMenu = tmenu.menu({
+	                onClick: function(item) {
+	                    var field = $(item.target).attr('field');
+	                    if (item.iconCls == 'icon-ok') {
+	                        grid.datagrid('hideColumn', field);
+	                        $(this).menu('setIcon', {
+	                            target: item.target,
+	                            iconCls: 'icon-empty'
+	                        })
+	                    } else {
+	                        grid.datagrid('showColumn', field);
+	                        $(this).menu('setIcon', {
+	                            target: item.target,
+	                            iconCls: 'icon-ok'
+	                        })
+	                    }
+	                }
+	            })
+	        }
+	        headerContextMenu.menu('show', {
+	            left: e.pageX,
+	            button: e.pageY
+	        })
+	    };
+	    $.fn.datagrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
+	    $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu
+	}
+	</script>
 </head>
 <body>
-	<table id="stuste" class="easyui-datagrid">
+	<table id="stuste">
 		<thead>
 			<tr>
 				<th data-options="field:'s_id',title:'s_id'">id</th>
@@ -203,8 +258,9 @@
 				<!-- <th data-options="field:'s_paytime',title:'s_paytime'">缴费时间</th> -->
 				<th field="s_paytime" hidden="true">缴费时间</th>			
 				<!-- <th data-options="field:'s_inclasstime',title:'s_inclasstime'">进班时间</th> -->
-				<th field="s_inclasstime" hidden="true">进班时间</th>				
+				<th field="s_inclasstime" hidden="true">进班时间</th>		
 				<th	data-options="field:'caozuo',title:'操作',formatter:formattercaozuo" class="right"></th>
+				
 			</tr>
 		</thead>
 	</table>
@@ -249,147 +305,147 @@
 			<table>
 				<tr>
 					<td>学员姓名：</td>
-					<td><input type="text" name="s_name" class="easyui-textbox"></td>
+					<td><input type="text" name="s_name" class="easyui-textbox" readonly="readonly"></td>
 				</tr>
 				<tr>
 					<td>年龄：</td>
-					<td><input type="text" name="s_age" class="easyui-textbox"></td>
+					<td><input type="text" name="s_age" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>性别：</td>
-					<td><input type="text" name="s_sex"class="easyui-textbox"  data-options="formatter:formattersex"></td>
+					<td><input type="text" name="s_sex"class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>电话：</td>
-					<td><input type="text" name="s_phone" class="easyui-textbox"></td>
+					<td><input type="text" name="s_phone" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>个人状态：</td>
-					<td><input type="text" name="s_state" class="easyui-textbox"></td>
+					<td><input type="text" name="s_state" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>学历：</td>
-					<td><input type="text" name="s_education" class="easyui-textbox"></td>
+					<td><input type="text" name="s_education" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>来源渠道：</td>
-					<td><input type="text" name="s_msgsource" class="easyui-textbox"></td>
+					<td><input type="text" name="s_msgsource" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>来源网站：</td>
-					<td><input type="text" name="s_sourceurl" class="easyui-textbox"></td>
+					<td><input type="text" name="s_sourceurl" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>来源关键词：</td>
-					<td><input type="text" name="s_sourcekeyword" class="easyui-textbox"></td>
+					<td><input type="text" name="s_sourcekeyword" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>所在区域：</td>
-					<td><input type="text" name="s_address" class="easyui-textbox"></td>
+					<td><input type="text" name="s_address" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>学员qq：</td>
-					<td><input type="text" name="s_qq" class="easyui-textbox"></td>
+					<td><input type="text" name="s_qq" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>客户微信：</td>
-					<td><input type="text" name="s_weixin" class="easyui-textbox"></td>
+					<td><input type="text" name="s_weixin" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<!-- <tr>
 					<td>备注：</td>
-					<td><input type="text" name="s_content" class="easyui-textbox"></td>
+					<td><input type="text" name="s_content" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>创建时间：</td>
-					<td><input type="text" name="s_createtime" class="easyui-textbox"></td>
+					<td><input type="text" name="s_createtime" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>是否有效：</td>
-					<td><input type="text" name="s_isvalid" class="easyui-textbox"></td>
+					<td><input type="text" name="s_isvalid" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>打分：</td>
-					<td><input type="text" name="s_record" class="easyui-textbox"></td>
+					<td><input type="text" name="s_record" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>是否回访：</td>
-					<td><input type="text" name="s_isreturnvist" class="easyui-textbox"></td>
+					<td><input type="text" name="s_isreturnvist" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>首次回访时间：</td>
-					<td><input type="text" name="s_firstvisittime" class="easyui-textbox"></td>
+					<td><input type="text" name="s_firstvisittime" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>是否上门：</td>
-					<td><input type="text" name="s_ishome" class="easyui-textbox"></td>
+					<td><input type="text" name="s_ishome" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>上门时间：</td>
-					<td><input type="text" name="s_hometime" class="easyui-textbox"></td>
+					<td><input type="text" name="s_hometime" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>无效原因：</td>
-					<td><input type="text" name="s_lostvalid" class="easyui-textbox"></td>
+					<td><input type="text" name="s_lostvalid" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>是否缴费：</td>
-					<td><input type="text" name="s_ispay" class="easyui-textbox"></td>
+					<td><input type="text" name="s_ispay" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>缴费时间：</td>
-					<td><input type="text" name="s_paytime" class="easyui-textbox"></td>
+					<td><input type="text" name="s_paytime" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>缴费金额：</td>
-					<td><input type="text" name="s_money" class="easyui-textbox"></td>
+					<td><input type="text" name="s_money" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>是否退费：</td>
-					<td><input type="text" name="s_isreturnmoney" class="easyui-textbox"></td>
+					<td><input type="text" name="s_isreturnmoney" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>是否进班：</td>
-					<td><input type="text" name="s_isinclass" class="easyui-textbox"></td>
+					<td><input type="text" name="s_isinclass" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>进班时间：</td>
-					<td><input type="text" name="s_inclasstime" class="easyui-textbox"></td>
+					<td><input type="text" name="s_inclasstime" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>进班备注：</td>
-					<td><input type="text" name="s_inclasscontent" class="easyui-textbox"></td>
+					<td><input type="text" name="s_inclasscontent" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>是否删除：</td>
-					<td><input type="text" name="s_isdel" class="easyui-textbox"></td>
+					<td><input type="text" name="s_isdel" class="easyui-textbox" readonly="true"></td>
 				</tr>-->
 				<tr> 
 					<td>来源部门：</td>
-					<td><input type="text" name="s_frompart" class="easyui-textbox"></td>
+					<td><input type="text" name="s_frompart" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>关注：</td>
-					<td><input type="text" name="s_concern" class="easyui-textbox"></td>
+					<td><input type="text" name="s_concern" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>是否报备：</td>
-					<td><input type="text" name="s_isbaobei" class="easyui-textbox" data-options="formatter:formattersex"></td>
+					<td><input type="text" name="s_isbaobei" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<!-- <tr>
 					<td>用户编号：</td>
-					<td><input type="text" name="s_userid" class="easyui-textbox"></td>
+					<td><input type="text" name="s_userid" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>退费原因：</td>
-					<td><input type="text" name="s_returnmoneycontent" class="easyui-textbox"></td>
+					<td><input type="text" name="s_returnmoneycontent" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>定金金额：</td>
-					<td><input type="text" name="s_premoney" class="easyui-textbox"></td>
+					<td><input type="text" name="s_premoney" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>定金时间：</td>
-					<td><input type="text" name="s_premoneytime" class="easyui-textbox"></td>
+					<td><input type="text" name="s_premoneytime" class="easyui-textbox" readonly="true"></td>
 				</tr> -->
 			</table>
 		</form>
@@ -417,7 +473,12 @@
 				</tr>
 				<tr>
 					<td>性别：</td>
-					<td><input type="text" name="s_sex" id="updates_sex" class="easyui-textbox"></td>
+					<td><!-- <input type="text" name="s_sex" id="updates_sex" class="easyui-textbox"> -->
+						<select style="width: 100px" id="updates_sex" class="easyui-combobox">
+				    		<option value="1">女</option>
+		    				<option value="0">男</option>
+			    		</select>
+					</td>
 				</tr>
 				<tr>
 					<td>年龄：</td>
@@ -469,7 +530,12 @@
 				</tr>
 				<tr>
 					<td>是否报备：</td>
-					<td><input type="text" name="s_isbaobei" id="updates_isbaobei" class="easyui-textbox"></td>
+					<td><!-- <input type="text" name="s_isbaobei" id="updates_isbaobei" class="easyui-textbox"> -->
+						<select style="width: 100px" id="updates_isbaobei" class="easyui-combobox">
+				    		<option value="1">否</option>
+		    				<option value="0">是</option>
+			    		</select>
+					</td>
 				</tr>
 				
 			</table>
@@ -498,7 +564,13 @@
 				</tr>
 				<tr>
 					<td>性别：</td>
-					<td><input type="text" name="s_sex" id="inserts_sex" class="easyui-textbox"></td>
+					<td><!-- <input type="text" name="s_sex" id="inserts_sex" class="easyui-textbox"> -->
+						<select style="width: 100px" id=inserts_sex class="easyui-combobox">
+							<option>请选择</option>
+				    		<option value="1">女</option>
+		    				<option value="0">男</option>
+			    		</select>
+					</td>
 				</tr>
 				<tr>
 					<td>年龄：</td>
@@ -538,7 +610,13 @@
 				</tr>
 				<tr>
 					<td>是否报备：</td>
-					<td><input type="text" name="s_isbaobei" id="inserts_isbaobei" class="easyui-textbox"></td>
+					<td><!-- <input type="text" name="s_isbaobei" id="inserts_isbaobei" class="easyui-textbox"> -->
+						<select style="width: 100px" id=inserts_isbaobei class="easyui-combobox">
+							<option>请选择</option>
+				    		<option value="1">否</option>
+		    				<option value="0">是</option>
+			    		</select>
+					</td>
 				</tr>
 				<tr>
 					<td>在线备注：</td>

@@ -14,6 +14,28 @@ public class Fenye<T> {
 	private String  Minu_createtime;
 	private String Maxu_createtime;
 	
+	/*咨询师模块的*/
+	private Students students;
+	private Netrollows netrollows;
+	public Fenye(Students students, Netrollows netrollows) {
+		super();
+		this.students = students;
+		this.netrollows = netrollows;
+	}
+	
+	public Students getStudents() {
+		return students;
+	}
+	public void setStudents(Students students) {
+		this.students = students;
+	}
+	public Netrollows getNetrollows() {
+		return netrollows;
+	}
+	public void setNetrollows(Netrollows netrollows) {
+		this.netrollows = netrollows;
+	}
+
 	/*网络咨询师模块的*/
 	private String s_name;
 	private String s_phone;
