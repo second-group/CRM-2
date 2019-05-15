@@ -16,7 +16,7 @@ public class TreeNode {
      * </pre>
      */
     public static ArrayList<TreeModel> getTree(List<TreeModel> list) {
-    	System.out.println(1);
+    	
 //首先，我们创建一个链表，用于存放第一层，也就是最高层节点
         ArrayList<TreeModel> tree = new ArrayList<>();
         // 循环遍历父节点
@@ -42,7 +42,6 @@ public class TreeNode {
      */
     //获取子节点
     public static ArrayList<TreeModel> getChildrenNode(int pid, List<TreeModel> list) {
-    	System.out.println(2);
 //我们拿到了父节点的ID，和所有数据的链表之后，来到了这里，首先，申明一个链表，用于存放二级的节点。
 //等会会调用递归，要注意，调用的递归ArrayList<TreeModel>所代表的意义不是一样的，所以，调用n次就代表这里的链表存放的是n+2次的层级节点。
         ArrayList<TreeModel> childrenNode = new ArrayList<>();
@@ -62,18 +61,19 @@ public class TreeNode {
     /**
 	 * 将tree变成选中状态
 	 * @param totalList
-	 * @param list
+	 * @param Roleslist
 	 * @return
 	 */
 	public static  ArrayList<TreeModel> checkTree(ArrayList<TreeModel> totalList,ArrayList<TreeModel> Roleslist){
-		System.out.println(3);
+
 		System.out.println(totalList+"所有");//所有
 		System.out.println(Roleslist+"拥有");//角色的id查询出来的模块
 		for (int i = 0; i < Roleslist.size(); i++) {
 			 for (int j = 0; j < totalList.size(); j++) {
 				if(totalList.get(j).getId()==Roleslist.get(i).getId()) {
 					System.out.println(totalList.get(j).getM_parentid()+"父id");
-					/*if(totalList.get(j).getM_parentid()!=0) {*/
+					/*if(totalList.get(j).getM_parentid()>0) {*/
+					/*Roleslist.get(i).getM_parentid()!=0*/
 						System.out.println("我进来了");
 						totalList.get(j).setChecked(true);
 					/*}*/					  					

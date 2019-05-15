@@ -83,6 +83,11 @@ public class UsersServiceImpl implements UsersService{
 		// TODO Auto-generated method stub
 		return usersMapper.updateUsers(users);
 	}
+	@Override
+	public List<Users> selectUsersAll() {
+		// TODO Auto-generated method stub
+		return usersMapper.selectUsersAll();
+	}
 
 	
 }

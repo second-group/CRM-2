@@ -2,10 +2,13 @@ package com.crm.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.crm.entity.Fenye;
 import com.crm.entity.Modules;
-import com.crm.entity.RoleModules;
+
 import com.crm.entity.Roles;
+
 
 public interface RolesMapper {
 	/**
@@ -34,5 +37,7 @@ public interface RolesMapper {
 	 */
 	List<Modules> selectRolesModules(Roles roles);
 	
-	Integer insertRolesModules(RoleModules roleModules);
+	Integer deleteRolesModules(Integer r_id);
+	
+	Integer insertRolesModules(@Param("rm_roleid")Integer rm_roleid,@Param("rm_moduleid")String rm_moduleid);
 }

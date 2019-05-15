@@ -92,4 +92,9 @@ public class ModulesController {
 		return modulesService.updateModules(modules);
 		
 	}
+	
+	@RequestMapping(value="/modules",method = RequestMethod.GET)
+	public String modules() {
+		return "modules";
+	}
 }

@@ -179,18 +179,20 @@
                 }, "json");
             }*/
            function server(){
+            	alert(r_id);
            		var nodes = $('#tt').tree('getChecked', ['checked','indeterminate']);
            		
+				
            		/*alert(nodes.id);*/
-           		var s = '';
+           		var ids = '';
 				for(var i=0; i<nodes.length; i++){
-					if (s != '') s += ',';
-					s += nodes[i].id;
+					if (ids != '') ids += ',';
+					ids += nodes[i].id;
 				}
-				alert(s);
+				alert(ids);
            		$.post("insertRolesModules", {
-           					rm_moduleid:s,
-           					rm_roleid: rm_roleid
+           					rm_moduleid:ids,
+           					rm_roleid: r_id
 							
 						}, function(res) {
 						/* 	var res = eval("(" + res + ")"); //你知道这里可以如何修改从而变得更简单么？       */           

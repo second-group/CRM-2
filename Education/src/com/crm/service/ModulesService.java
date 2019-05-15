@@ -21,6 +21,8 @@ public interface ModulesService {
 	
 	Integer deleteModules(Modules modules);
 	
+	List<Users> selectUsersAll();
+	
 	List<Modules> selectModulesById(Modules modules);
 	
 	Integer updateModules(Modules modules);
