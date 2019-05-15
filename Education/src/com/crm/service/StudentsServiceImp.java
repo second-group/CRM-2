@@ -69,4 +69,10 @@ public class StudentsServiceImp implements StudentsService {
 		return studentsMapper.UpdateStu(students);
 	}
 
+	@Override
+	public Integer updateStudent(Students students) {
+		
+		return studentsMapper.updateStudent(students);
+	}
+
 }
