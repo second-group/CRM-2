@@ -529,12 +529,12 @@
 					</tr>
 					<tr>
 						<td>开始跟踪时间:</td>
-						<td><input class="easyui-datebox" name="n_followtime" id="n_followtime" data-options="required:true"></input>
+						<td><input class="easyui-datetimebox" name="n_followtime" id="n_followtime" data-options="required:true"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>结束跟踪时间:</td>
-						<td><input class="easyui-datebox" name="n_nextfollowtime" id="n_nextfollowtime" data-options="required:true"></input>
+						<td><input class="easyui-datetimebox" name="n_nextfollowtime" id="n_nextfollowtime" data-options="required:true"></input>
 						</td>
 					</tr>
 					<tr>
@@ -554,7 +554,7 @@
 					</tr>
 					<tr>
 						<td>创建时间/回访时间:</td>
-						<td><input class="easyui-datebox" name="n_createtime"  id="n_createtime" data-options="required:true"></input>
+						<td><input class="easyui-datetimebox" name="n_createtime"  id="n_createtime" data-options="required:true"></input>
 						</td>
 					</tr>
 					<tr>

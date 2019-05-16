@@ -170,6 +170,9 @@
 			}
 		})		
 	}
+	function zixunshi(value,row,index){
+		return row.users.u_loginname;
+	}
 	//添加的重置操作方法
 	function insertReset(){
 		$("#stu-tianjia-form").form("reset")
@@ -255,8 +258,9 @@
 				<!-- <th data-options="field:'s_paytime',title:'s_paytime'">缴费时间</th> -->
 				<th field="s_paytime" hidden="true">缴费时间</th>			
 				<!-- <th data-options="field:'s_inclasstime',title:'s_inclasstime'">进班时间</th> -->
-				<th field="s_inclasstime" hidden="true">进班时间</th>				
+				<th field="s_inclasstime" hidden="true">进班时间</th>		
 				<th	data-options="field:'caozuo',title:'操作',formatter:formattercaozuo" class="right"></th>
+				
 			</tr>
 		</thead>
 	</table>
