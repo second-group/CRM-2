@@ -96,6 +96,14 @@ public interface UsersMapper {
 	 * @return
 	 */
 	List<Users> selectUsersIsExect(Users users);
-	
-	
+	/**
+	 * 查询所有咨询师
+	 * @return
+	 */
+	List<Users> selectUsersByStudent();
+	/**
+	 * 查询所有用户，登录时进行验证
+	 * @return
+	 */
+	List<Users> selectUsersAll();
 }

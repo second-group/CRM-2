@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+
+import com.crm.entity.Modules;
 @Component
 public class TreeNode {
     /**
@@ -16,7 +18,7 @@ public class TreeNode {
      * </pre>
      */
     public static ArrayList<TreeModel> getTree(List<TreeModel> list) {
-    	
+    	System.out.println(1);
 //首先，我们创建一个链表，用于存放第一层，也就是最高层节点
         ArrayList<TreeModel> tree = new ArrayList<>();
         // 循环遍历父节点
@@ -42,6 +44,7 @@ public class TreeNode {
      */
     //获取子节点
     public static ArrayList<TreeModel> getChildrenNode(int pid, List<TreeModel> list) {
+    	System.out.println(2);
 //我们拿到了父节点的ID，和所有数据的链表之后，来到了这里，首先，申明一个链表，用于存放二级的节点。
 //等会会调用递归，要注意，调用的递归ArrayList<TreeModel>所代表的意义不是一样的，所以，调用n次就代表这里的链表存放的是n+2次的层级节点。
         ArrayList<TreeModel> childrenNode = new ArrayList<>();
@@ -61,26 +64,45 @@ public class TreeNode {
     /**
 	 * 将tree变成选中状态
 	 * @param totalList
-	 * @param Roleslist
+	 * @param list
 	 * @return
 	 */
-	public static  ArrayList<TreeModel> checkTree(ArrayList<TreeModel> totalList,ArrayList<TreeModel> Roleslist){
-
-		System.out.println(totalList+"所有");//所有
-		System.out.println(Roleslist+"拥有");//角色的id查询出来的模块
+	public static  List<Modules> checkTree(List<Modules> totalList,List<Modules> Roleslist){
+		System.out.println(totalList);
+		System.out.println(Roleslist);
 		for (int i = 0; i < Roleslist.size(); i++) {
 			 for (int j = 0; j < totalList.size(); j++) {
-				if(totalList.get(j).getId()==Roleslist.get(i).getId()) {
+				if(totalList.get(j).getM_id()==Roleslist.get(i).getM_id()) {
 					System.out.println(totalList.get(j).getM_parentid()+"父id");
-					/*if(totalList.get(j).getM_parentid()>0) {*/
-					/*Roleslist.get(i).getM_parentid()!=0*/
+					if(totalList.get(j).getM_parentid()!=0) {
 						System.out.println("我进来了");
 						totalList.get(j).setChecked(true);
-					/*}*/					  					
+					}
+					
 				}
 			}
 		}
+		
 		return totalList;
 	}
+	
+	public static  ArrayList<TreeModel> getcheckTrue(List<Modules> totalList){
+		ArrayList<TreeModel> root = new ArrayList<>();
+		ArrayList<TreeModel> tree = new ArrayList<>();
+		 for (Modules mod1:totalList) {
+			   System.out.println(mod1);
+			   TreeModel node = new TreeModel();
+			   node.setId(mod1.getM_id());
+             node.setText(mod1.getM_name());             
+             node.setM_parentid(mod1.getM_parentid());
+             node.setM_path(mod1.getM_path()); 
+            node.setChecked(mod1.getChecked());
+             tree.add(node);
+		   }
+		   root = TreeNode.getTree(tree);
+		   System.out.println(root+"最后");
+		   return root;
+	}
+	
 }
 

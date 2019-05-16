@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.security.auth.Subject;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,7 +25,6 @@ import com.crm.service.ModulesService;
 import com.crm.service.UsersService;
 import com.crm.util.RandomValidateCode;
 @Controller
-@RequestMapping("/uuuuu") 
 public class UsersController {
 	@Autowired
 	private UsersService usersService;
@@ -110,14 +109,12 @@ public class UsersController {
 		users.setU_createtime(df.format(new Date()));
 		return usersService.insertUsers(users);		
 	}
-/*	@RequestMapping(value="/selectALLUsers",method=RequestMethod.POST)
+	@RequestMapping(value="/selectALLUsers",method=RequestMethod.POST)
 	@ResponseBody
 	public List<Users> selectUsersByStudent(){
 		
 		return usersService.selectUsersByStudent();
 	}
-	*/
-	
 	
 	/**
 	 * 拦截器拦截进入登录页面
@@ -155,14 +152,34 @@ public class UsersController {
 		    System.out.println(captchaPassed+"我是图片");*/
 		
 		if(users!=null) {
-			List<Users> uu=modulesService.selectUsersAll();
+			List<Users> uu=usersService.selectUsersAll();
 			session.setAttribute("uu", uu);//存入session里面
-			System.out.println("不理我？");
-			System.out.println(uu+"我是所有");
-			System.out.println(users.getU_loginname());
+			System.out.println(uu);
+		/*	for (int i = 0; i < uu.size(); i++) {
+				if(uu.get(i).getU_lastlogintime().equals(users.getU_loginname())){
+					session.setAttribute("usersChecked", "用户名不存在");
+					
+				}else if(uu.get(i).getU_password().equals(users.getU_password())){
+					System.out.println("密码错误");
+					session.setAttribute("usersChecked", "密码错误");
+					
+				}else if(uu.get(i).getU_islockout()==1) {
+					alert("该用户已锁定");
+					session.setAttribute("usersChecked", "该用户已锁定");
+					
+				}
+				
+			}*/
+			 /* for(Users us:uu){
+				   System.out.println(us.getU_loginname());
+				  } */ 
 			Users us=modulesService.selectUsersByLogin(users);
-		
+			String random = (String) session.getAttribute("RANDOMVALIDATECODEKEY");
+			String inputStr=request.getParameter("inputStr");
+			System.out.println(inputStr+"页面验证码");
+			System.out.println(random+"后台验证码");
 			System.out.println(us+"585858585858");
+			 /*&& random.equals(inputStr)*/
 			if(us!=null) {
 				/*if(ch.equals(true)) {
 					
@@ -174,8 +191,15 @@ public class UsersController {
 	                response.addCookie(nameCookie);
 	                response.addCookie(pwdCookie);
 				}*/
-				session.setAttribute("users", us);//存入session里面
-				return "inindex";
+				if(random.equals(inputStr)) {
+					session.setAttribute("users", us);//存入session里面
+					return "inindex";
+				}else {
+					System.out.println("验证码？");
+					/*session.setAttribute("imgCheck", "验证码错误");*/
+					return "验证码错误";
+				}
+				
 			}else /*if(!users.getU_loginname().equals(us.getU_lastlogintime()))*/{
 				model.addAttribute("msg","登录失败,用户名错误！");
 				System.out.println("我是用户名错误");
@@ -188,7 +212,7 @@ public class UsersController {
 				return "inlogin";
 			}*/
 		}else {
-			model.addAttribute("LoginFlag2","登录失败,账号可能不存在或已经被锁定！");
+			model.addAttribute("msg","请输入用户名密码");
 			return "inlogin";
 		}
 		}
@@ -202,7 +226,6 @@ public class UsersController {
 	        session.invalidate();//清除Session
 	        return "login";
 	    }
-	 
 
 /**
 
@@ -287,12 +310,4 @@ public class UsersController {
 	        }
 
 	    }
-
-	 
-
-	 
-
-	   
-
-
 }

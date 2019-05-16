@@ -1,18 +1,14 @@
 package com.crm.Controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,24 +26,46 @@ public class LoginController {
 	private ModulesService modulesService;
 	@Autowired
 	private UsersService usersService;
-	public String login(Users users,Model model,HttpSession session){
-		//先判断users里是否有值
-		if(users!=null) {
-			System.out.println(users.getU_loginname());
-			Users user=modulesService.selectUsersByLogin(users);
-			if(user!=null) {
-				session.setAttribute("users", user);//存入session里面
-			
-				return "inindex";
-			}else {
-				model.addAttribute("LoginFlag1","登录失败,密码或账号错误！");
-				model.addAttribute("message","登录失败,密码或账号错误！");
-				return "inlogin";
-			}
-		}else {
-			model.addAttribute("LoginFlag2","登录失败");
-			return "inlogin";
-		}
+		@RequestMapping(value="/loginVerify",method=RequestMethod.POST)
+	@ResponseBody
+	 public Map<String, Object> loginVerify(Users users,HttpServletRequest request, HttpServletResponse response) throws Exception {
+			System.out.println("来啦来啊");
+		String rememberme=request.getParameter("rememberme");
+		Map<String, Object> map = new HashMap<String, Object>();
+		Users us=modulesService.selectUsersByLogin(users);	
+		if(us==null) {
+			  map.put("code",0);
+	          map.put("msg","用户名无效！");
+		}else if(!us.getU_password().equals(users.getU_password())) {
+            map.put("code",0);
+            map.put("msg","密码错误！");
+		} else {
+            //登录成功
+            map.put("code",1);
+            map.put("msg","");
+            //添加session
+          /*  modelMap.addAttribute("users",us);*/
+            request.getSession().setAttribute("users", us);
+            //添加cookie
+          
+            if(rememberme!=null) {
+                //创建两个Cookie对象
+                Cookie nameCookie = new Cookie("u_lastlogintime", users.getU_lastlogintime());
+                //设置Cookie的有效期为3天
+                nameCookie.setMaxAge(60 * 60 * 24 * 7);
+                Cookie pwdCookie = new Cookie("u_password", users.getU_password());
+                pwdCookie.setMaxAge(60 * 60 * 24 * 7);
+                response.addCookie(nameCookie);
+                response.addCookie(pwdCookie);
+            }
+          
+    	
+
+        }
+		System.out.println(map);
 		
-	}
+        return map;
+		
+		
+}
 }

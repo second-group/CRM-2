@@ -23,7 +23,6 @@
 			<mvc:mapping path="/**"/>
 				<mvc:exclude-mapping path="/inlogin"/>
 			<mvc:exclude-mapping path="/login"/>
-			<mvc:exclude-mapping path="/checkCode"/>
 			<mvc:exclude-mapping path="/getVerify"/>
 			<!-- 拦截器静态资源放过 -->
 			<mvc:exclude-mapping path="/css/**"/>

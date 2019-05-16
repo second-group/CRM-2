@@ -31,5 +31,7 @@ public interface UsersService {
 	List<Users> selectUsersIsExect(Users users);
 	Integer updateUsersU_lastlogintime(Users users);
 	
+	List<Users> selectUsersByStudent();
 	
+	List<Users> selectUsersAll();
 }

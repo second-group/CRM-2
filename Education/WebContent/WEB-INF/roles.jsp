@@ -179,19 +179,17 @@
                 }, "json");
             }*/
            function server(){
-            	alert(r_id);
            		var nodes = $('#tt').tree('getChecked', ['checked','indeterminate']);
            		
-				
            		/*alert(nodes.id);*/
-           		var ids = '';
+           		var s = '';
 				for(var i=0; i<nodes.length; i++){
-					if (ids != '') ids += ',';
-					ids += nodes[i].id;
+					if (s != '') s += ',';
+					s += nodes[i].id;
 				}
-				alert(ids);
+				alert(s);
            		$.post("insertRolesModules", {
-           					rm_moduleid:ids,
+           					moduleid:s,
            					rm_roleid: r_id
 							
 						}, function(res) {

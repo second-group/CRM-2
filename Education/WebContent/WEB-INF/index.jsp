@@ -110,8 +110,7 @@
 	            }, "json");  
 	        });  
 	    });   */
-	    
-	 	function out(){
+		function out(){
     		$.messager.confirm('确认', '您确认想要退出登录吗？', function(r) {
 					if(r) { // 用户点击了确认按钮
 						

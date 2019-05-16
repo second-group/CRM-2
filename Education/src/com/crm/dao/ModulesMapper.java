@@ -24,10 +24,9 @@ public interface ModulesMapper {
 	Integer insertModules(Modules modules);
 	
 	Integer deleteModules(Modules modules);
+		
 	
-	List<Users> selectUsersAll();
-	
-	List<Modules> selectModulesById(Modules modules);
+	Modules selectModulesById(Modules modules);
 	
 	Integer updateModules(Modules modules);
 }

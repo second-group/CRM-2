@@ -3,13 +3,13 @@ package com.crm.service;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.crm.dao.RolesMapper;
 import com.crm.entity.Fenye;
 import com.crm.entity.Modules;
+import com.crm.entity.RoleModules;
 import com.crm.entity.Roles;
 import com.crm.util.TreeModel;
 import com.crm.util.TreeNode;
@@ -47,9 +47,9 @@ public class RolesServiceImpl implements RolesService{
 		return rolesMapper.deleteRoles(roles);
 	}
 	@Override
-	public ArrayList<TreeModel> selectRolesModules(Roles roles) {
+	public List<Modules> selectRolesModules(Roles roles) {
 		// TODO Auto-generated method stub
-		List<Modules> mod=rolesMapper.selectRolesModules(roles);
+/*		List<Modules> mod=rolesMapper.selectRolesModules(roles);
 		ArrayList<TreeModel> root = new ArrayList<>();
 		ArrayList<TreeModel> tree = new ArrayList<>();
 		   for (Modules mod1:mod) {
@@ -61,12 +61,10 @@ public class RolesServiceImpl implements RolesService{
                node.setM_path(mod1.getM_path());
                tree.add(node);
 		   }
-		   root = TreeNode.getTree(tree); 
-		return root;	
+		   root = TreeNode.getTree(tree); */
+		return rolesMapper.selectRolesModules(roles);	
 	}
-	@Override
-	public Integer insertRolesModules(Integer rm_roleid,String rm_moduleid) {
-		return rolesMapper.insertRolesModules(rm_roleid,rm_moduleid);
-	}
+	
+
 
 }
