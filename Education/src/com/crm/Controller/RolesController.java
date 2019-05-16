@@ -1,23 +1,21 @@
 package com.crm.Controller;
 
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crm.entity.Fenye;
-
+import com.crm.entity.Modules;
+import com.crm.entity.RoleModules;
 import com.crm.entity.Roles;
-
+import com.crm.entity.Users;
 import com.crm.service.ModulesService;
 import com.crm.service.RolesService;
 import com.crm.util.TreeModel;
@@ -85,20 +83,14 @@ public class RolesController {
 	
 	
 	
-
 	@RequestMapping(value="/insertRolesModules",method=RequestMethod.POST)
 	@ResponseBody
-	public Integer insertRolesModules(@RequestParam(value="rm_roleid")Integer rm_roleid,@RequestParam(value="rm_moduleid")String rm_moduleid,HttpServletRequest request){
-		String rm=request.getParameter("rm_roleid");
-		String rms=request.getParameter("rm_moduleid");
-		System.out.println(rm);
-		System.out.println(rms);
-		System.out.println("我在哪？");	
-		return rolesService.insertRolesModules(rm_roleid,rm_moduleid);
+	public Integer insertRolesModules(RoleModules roleModules){
+	/*	System.out.println(roleModules+"548454894687456465496");
+		for(int i=2;i>0;i--) {
+			rolesService.insertRolesModules(roleModules);
+		}*/
+		return rolesService.insertRolesModules(roleModules);
 		
-	}
-	@RequestMapping(value="/roles",method = RequestMethod.GET)
-	public String roles() {
-		return "roles";
 	}
 }

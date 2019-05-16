@@ -3,9 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.crm.dao.ModulesMapper">
-  <select id="selectUsersAll" resultType="users">
-  				select * from users
-  		</select>
   <select id="selectUsersByLogin" parameterType="users" resultType="users">
   		select * from users <where>u_loginname=#{u_loginname} and u_password=#{u_password}</where>
   </select>

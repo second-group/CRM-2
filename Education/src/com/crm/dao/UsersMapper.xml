@@ -124,5 +124,4 @@
   		<select id="selectUsersIsExect" parameterType="users" resultType="users">
   			select * from users where u_loginname=#{u_loginname}
   		</select>
-  		
   </mapper>

@@ -87,10 +87,5 @@ public class ModulesServiceImpl implements ModulesService{
 		// TODO Auto-generated method stub
 		return modulesMapper.selectUsersByLogin(users);
 	}
-	@Override
-	public List<Users> selectUsersAll() {
-		// TODO Auto-generated method stub
-		return modulesMapper.selectUsersAll();
-	}
 	
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crm.entity.Fenye;
 import com.crm.entity.Students;
+import com.crm.entity.Users;
 import com.crm.service.StudentsService;
 
 @Controller
@@ -48,27 +49,16 @@ public class StudentsController {
 		return studentsService.insertStu(students);
 	}
 	
-
-	@RequestMapping(value="/selectStudent",method=RequestMethod.POST)
-	@ResponseBody
-	public Fenye<Students> selectStudent(Fenye<Students> fenye,Integer rows,Integer page,Students students) {
-		fenye.setStudents(students);
-		System.out.println(fenye.getStudents());
-		fenye.setPage((page-1)*rows);
-		fenye.setPageSize(rows);
-		
-		return studentsService.selectStudent(fenye);	
-	}
-
 	
 	@RequestMapping(value="/SelectStu",method=RequestMethod.POST)
 	@ResponseBody
-	private Fenye<Students> SelectStu(Integer page,Integer rows,Students students){
-		
+	private Fenye<Students> SelectStu(Users users,Integer page,Integer rows,Students students){
+		students.setUsers(users);
 		fenye.setPage((page-1)*rows);
 		fenye.setPageSize(rows);
 		fenye.setStudents(students);
-		return studentsService.selectStu(fenye);
+		
+		return studentsService.SelectStu(fenye);
 	}
 	
 	@RequestMapping(value="/UpdateStu",method=RequestMethod.POST)
@@ -77,10 +67,5 @@ public class StudentsController {
 		
 		return studentsService.UpdateStu(students);
 	}
-	@RequestMapping(value="/UpdateStuent",method=RequestMethod.POST)
-	@ResponseBody
-	public Integer updateStudent(Students students) {
-		return studentsService.updateStudent(students);
-	}
-
+	
 }

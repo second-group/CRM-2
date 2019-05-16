@@ -3,13 +3,13 @@ package com.crm.service;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.crm.dao.RolesMapper;
 import com.crm.entity.Fenye;
 import com.crm.entity.Modules;
+import com.crm.entity.RoleModules;
 import com.crm.entity.Roles;
 import com.crm.util.TreeModel;
 import com.crm.util.TreeNode;
@@ -65,8 +65,9 @@ public class RolesServiceImpl implements RolesService{
 		return root;	
 	}
 	@Override
-	public Integer insertRolesModules(Integer rm_roleid,String rm_moduleid) {
-		return rolesMapper.insertRolesModules(rm_roleid,rm_moduleid);
+	public Integer insertRolesModules(RoleModules roleModules) {
+		// TODO Auto-generated method stub
+		return rolesMapper.insertRolesModules(roleModules);
 	}
 
 }

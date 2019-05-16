@@ -18,13 +18,7 @@ public class Students {
 	private String s_state;
 	private String s_education;
 	private String s_stuclass;
-	private Users users;
-	public Users getUsers() {
-		return users;
-	}
-	public void setUsers(Users users) {
-		this.users = users;
-	}
+	
 	public String getS_stuclass() {
 		return s_stuclass;
 	}
@@ -69,6 +63,8 @@ public class Students {
 	private String s_premoneytime;
 	private String s_curriculum;
 	
+	private Users users;
+	
 	public Students(Integer s_id, String s_name, Integer s_age, Integer s_sex, String s_phone, String s_state,
 			String s_education, String s_stuclass, String s_msgsource, String s_sourceurl, String s_sourcekeyword,
 			String s_address, String s_qq, String s_weixin, String s_content, String s_createtime, Integer s_isvalid,
@@ -76,7 +72,7 @@ public class Students {
 			String s_lostvalid, Integer s_ispay, String s_paytime, Double s_money, Integer s_isreturnmoney,
 			Integer s_isinclass, String s_inclasstime, String s_inclasscontent, Integer s_isdel, String s_frompart,
 			String s_concern, Integer s_isbaobei, Integer s_userid, String s_returnmoneycontent, Double s_premoney,
-			String s_premoneytime, String s_curriculum) {
+			String s_premoneytime, String s_curriculum, Users users) {
 		super();
 		this.s_id = s_id;
 		this.s_name = s_name;
@@ -117,6 +113,7 @@ public class Students {
 		this.s_premoney = s_premoney;
 		this.s_premoneytime = s_premoneytime;
 		this.s_curriculum = s_curriculum;
+		this.users = users;
 	}
 	public Students() {
 		super();
@@ -344,13 +341,17 @@ public class Students {
 	public void setS_curriculum(String s_curriculum) {
 		this.s_curriculum = s_curriculum;
 	}
+	
+	public Users getUsers() {
+		return users;
+	}
+	public void setUsers(Users users) {
+		this.users = users;
+	}
 	@Override
 	public String toString() {
 		return "Students [s_id=" + s_id + ", s_name=" + s_name + ", s_age=" + s_age + ", s_sex=" + s_sex + ", s_phone="
 				+ s_phone + ", s_state=" + s_state + ", s_education=" + s_education + ", s_stuclass=" + s_stuclass
-				+ ", users=" + users + ", s_msgsource=" + s_msgsource + ", s_sourceurl=" + s_sourceurl
-				+ ", s_sourcekeyword=" + s_sourcekeyword + ", s_address=" + s_address + ", s_qq=" + s_qq + ", s_weixin="
-				+ s_weixin + ", s_content=" + s_content + ", s_createtime=" + s_createtime + ", s_isvalid=" + s_isvalid
 				+ ", s_msgsource=" + s_msgsource + ", s_sourceurl=" + s_sourceurl + ", s_sourcekeyword="
 				+ s_sourcekeyword + ", s_address=" + s_address + ", s_qq=" + s_qq + ", s_weixin=" + s_weixin
 				+ ", s_content=" + s_content + ", s_createtime=" + s_createtime + ", s_isvalid=" + s_isvalid
@@ -361,8 +362,9 @@ public class Students {
 				+ s_inclasstime + ", s_inclasscontent=" + s_inclasscontent + ", s_isdel=" + s_isdel + ", s_frompart="
 				+ s_frompart + ", s_concern=" + s_concern + ", s_isbaobei=" + s_isbaobei + ", s_userid=" + s_userid
 				+ ", s_returnmoneycontent=" + s_returnmoneycontent + ", s_premoney=" + s_premoney + ", s_premoneytime="
-				+ s_premoneytime + ", s_curriculum=" + s_curriculum + "]";
+				+ s_premoneytime + ", s_curriculum=" + s_curriculum + ", users=" + users + "]";
 	}
+	
 	
 	
 }

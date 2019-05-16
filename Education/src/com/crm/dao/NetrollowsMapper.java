@@ -21,10 +21,4 @@ public interface NetrollowsMapper {
 	Integer SelectNetCount(Fenye<Netrollows> fenye);
 	
 	Integer InsertNet(Netrollows netrollows);
-	/**
-	 * 咨询师经理查询所有的回访记录
-	 * @param fenye
-	 * @return
-	 */
-	List<Netrollows> selectNet(Fenye<Netrollows> fenye);
 }
