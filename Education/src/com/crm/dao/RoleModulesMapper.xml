@@ -3,5 +3,11 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.crm.dao.RoleModulesMapper">
-  
+  	<delete id="deleteRolesModulesById" parameterType="int">
+  		delete from rolemodules <where>rm_roleid=#{rm_roleid}</where>
+  	</delete>
+  	<insert id="insertRolesModulesById">
+  		insert into rolemodules(rm_roleid,rm_moduleid) values(#{rm_roleid},#{rm_moduleid})
+  	
+  	</insert>
   </mapper>

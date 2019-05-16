@@ -16,18 +16,6 @@
 		init();
 	})
 	function init(){
-		var s_ispay=$("#s_ispay").combobox("getValue");
-		if(s_ispay == "fufei"){
-			s_ispay = '';	
-		}
-		var s_isvalid=$("#s_isvalid").combobox("getValue");
-		if(s_isvalid == "youxiao"){
-			s_isvalid = '';	
-		}
-		var s_isreturnvist=$("#s_isreturnvist").combobox("getValue");
-		if(s_isreturnvist == "huifang"){
-			s_isreturnvist = '';	
-		}
 		$("#stuste").datagrid({
 			url:'stuss',
 			method:'post',
@@ -36,12 +24,9 @@
 			queryParams:{	
 				s_name:$("#s_name").val(),
 				s_phone:$("#s_phone").val(),
-				/* s_ispay:$("#s_ispay").val(), */	
-				s_ispay:s_ispay,
-				/* s_isvalid:$("#s_isvalid").val(), */
-				s_isvalid:s_isvalid,
-				/* s_isreturnvist:$("#s_isreturnvist").val(),		 */
-				s_isreturnvist:s_isreturnvist,
+				s_ispay:$("#s_ispay").val(),				
+				s_isvalid:$("#s_isvalid").val(),				
+				s_isreturnvist:$("#s_isreturnvist").val(),				
 				s_qq:$("#s_qq").val(),				
 				s_createtime:$("#s_createtime").datebox("getValue"),				
 				s_hometime:$("#s_hometime").datebox("getValue"),				
@@ -55,7 +40,7 @@
 		
 	}
 	function formattercaozuo(value,row,index){
-		return "<a href='javascript:void(0)' onclick='lookstus("+index+")'>查看</a> <a href='javascript:void(0)' onclick='updatestu("+index+")'>修改</a>  <a href='javascript:void(0)' onclick='deletestu("+index+")'>删除</a> <a href='javascript:void(0)' onclick='shezhi("+index+")'>设置</a>"
+		return "<a href='javascript:void(0)' onclick='lookstus("+index+")'>查看</a> <a href='javascript:void(0)' onclick='updatestu("+index+")'>修改</a>  <a href='javascript:void(0)' onclick='deletestu("+index+")'>删除</a>"
 	}
 	 function formattersex(value,row,index) {
 		return value==0? '男':'女';
@@ -95,8 +80,6 @@
 	function lookstus(index){
 		var arr=$("#stuste").datagrid("getData");//获取数据表格加载完成时返回的数据
 		var row=arr.rows[index];//根据我们所选中的行的下标获取选中行的数据
-		$("#s_sex").textbox('setValue',row.s_sex==1?"男":"女");
-		$("#s_isbaobei").textbox('setValue',row.s_isbaobei==1?"是":"否");
 		$("#stu-chakan-form").form("load",row);//把我们获取的行中的数据填充但form表单中去
 		$("#stu-chakan-dialog").dialog("open");//打开我们的窗口
 	}
@@ -111,7 +94,7 @@
 		 var row= $('#stuste').datagrid("getRows")[index];  
 		 var row=arr.rows[index];//根据我们所选中的行的下标获取选中行的数据 */
 		/*  $("#updates_sex").combobox('setValue',row.s_sex==1?"男":"女"); */
-		/*  alert(row.s_sex);  */
+		 alert(row.s_sex); 
 		$("#stu-xiugai-form").form("load",row);//把我们获取的行中的数据填充但form表单中去
 		$("#stu-xiugai-dialog").dialog("open");//打开我们的窗口			
 		$("#updates_sex").combobox('setValue',row.s_sex);  
@@ -187,6 +170,9 @@
 			}
 		})		
 	}
+	function zixunshi(value,row,index){
+		return row.users.u_loginname;
+	}
 	//添加的重置操作方法
 	function insertReset(){
 		$("#stu-tianjia-form").form("reset")
@@ -235,15 +221,10 @@
 	    $.fn.datagrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
 	    $.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu
 	}
-	
-	function dongtai(){
-		
-		
-	}
 	</script>
 </head>
 <body>
-	<table id="stuste" data-options="fitColumns:true,checkbox: true" >  
+	<table id="stuste">
 		<thead>
 			<tr>
 				<th data-options="field:'s_id',title:'s_id'">id</th>
@@ -263,11 +244,11 @@
 				<th data-options="field:'s_isbaobei',title:'s_isbaobei',formatter:formatterbaobei">是否报备</th>			
 				<th data-options="field:'s_content',title:'s_content'">在线备注</th>			
 				<!-- <th data-options="field:'s_ispay',title:'s_ispay',formatter:formatterispay">是否缴费</th> -->
-				<th field="s_ispay" hidden="true" formatter="formatterispay">是否缴费</th>				
+				<th field="s_ispay" hidden="true">是否缴费</th>				
 				<!-- <th data-options="field:'s_isvalid',title:'s_isvalid',formatter:formatterisvalid">是否有效</th> -->	
-				<th field="s_isvalid" hidden="true" formatter="formatterisvalid">是否有效</th>		
+				<th field="s_isvalid" hidden="true">是否有效</th>		
 				<!-- <th data-options="field:'s_isreturnvist',title:'s_isreturnvist',formatter:formatterisreturnvist">是否回访</th>			 -->
-				<th field="s_isreturnvist" hidden="true" formatter="formatterisreturnvist">是否回访</th>	
+				<th field="s_isreturnvist" hidden="true">是否回访</th>	
 				<!-- <th data-options="field:'s_createtime',title:'s_createtime'">创建时间</th>	 -->
 				<th field="s_createtime" hidden="true">创建时间</th>			
 				<!-- <th data-options="field:'s_hometime',title:'s_hometime'">上门时间</th>	 -->	
@@ -277,8 +258,9 @@
 				<!-- <th data-options="field:'s_paytime',title:'s_paytime'">缴费时间</th> -->
 				<th field="s_paytime" hidden="true">缴费时间</th>			
 				<!-- <th data-options="field:'s_inclasstime',title:'s_inclasstime'">进班时间</th> -->
-				<th field="s_inclasstime" hidden="true">进班时间</th>				
+				<th field="s_inclasstime" hidden="true">进班时间</th>		
 				<th	data-options="field:'caozuo',title:'操作',formatter:formattercaozuo" class="right"></th>
+				
 			</tr>
 		</thead>
 	</table>
@@ -290,27 +272,11 @@
 			<label for="name">电话:</label> 
 			<input class="easyui-validatebox" type="text" id="s_phone" />
 			<label for="name">是否缴费:</label> 
-			<!-- <input class="easyui-validatebox" type="text" id="s_ispay" /> -->
-						<select style="width: 100px" id="s_ispay" class="easyui-combobox">
-							<option value="fufei">请选择</option>
-				    		<option value="1">否</option>
-		    				<option value="0">是</option>
-			    		</select>
-			
+			<input class="easyui-validatebox" type="text" id="s_ispay" />
 			<label for="name">是否有效:</label> 
-			<!-- <input class="easyui-validatebox" type="text" id="s_isvalid" /> -->
-						<select style="width: 100px" id="s_isvalid" class="easyui-combobox">
-							<option value="youxiao">请选择</option>
-				    		<option value="1">否</option>
-		    				<option value="0">是</option>
-			    		</select>
+			<input class="easyui-validatebox" type="text" id="s_isvalid" />
 			<label for="name">是否回访:</label> 
-			<!-- <input class="easyui-validatebox" type="text" id="s_isreturnvist" /> -->
-						<select style="width: 100px" id="s_isreturnvist" class="easyui-combobox">
-							<option value="huifang">请选择</option>
-				    		<option value="1">否</option>
-		    				<option value="0">是</option>
-			    		</select>
+			<input class="easyui-validatebox" type="text" id="s_isreturnvist" />
 			<label for="name">QQ:</label> 
 			<input class="easyui-validatebox" type="text" id="s_qq"  />
 			<label for="name">创建时间:</label> 
@@ -325,10 +291,7 @@
 			<input type="text" id="s_inclasstime" class="easyui-datebox" />
 
 			 <a href="javascript:void(0)" onclick="init()"	class="easyui-linkbutton"	data-options="iconCls:'icon-search',plain:true">搜索</a>
-			  <a href="javascript:void(0);" id="btnExport" class="easyui-linkbutton" iconCls='icon-print'>导出Excel</a>
-			 <a href="javascript:void(0)" onclick="tianjiastu()"	class="easyui-linkbutton"	data-options="iconCls:'icon-add',plain:true">添加</a>
-			  <a href="javascript:void(0);" onclick="dongtai()" class="easyui-linkbutton" iconCls='icon-edit'>动态</a>
-			<a href="#" class="easyui-linkbutton" onclick="progress()">进度条</a>
+			 <a href="javascript:void(0)" onclick="tianjiastu()"	class="easyui-linkbutton"	data-options="iconCls:'icon-search',plain:true">添加</a>
 		</form>
 	</div>
 	
@@ -350,12 +313,7 @@
 				</tr>
 				<tr>
 					<td>性别：</td>
-					<td> <input type="text" name="s_sexs" class="easyui-textbox" readonly="true" id="s_sex">
-						<!-- <select style="width: 100px" id=s_sex class="easyui-combobox">
-				    		<option value="1">女</option>
-		    				<option value="0">男</option>
-			    		</select> -->
-					</td>
+					<td><input type="text" name="s_sex"class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<tr>
 					<td>电话：</td>
@@ -471,12 +429,7 @@
 				</tr>
 				<tr>
 					<td>是否报备：</td>
-					<td><input type="text" name="s_isbaobeis" class="easyui-textbox" readonly="true" id="s_isbaobei">
-						<!-- <select style="width: 100px" id=s_isbaobei class="easyui-combobox">
-				    		<option value="1">否</option>
-		    				<option value="0">是</option>
-			    		</select> -->
-					</td>
+					<td><input type="text" name="s_isbaobei" class="easyui-textbox" readonly="true"></td>
 				</tr>
 				<!-- <tr>
 					<td>用户编号：</td>
@@ -673,96 +626,4 @@
 		</form>
 	</div>
 </body>
-<script type="text/javascript">
-function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
-	//如果jsondata不是对象，那么json.parse将分析对象中的json字符串。
-	var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
-	var CSV = '';
-
-	//在第一行拼接标题
-	CSV += ReportTitle + '\r\n\n';
-
-	//产生数据标头
-	if (ShowLabel) {
-		var row = "";
-		//此循环将从数组的第一个索引中提取标签
-		for ( var index in arrData[0]) {
-
-			//现在将每个值转换为字符串和逗号分隔
-			row += index + ',';
-		}
-
-		row = row.slice(0, -1);
-
-		//添加带换行符的标签行
-		CSV += row + '\r\n';
-	}
-
-	//第一个循环是提取每一行
-	for (var i = 0; i < arrData.length; i++) {
-		var row = "";
-
-		//2nd loop will extract each column and convert it in string comma-seprated
-		for ( var index in arrData[i]) {
-			row += '"' + arrData[i][index] + '",';
-		}
-
-		row.slice(0, row.length - 1);
-
-		//add a line break after each row
-		CSV += row + '\r\n';
-	}
-
-	if (CSV == '') {
-		alert("Invalid data");
-		return;
-	}
-
-	//Generate a file name
-	var fileName = "我的学生_";
-	//this will remove the blank-spaces from the title and replace it with an underscore
-	fileName += ReportTitle.replace(/ /g, "_");
-
-	//Initialize file format you want csv or xls
-	//var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
-	var uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURI(CSV);
-
-	// Now the little tricky part.
-	// you can use either>> window.open(uri);
-	// but this will not work in some browsers
-	// or you will not get the correct file extension    
-
-	//this trick will generate a temp <a /> tag
-	var link = document.createElement("a");
-	link.href = uri;
-
-	//set the visibility hidden so it will not effect on your web-layout
-	link.style = "visibility:hidden";
-	link.download = fileName + ".csv";
-
-	//this part will append the anchor tag and remove it after automatic click
-	document.body.appendChild(link);
-	link.click();
-	document.body.removeChild(link);
-}
-
-$("#btnExport").click(function() {
-	var data = JSON.stringify($('#stuste').datagrid('getData').rows);
-	if (data == '')
-		return;
-
-	JSONToCSVConvertor(data, "数据信息", true);
-});
-
-
-function progress(){
-	var win = $.messager.progress({
-		title:'Please waiting',
-		msg:'Loading data...'
-	});
-	setTimeout(function(){
-		$.messager.progress('close');
-	},3200)
-}
-</script>
 </html>
