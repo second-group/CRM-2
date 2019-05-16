@@ -68,7 +68,7 @@ public class StudentsController {
 		fenye.setPage((page-1)*rows);
 		fenye.setPageSize(rows);
 		fenye.setStudents(students);
-		return studentsService.selectStu(fenye);
+		return studentsService.SelectStu(fenye);
 	}
 	
 	@RequestMapping(value="/UpdateStu",method=RequestMethod.POST)
@@ -81,6 +81,14 @@ public class StudentsController {
 	@ResponseBody
 	public Integer updateStudent(Students students) {
 		return studentsService.updateStudent(students);
+	}
+	@RequestMapping(value="/students",method = RequestMethod.GET)
+	public String students() {
+		return "students";
+	}
+	@RequestMapping(value="/kh",method = RequestMethod.GET)
+	public String kh() {
+		return "kh";
 	}
 
 }

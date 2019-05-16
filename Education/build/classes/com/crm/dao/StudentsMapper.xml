@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.crm.dao.StudentsMapper">
-	<resultMap type="Students" id="studentMap">
+	<resultMap type="students" id="studentMap">
 		<id column="s_id" property="s_id"></id>
 		<result column="s_name" property="s_name"/>
 		<result column="s_age" property="s_age"/>
@@ -38,44 +38,43 @@
 		<result column="s_isbaobei" property="s_isbaobei"/>
 		<result column="s_userid" property="s_userid"/>
 		<result column="s_returnmoneycontent" property="s_returnmoneycontent"/>
+		
+		<result column="u_id" property="users.u_id"/>
 		<result  column="u_loginname" property="users.u_loginname"/>
 	</resultMap>
 	<sql id="studentsql">
-		<if test="students.s_name !=null and students.s_name !=''">
-			and s_name like "%"#{students.s_name}"%"
+		<if test="s_name !=null and s_name !=''">
+			and s_name like "%"#{s_name}"%"
 		</if>
-		<if test="students.s_phone !=null and students.s_phone !=''">
-		 	and s_phone=#{students.s_phone}
+		<if test="s_phone !=null and s_phone !=''">
+			and s_phone like "%"#{s_phone}"%"
 		</if>
-		<if test="students.s_userid !=null and students.s_userid !=''">
-			and s_userid=#{students.s_userid}
+		<if test="s_ispay !=null">
+			and s_ispay=#{s_ispay}
 		</if>
-		<if test="students.s_ispay !=null and students.s_ispay !=''">
-			and s_ispay=#{students.s_ispay}
+		<if test="s_isvalid !=null">
+			and s_isvalid=#{s_isvalid}
 		</if>
-		<if test="students.s_isvalid !=null and students.s_isvalid !=''">
-			and s_isvalid=#{students.s_isvalid}
+		<if test="s_isreturnvist !=null">
+			and s_isreturnvist=#{s_isreturnvist}
 		</if>
-		<if test="students.s_isreturnvist !=null and students.s_isreturnvist !=''">
-			and s_isreturnvist=#{students.s_isreturnvist}
+		<if test="s_qq !=null and s_qq !=''">
+			and s_qq like "%"#{s_qq}"%"
 		</if>
-		<if test="students.s_qq !=null and students.s_qq !=''">
-			and s_qq=#{students.s_qq}
+		<if test="s_createtime !=null and s_createtime !=''">
+			and s_createtime like "%"#{s_createtime}"%"
 		</if>
-		<if test="students.s_createtime !=null and students.s_createtime !=''">
-			and s_createtime=#{students.s_createtime}
+		<if test="s_hometime !=null and s_hometime !=''">
+			and s_hometime like "%"#{s_hometime}"%"
 		</if>
-		<if test="students.s_hometime !=null and students.s_hometime !=''">
-			and s_hometime=#{students.s_hometime}
+		<if test="s_firstvisittime !=null and s_firstvisittime !=''">
+			and s_firstvisittime like "%"#{s_firstvisittime}"%"
 		</if>
-		<if test="students.s_firstvisittime !=null and students.s_firstvisittime !=''">
-			and s_firstvisittime=#{students.s_firstvisittime}
+		<if test="s_paytime !=null and s_paytime !=''">
+			and s_paytime like "%"#{s_paytime}"%"
 		</if>
-		<if test=" students.s_paytime !=null and students.s_paytime !=''">
-			and s_paytime=#{students.s_paytime}
-		</if>
-		<if test="students.s_inclasstime !=null and students.s_inclasstime !=''">
-			and s_inclasstime=#{students.s_inclasstime}
+		<if test="s_inclasstime !=null and s_inclasstime !=''">
+			and s_inclasstime like "%"#{s_inclasstime}"%"
 		</if>
 	</sql>
 	<select id="selectStu" parameterType="fenye" resultMap="studentMap">
@@ -85,34 +84,34 @@
 			and s_name like "%"#{s_name}"%"
 		</if>
 		<if test="s_phone !=null and s_phone !=''">
-			and s_phone=#{s_phone}
+			and s_phone like "%"#{s_phone}"%"
 		</if>
-		<if test="s_ispay !=null and s_ispay !=''">
+		<if test="s_ispay !=null">
 			and s_ispay=#{s_ispay}
 		</if>
-		<if test="s_isvalid !=null and s_isvalid !=''">
+		<if test="s_isvalid !=null">
 			and s_isvalid=#{s_isvalid}
 		</if>
-		<if test="s_isreturnvist !=null and s_isreturnvist !=''">
+		<if test="s_isreturnvist !=null">
 			and s_isreturnvist=#{s_isreturnvist}
 		</if>
 		<if test="s_qq !=null and s_qq !=''">
-			and s_qq=#{s_qq}
+			and s_qq like "%"#{s_qq}"%"
 		</if>
 		<if test="s_createtime !=null and s_createtime !=''">
-			and s_createtime=#{s_createtime}
+			and s_createtime like "%"#{s_createtime}"%"
 		</if>
 		<if test="s_hometime !=null and s_hometime !=''">
-			and s_hometime=#{s_hometime}
+			and s_hometime like "%"#{s_hometime}"%"
 		</if>
 		<if test="s_firstvisittime !=null and s_firstvisittime !=''">
-			and s_firstvisittime=#{s_firstvisittime}
+			and s_firstvisittime like "%"#{s_firstvisittime}"%"
 		</if>
 		<if test="s_paytime !=null and s_paytime !=''">
-			and s_paytime=#{s_paytime}
+			and s_paytime like "%"#{s_paytime}"%"
 		</if>
 		<if test="s_inclasstime !=null and s_inclasstime !=''">
-			and s_inclasstime=#{s_inclasstime}
+			and s_inclasstime like "%"#{s_inclasstime}"%"
 		</if>
 		
 	</where>
@@ -234,9 +233,24 @@
 	
 	
 	<!-- 以下是咨询师 -->
-		<select id="SelectStu" parameterType="fenye" resultType="students">
-			select * from students
-			
+		<sql id="stu">
+		<where>
+			<if test="students.s_name !=null and students.s_name !=''">
+				and s_name like "%"#{students.s_name}"%"
+			</if>
+			<if test="students.s_curriculum !=null and students.s_curriculum !=''">
+				and s_curriculum like "%"#{students.s_curriculum}"%"
+			</if>
+			<if test="students.s_record !=null and students.s_record !=''">
+				and s_record=#{students.s_record}
+			</if>
+			<!-- and u.u_id=#{users.u_id} -->
+		</where>
+	</sql>
+		<select id="SelectStu" parameterType="fenye" resultMap="studentMap">
+			select s.*,u.u_loginname from students s inner join users u on s.s_userid = u.u_id
+			<include refid="stu"></include>
+			<!-- <where>u.u_id=#{users.u_id}</where> -->
 		</select>
 		
 		<select id="SelectStuCount" parameterType="fenye" resultType="int">

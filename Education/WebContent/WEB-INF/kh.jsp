@@ -12,63 +12,93 @@
 <script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
 
 <script type="text/javascript">
+	//主方法：初始化表
 	$(function(){
 		shezhidongtai();
 		init();
 		
 	})
+	//学生表格
 	function init(){
+		var n_userid='${sessionScope.users.u_id}';
+		alert(n_userid);
 		$("#StuTab").datagrid({
 			url:'SelectStu',
 			method:'post',
 			toolbar:"#toolbar",
-			pagination:true
-			
-			
+			pagination:true,
+			queryParams:{
+				s_name:$("#s_name").val(),
+				s_curriculum:$("#s_curriculum").val(),
+				s_record:$("#s_record").val(),
+				n_userid:n_userid
+				
+			}	
 			
 		})
 		
 	}
+	//格式化操作列
 	function formattercaozuo(value,row,index){
-		
 		return "<a href='javascript:void(0)' onclick='lookStu("+index+")'>查看</a> <a href='javascript:void(0)' onclick='updateStu("+index+")'>修改</a> <a href='javascript:void(0)' onclick='TrackStu("+index+")'>跟踪</a>"
 	}
-	
+	//格式化咨询师
+	function formatters_userid(value, row, index) {
+		return row.users.u_loginname;
+	}
+	//查看学生
 	function lookStu(index) {
 		var data = $("#StuTab").datagrid("getData"); 
-		var row = data.rows[index]; 
+		var row = data.rows[index];
+		
+		$("#s_isvalid").textbox('setValue',row.s_isvalid == 0? "否":"是");
+		$("#s_isreturnvist").textbox('setValue',row.s_isreturnvist == 0? "否":"是");
+		$("#s_ishome").textbox('setValue',row.s_ishome == 0? "否":"是");
+		$("#s_ispay").textbox('setValue',row.s_ispay == 0? "否":"是");
+		$("#s_isreturnmoney").textbox('setValue',row.s_isreturnmoney == 0? "否":"是");
+		$("#s_isinclass").textbox('setValue',row.s_isinclass == 0? "否":"是");
+		
 		$("#LookStuForm").form("load", row);
 		$("#LookStu_window").window("open");
 	}
-	
+	//填充修改学生的表单
 	function updateStu(index) {
 		var data = $("#StuTab").datagrid("getData"); 
 		var row = data.rows[index]; 
+		
+		$("#updates_isvalid").combobox('setValue',row.s_isvalid);
+		$("#updates_isreturnvist").combobox('setValue',row.s_isreturnvist);
+		$("#updates_ishome").combobox('setValue',row.s_ishome);
+		$("#updates_ispay").combobox('setValue',row.s_ispay);
+		$("#updates_isreturnmoney").combobox('setValue',row.s_isreturnmoney);
+		$("#updates_isinclass").combobox('setValue',row.s_isinclass);
+		
 		$("#updateStuForm").form("load", row);
 		$("#updateStu_window").window("open");
 	}
-	
+	//提交修改学生
 	function submitupdateStuForm() {
 			$.post(
 				"UpdateStu", {
 					s_id:$("#updates_id").val(),
+					s_name:$("#updates_name").val(),
 					s_userid:$("#updates_userid").val(),
 					s_curriculum:$("#updates_curriculum").val(),
 					s_record:$("#updates_record").val(),
-					s_isvalid:$("#updates_isvalid").val(),
+					s_isvalid:$("#updates_isvalid").combobox("getValue"),
 					s_lostvalid:$("#updates_lostvalid").val(),
-					s_isreturnvist:$("#updates_isreturnvist").val(),
+					s_isreturnvist:$("#updates_isreturnvist").combobox("getValue"),
 					s_firstvisittime:$("#updates_firstvisittime").val(),
-					s_ishome:$("#updates_ishome").val(),
+					s_ishome:$("#updates_ishome").combobox("getValue"),
 					s_hometime:$("#updates_hometime").val(),
 					s_premoney:$("#updates_premoney").val(),
 					s_premoneytime:$("#updates_premoneytime").val(),
-					s_ispay:$("#updates_ispay").val(),
+					s_ispay:$("#updates_ispay").combobox("getValue"),
 					s_paytime:$("#updates_paytime").val(),
 					s_money:$("#updates_money").val(),
-					s_isreturnmoney:$("#updates_isreturnmoney").val(),
+					s_isreturnmoney:$("#updates_isreturnmoney").combobox("getValue"),
 					s_returnmoneycontent:$("#updates_returnmoneycontent").val(),
-					s_isinclass:$("#updates_isinclass").val(),
+					s_isinclass:$("#updates_isinclass").combobox("getValue"),
 					s_inclasstime:$("#updates_inclasstime").val(),
 					s_inclasscontent:$("#updates_inclasscontent").val(),
 					s_content:$("#updates_content").val()
@@ -85,32 +115,28 @@
 			}
 		}, "json");
 	}
-	
+	//添加跟踪
 	function TrackStu(index) {
 		
 		var data = $("#StuTab").datagrid("getData"); 
 		var row = data.rows[index]; 
-		var datas = $("#StuLogTab").datagrid("getData"); 
-		
-		/* if(row.s_id){
-			alert("此用户已跟踪！！！");
-		} */
-		alert(datas);
 		$("#InsertNetForm").form("load", row);
 		$("#InsertNet_window").window("open");
 	}
-	
+	//提交添加跟踪
 	function submitNetForm() {
+		var n_userid='${sessionScope.users.u_id}';
+		alert(n_userid);
 		$.post(
 				"InsertNet", {
 					n_studentid:$("#n_studentid").val(),
 					n_studentname:$("#n_studentname").val(),
-					n_followtime:$("#n_followtime").val(),
-					n_nextfollowtime:$("#n_nextfollowtime").val(),
+					n_followtime:$("#n_followtimes").datebox('getValue'),
+					n_nextfollowtime:$("#n_nextfollowtimes").datebox('getValue'),
 					n_content:$("#n_content").val(),
-					n_userid:$("#n_userid").val(),
+					n_userid:n_userid,
 					n_followtype:$("#n_followtype").val(),
-					n_createtime:$("#n_createtime").val(),
+					n_createtime:$("#n_createtimes").datebox('getValue'),
 					n_followstate:$("#n_followstate").val()
 		
 			},
@@ -125,7 +151,7 @@
 			}
 		}, "json");
 	}
-	
+	//初始化日志表格
 	function initLog() {
 		$("#StuLogTab").datagrid({
 			url:'SelectNet',
@@ -142,24 +168,23 @@
 			
 		})
 	}
-	
+	//打开日志表单
 	function logStu() {
 		$("#InsertNetLog_window").window("open");
 		initLog();
 	}
-	
-	function formatterlook(value,row,index){
-		
+	//格式化查看日志详情
+	function formatterlook(value,row,index){	
 		return "<a href='javascript:void(0)' onclick='lookLog("+index+")'>查看</a>"
 	}
-	
+	//日志详情查看
 	function lookLog(index) {
 		var data = $("#StuLogTab").datagrid("getData"); 
 		var row = data.rows[index]; 
 		$("#LookNetForm").form("load", row);
 		$("#LookNet_window").window("open");
 	}
-	
+	//格式化1/0，是/否
 	function formatters_isvalid(value,row,index) {
 		return value == 1 ? '是':'否';
 	}
@@ -179,6 +204,7 @@
 		return value == 1 ? '是':'否';
 	}
 	
+	//设置动态显示列表
 	function shezhidongtai(){
 		var createGridHeaderContextMenu = function(e, field) {
 			e.preventDefault();
@@ -235,14 +261,13 @@
 
 </head>
 <body>
-
-	<table id="StuTab" data-options="fitColumns:true,checkbox: true"  >
+	<!-- 学生的表格 -->
+	<table id="StuTab" data-options="fitColumns:true"  >
 		<thead>
 			<tr>
-				
 				<th data-options="field:'s_id'">id</th>
 				<th data-options="field:'s_name',title:'s_name'">姓名</th>
-				<th data-options="field:'s_userid'">咨询师</th>
+				<th data-options="field:'u_loginname',formatter:formatters_userid">咨询师</th>
 				<th data-options="field:'s_curriculum'">课程方向</th>	
 				<th data-options="field:'s_record'">打分</th>	
 				<th data-options="field:'s_isvalid',formatter:formatters_isvalid">是否有效</th>	
@@ -262,129 +287,143 @@
 				<th data-options="field:'s_inclasstime'">进班时间</th>	
 				<th data-options="field:'s_inclasscontent'">进班备注</th>	
 				<th data-options="field:'s_content'">备注</th>	
-
 				<th data-options="field:'caozuo',title:'操作',formatter:formattercaozuo" class="right"></th>
 			</tr>
 		</thead>
 	</table>
 	
-	<!-- toolbar -->
+	<!-- 学生的toolbar -->
 	<div id="toolbar">
 		<form id="toolform" class="easyui-form">
-		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="logStu()">日志</a>
-		<a href="javascript:void(0);" id="btnExport" class="easyui-linkbutton" iconCls='icon-print'>导出Excel</a>
-			
+			<label for="name">名称:</label>
+			<input class="easyui-textbox" type="text" id="s_name">
+			<label for="name">课程方向:</label>
+			<input class="easyui-textbox" type="text" id="s_curriculum">
+			<label for="name">打分:</label>
+			<input class="easyui-textbox" type="text" id="s_record">
+			<!-- <label for="name">类别</label>
+			<select id="bt_name" class="easyui-combobox" >   
+			    <option>--请选择--</option>   
+			</select>   -->
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="init()">检索</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="logStu()">日志</a>
+			<a href="javascript:void(0);" id="btnExport" class="easyui-linkbutton" iconCls='icon-print'>导出Excel</a>
 		</form>
 	</div>
 	
-	<!-- 查看  -->
+	<!-- 学生的查看  -->
 		  <div id="LookStu_window" class="easyui-window" title="查看信息" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:500px;height:500px;padding:10px;">
 			<form id="LookStuForm" class="easyui-form">
 				<table cellpadding="5">
 					<tr style="display: none">
 						<td>ID:</td>
-						<td><input class="easyui-textbox" name="s_id"  id="updates_id" ></input>
+						<td><input class="easyui-textbox" name="s_id"  id="s_id" ></input>
+						</td>
+					</tr>
+					<tr style="display: none">
+						<td>咨询师:</td>
+						<td><input class="easyui-textbox" name="s_userid" id="s_userid"  readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
-						<td>咨询师:</td>
-						<td><input class="easyui-textbox" name="s_userid" id="updates_userid" data-options="required:true"></input>
+						<td>姓名:</td>
+						<td><input class="easyui-textbox" name="s_name" id="s_name" readonly="readonly"></input>
 						</td>
 					</tr>
-					
 					<tr>
 						<td>课程方向:</td>
-						<td><input class="easyui-textbox" name="s_curriculum" id="updates_curriculum" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="s_curriculum" id="s_curriculum" readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>打分:</td>
-						<td><input class="easyui-textbox" name="s_record" id="updates_record" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="s_record" id="s_record"  readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>是否有效:</td>
-						<td><input class="easyui-textbox" name="s_isvalid" id="updates_isvalid" data-options="required:true"></input>
+						<td>
+							<input class="easyui-textbox" name="s_isvalids" id="s_isvalid"  readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>无效原因:</td>
-						<td><input class="easyui-textbox" name="s_lostvalid" id="updates_lostvalid" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="s_lostvalid" id="s_lostvalid"  readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>是否回访:</td>
-						<td><input class="easyui-textbox" name="s_isreturnvist" id="updates_isreturnvist" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="s_isreturnvists" id="s_isreturnvist" readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>首次回访时间:</td>
-						<td><input class="easyui-datebox" name="s_firstvisittime" id="updates_firstvisittime" data-options="required:true"></input>
+						<td><input class="easyui-datebox" name="s_firstvisittime" id="s_firstvisittime"  readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>是否上门:</td>
-						<td><input class="easyui-textbox" name="s_ishome"  id="updates_ishome" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="s_ishomes"  id="s_ishome"  readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>上门时间:</td>
-						<td><input class="easyui-datebox" name="s_hometime" id="updates_hometime" data-options="required:true"></input>
+						<td><input class="easyui-datebox" name="s_hometime" id="s_hometime"  readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>定金金额:</td>
-						<td><input class="easyui-textbox" name="s_premoney" id="updates_premoney" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="s_premoney" id="s_premoney" readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>定金时间:</td>
-						<td><input class="easyui-datebox" name="s_premoneytime" id="updates_premoneytime" data-options="required:true"></input>
+						<td><input class="easyui-datebox" name="s_premoneytime" id="s_premoneytime"  readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>是否缴费:</td>
-						<td><input class="easyui-textbox" name="s_ispay"  id="updates_ispay" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="s_ispays"  id="s_ispay"  readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>缴费时间:</td>
-						<td><input class="easyui-datebox" name="s_paytime" id="updates_paytime" data-options="required:true"></input>
+						<td><input class="easyui-datebox" name="s_paytime" id="s_paytime"  readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>缴费金额:</td>
-						<td><input class="easyui-textbox" name="s_money" id="updates_money" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="s_money" id="s_money"  readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>是否退费:</td>
-						<td><input class="easyui-textbox" name="s_isreturnmoney"  id="updates_isreturnmoney" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="s_isreturnmoneys"  id="s_isreturnmoney"  readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>退费原因:</td>
-						<td><input class="easyui-textbox" name="s_returnmoneycontent"  id="updates_returnmoneycontent" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="s_returnmoneycontent"  id="s_returnmoneycontent"  readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>是否进班:</td>
-						<td><input class="easyui-textbox" name="s_isinclass"  id="updates_isinclass" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="s_isinclasss"  id="s_isinclass"  readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>进班时间:</td>
-						<td><input class="easyui-datebox" name="s_inclasstime" id="updates_inclasstime" data-options="required:true"></input>
+						<td><input class="easyui-datebox" name="s_inclasstime" id="s_inclasstime" readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>进班备注:</td>
-						<td><input class="easyui-textbox" name="s_inclasscontent" id="updates_inclasscontent" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="s_inclasscontent" id="s_inclasscontent"  readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>备注:</td>
-						<td><input class="easyui-textbox" name="s_content" id="updates_content" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="s_content" id="s_content"  readonly="readonly"></input>
 						</td>
 					</tr>
 
@@ -393,7 +432,7 @@
 			
 		</div> 
 	
-	<!-- 修改  -->
+	<!-- 学生的修改  -->
 		  <div id="updateStu_window" class="easyui-window" title="修改信息" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:500px;height:500px;padding:10px;">
 			<form id="updateStuForm" class="easyui-form">
 				<table cellpadding="5">
@@ -402,12 +441,16 @@
 						<td><input class="easyui-textbox" name="s_id"  id="updates_id" ></input>
 						</td>
 					</tr>
-					<tr>
+					<tr style="display: none">
 						<td>咨询师:</td>
-						<td><input class="easyui-textbox" name="s_userid" id="updates_userid" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="s_userid" id="updates_userid" data-options="required:true" readonly="readonly"></input>
 						</td>
 					</tr>
-					
+					<tr>
+						<td>姓名:</td>
+						<td><input class="easyui-textbox" name="s_name" id="updates_name" readonly="readonly"></input>
+						</td>
+					</tr>
 					<tr>
 						<td>课程方向:</td>
 						<td><input class="easyui-textbox" name="s_curriculum" id="updates_curriculum" data-options="required:true"></input>
@@ -420,7 +463,11 @@
 					</tr>
 					<tr>
 						<td>是否有效:</td>
-						<td><input class="easyui-textbox" name="s_isvalid" id="updates_isvalid" data-options="required:true"></input>
+						<td><!-- <input class="easyui-textbox" name="s_isvalids" id="updates_isvalid"  data-options="required:true"></input> -->
+							<select style="width: 100px" id="updates_isvalid" class="easyui-combobox">
+								<option value="1">是</option>
+								<option value="0">否</option>
+							</select>
 						</td>
 					</tr>
 					<tr>
@@ -430,7 +477,11 @@
 					</tr>
 					<tr>
 						<td>是否回访:</td>
-						<td><input class="easyui-textbox" name="s_isreturnvist" id="updates_isreturnvist" data-options="required:true"></input>
+						<td><!-- <input class="easyui-textbox" name="s_isreturnvist" id="updates_isreturnvist" data-options="required:true"></input> -->
+							<select style="width: 100px" id="updates_isreturnvist" class="easyui-combobox">
+								<option value="1">是</option>
+								<option value="0">否</option>
+							</select>
 						</td>
 					</tr>
 					<tr>
@@ -440,7 +491,11 @@
 					</tr>
 					<tr>
 						<td>是否上门:</td>
-						<td><input class="easyui-textbox" name="s_ishome"  id="updates_ishome" data-options="required:true"></input>
+						<td><!-- <input class="easyui-textbox" name="s_ishome"  id="updates_ishome" data-options="required:true"></input> -->
+							<select style="width: 100px" id="updates_ishome" class="easyui-combobox">
+								<option value="1">是</option>
+								<option value="0">否</option>
+							</select>
 						</td>
 					</tr>
 					<tr>
@@ -460,7 +515,11 @@
 					</tr>
 					<tr>
 						<td>是否缴费:</td>
-						<td><input class="easyui-textbox" name="s_ispay"  id="updates_ispay" data-options="required:true"></input>
+						<td><!-- <input class="easyui-textbox" name="s_ispay"  id="updates_ispay" data-options="required:true"></input> -->
+							<select style="width: 100px" id="updates_ispay" class="easyui-combobox">
+								<option value="1">是</option>
+								<option value="0">否</option>
+							</select>
 						</td>
 					</tr>
 					<tr>
@@ -475,7 +534,11 @@
 					</tr>
 					<tr>
 						<td>是否退费:</td>
-						<td><input class="easyui-textbox" name="s_isreturnmoney"  id="updates_isreturnmoney" data-options="required:true"></input>
+						<td><!-- <input class="easyui-textbox" name="s_isreturnmoney"  id="updates_isreturnmoney" data-options="required:true"></input> -->
+							<select style="width: 100px" id="updates_isreturnmoney" class="easyui-combobox">
+								<option value="1">是</option>
+								<option value="0">否</option>
+							</select>
 						</td>
 					</tr>
 					<tr>
@@ -485,7 +548,11 @@
 					</tr>
 					<tr>
 						<td>是否进班:</td>
-						<td><input class="easyui-textbox" name="s_isinclass"  id="updates_isinclass" data-options="required:true"></input>
+						<td><!-- <input class="easyui-textbox" name="s_isinclass"  id="updates_isinclass" data-options="required:true"></input> -->
+							<select style="width: 100px" id="updates_isinclass" class="easyui-combobox">
+								<option value="1">是</option>
+								<option value="0">否</option>
+							</select>
 						</td>
 					</tr>
 					<tr>
@@ -529,37 +596,37 @@
 					</tr>
 					<tr>
 						<td>开始跟踪时间:</td>
-						<td><input class="easyui-datebox" name="n_followtime" id="n_followtime" data-options="required:true"></input>
+						<td><input class="easyui-datebox" name="n_followtimes" id="n_followtimes" data-options="required:true"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>结束跟踪时间:</td>
-						<td><input class="easyui-datebox" name="n_nextfollowtime" id="n_nextfollowtime" data-options="required:true"></input>
+						<td><input class="easyui-datebox" name="n_nextfollowtimes" id="n_nextfollowtimes" data-options="required:true"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>回访记录/回访情况:</td>
-						<td><input class="easyui-textbox" name="n_content" id="n_content" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="n_contents" id="n_content" data-options="required:true"></input>
 						</td>
 					</tr>
-					<tr>
+					<tr style="display: none">
 						<td>用户编号:</td>
-						<td><input class="easyui-textbox" name="n_userid" id="n_userid" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="s_userid" id="n_userid" data-options="required:true" readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>跟踪类型/跟踪方式:</td>
-						<td><input class="easyui-textbox" name="n_followtype" id="n_followtype" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="n_followtypes" id="n_followtype" data-options="required:true"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>创建时间/回访时间:</td>
-						<td><input class="easyui-datebox" name="n_createtime"  id="n_createtime" data-options="required:true"></input>
+						<td><input class="easyui-datebox" name="n_createtimes"  id="n_createtimes" data-options="required:true"></input>
 						</td>
 					</tr>
 					<tr>
 						<td>跟踪状态:</td>
-						<td><input class="easyui-textbox" name="n_followstate" id="n_followstate" data-options="required:true"></input>
+						<td><input class="easyui-textbox" name="n_followstates" id="n_followstate" data-options="required:true"></input>
 						</td>
 					</tr>
 					
@@ -572,8 +639,8 @@
 			</div>
 		</div>
 		
-		<!-- 日志  -->
-		  <div id="InsertNetLog_window" class="easyui-window" title="日志信息" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:620px;height:500px;padding:10px;">
+		<!-- 日志表格  -->
+		  <div id="InsertNetLog_window" class="easyui-window" title="日志信息" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:700px;height:500px;padding:10px;">
 			<table id="StuLogTab" class="easyui-datagrid">
 				<thead>
 					<tr>
@@ -583,7 +650,7 @@
 						
 						<th data-options="field:'n_studentname'">学生名字</th>
 						
-						<th data-options="field:'n_createtime'">跟踪时间</th>	
+						<th data-options="field:'n_createtime'">下次跟踪时间</th>	
 							
 						<th data-options="field:'n_content'">内容</th>
 						
@@ -599,7 +666,7 @@
 			</table>
 		  </div>
 		  
-		<div id="Logtoolbar" class="easyui-window" data-options="closed:true" style="width:620px;">
+		<div id="Logtoolbar" class="easyui-window" data-options="closed:true" style="width:700px;">
 		<form id="Logtoolform" class="easyui-form">
 		<!-- <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="logStu()">日志</a> -->
 			<label for="name">学生名称:</label>
@@ -678,6 +745,7 @@
 		</div>
 		
 </body>
+<!-- 导出excel -->
 <script type="text/javascript">
 function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
 	
