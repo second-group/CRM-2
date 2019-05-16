@@ -97,15 +97,15 @@
         //修改
         function updateModuleInfo(index) {
     	var nodes = $('#tt').tree('getSelected');
-    	alert(nodes.text);
+    	/* alert(nodes.text);
     	console.log(nodes);
-    	alert(nodes.m_weight);
+    	alert(nodes.m_weight); */
 	if(nodes!=null){
 		$.post("selectModulesById",{
 			m_id:nodes.id		
 		},function(data){
-			alert(data);
-			alert(data.m_name);
+			 /* alert(data); */
+			/*alert(data.m_name); */
           /*   console.log("data = "+data);
 			alert(data.m_name); */
 					/* var data=eval("("+data.m_name+")"); */
