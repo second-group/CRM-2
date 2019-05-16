@@ -42,17 +42,6 @@ public class StudentsServiceImp implements StudentsService {
 		// TODO Auto-generated method stub
 		return studentsMapper.insertStu(students);
 	}
-
-
-	@Override
-	public Fenye<Students> selectStudent(Fenye<Students> fenye) {
-		List<Students> selectStudent = studentsMapper.selectStudent(fenye);
-		Integer selectStudentTotal = studentsMapper.selectStudentTotal(fenye);
-		fenye.setRows(selectStudent);
-		fenye.setTotal(selectStudentTotal);
-		return fenye;
-	}
-
 	
 	//以下是咨询师
 	public Fenye<Students> SelectStu(Fenye<Students> fenye) {
@@ -68,11 +57,4 @@ public class StudentsServiceImp implements StudentsService {
 		
 		return studentsMapper.UpdateStu(students);
 	}
-
-	@Override
-	public Integer updateStudent(Students students) {
-		
-		return studentsMapper.updateStudent(students);
-	}
-
 }

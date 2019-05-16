@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
-
-import com.crm.entity.Modules;
 @Component
 public class TreeNode {
     /**
@@ -67,42 +65,22 @@ public class TreeNode {
 	 * @param list
 	 * @return
 	 */
-	public static  List<Modules> checkTree(List<Modules> totalList,List<Modules> Roleslist){
-		System.out.println(totalList);
-		System.out.println(Roleslist);
+	public static  ArrayList<TreeModel> checkTree(ArrayList<TreeModel> totalList,ArrayList<TreeModel> Roleslist){
+		System.out.println(3);
+		System.out.println(totalList+"所有");//所有
+		System.out.println(Roleslist+"拥有");//角色的id查询出来的模块
 		for (int i = 0; i < Roleslist.size(); i++) {
 			 for (int j = 0; j < totalList.size(); j++) {
-				if(totalList.get(j).getM_id()==Roleslist.get(i).getM_id()) {
+				if(totalList.get(j).getId()==Roleslist.get(i).getId()) {
 					System.out.println(totalList.get(j).getM_parentid()+"父id");
-					if(totalList.get(j).getM_parentid()!=0) {
+					/*if(totalList.get(j).getM_parentid()!=0) {*/
 						System.out.println("我进来了");
 						totalList.get(j).setChecked(true);
-					}
-					
+					/*}*/					  					
 				}
 			}
 		}
-		
 		return totalList;
 	}
-	
-	public static  ArrayList<TreeModel> getcheckTrue(List<Modules> totalList){
-		ArrayList<TreeModel> root = new ArrayList<>();
-		ArrayList<TreeModel> tree = new ArrayList<>();
-		 for (Modules mod1:totalList) {
-			   System.out.println(mod1);
-			   TreeModel node = new TreeModel();
-			   node.setId(mod1.getM_id());
-             node.setText(mod1.getM_name());             
-             node.setM_parentid(mod1.getM_parentid());
-             node.setM_path(mod1.getM_path()); 
-            node.setChecked(mod1.getChecked());
-             tree.add(node);
-		   }
-		   root = TreeNode.getTree(tree);
-		   System.out.println(root+"最后");
-		   return root;
-	}
-	
 }
 

@@ -14,14 +14,14 @@ public interface ModulesService {
 	ArrayList<TreeModel> selectModules(Users users);
 	
 	ArrayList<TreeModel> selectModulesAll();
-	List<Modules> selectRoleModulesAll();
+	
 	List<Modules> selectModulesExict(Modules modules);
 	
 	Integer insertModules(Modules modules);
 	
 	Integer deleteModules(Modules modules);
 	
-	Modules selectModulesById(Modules modules);
+	List<Modules> selectModulesById(Modules modules);
 	
 	Integer updateModules(Modules modules);
 }

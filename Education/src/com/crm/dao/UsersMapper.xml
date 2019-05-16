@@ -20,7 +20,7 @@
   				<if test="Maxu_createtime != null and Maxu_createtime != ''">
   					and u_createtime &lt;=#{Maxu_createtime}
   				</if>
-  				<if test="users.u_islockout !=null">
+  				<if test="users.u_islockout !=null and users.u_islockout != ''">
   					and u_islockout = #{users.u_islockout}
   				</if>
   			<!-- 	<if test="users.u_islockout !=null and users.u_islockout != ''">
@@ -123,13 +123,5 @@
   		
   		<select id="selectUsersIsExect" parameterType="users" resultType="users">
   			select * from users where u_loginname=#{u_loginname}
-  		</select>
-  		<select id="selectUsersByStudent" resultType="users">
-  			select users.u_id,users.u_loginname
-			from users ,userroles,roles where users.u_id=userroles.ur_userid and userroles.ur_roleid=roles.r_id and roles.r_name='咨询师'
-  		</select>
-  		
-  		<select id="selectUsersAll" resultType="users">
-  			select * from users
   		</select>
   </mapper>

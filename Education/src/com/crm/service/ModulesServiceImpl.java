@@ -73,7 +73,7 @@ public class ModulesServiceImpl implements ModulesService{
 		return modulesMapper.deleteModules(modules);
 	}
 	@Override
-	public Modules selectModulesById(Modules modules) {
+	public List<Modules> selectModulesById(Modules modules) {
 		// TODO Auto-generated method stub
 		return modulesMapper.selectModulesById(modules);
 	}
@@ -86,11 +86,6 @@ public class ModulesServiceImpl implements ModulesService{
 	public Users selectUsersByLogin(Users users) {
 		// TODO Auto-generated method stub
 		return modulesMapper.selectUsersByLogin(users);
-	}
-	@Override
-	public List<Modules> selectRoleModulesAll() {
-		// TODO Auto-generated method stub
-		return modulesMapper.selectModulesAll();
 	}
 	
 }

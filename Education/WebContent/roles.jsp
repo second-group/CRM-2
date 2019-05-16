@@ -189,8 +189,8 @@
 				}
 				alert(s);
            		$.post("insertRolesModules", {
-           					moduleid:s,
-           					rm_roleid: r_id
+           					rm_moduleid:s,
+           					rm_roleid: rm_roleid
 							
 						}, function(res) {
 						/* 	var res = eval("(" + res + ")"); //你知道这里可以如何修改从而变得更简单么？       */           

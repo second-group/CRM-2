@@ -47,9 +47,9 @@ public class RolesServiceImpl implements RolesService{
 		return rolesMapper.deleteRoles(roles);
 	}
 	@Override
-	public List<Modules> selectRolesModules(Roles roles) {
+	public ArrayList<TreeModel> selectRolesModules(Roles roles) {
 		// TODO Auto-generated method stub
-/*		List<Modules> mod=rolesMapper.selectRolesModules(roles);
+		List<Modules> mod=rolesMapper.selectRolesModules(roles);
 		ArrayList<TreeModel> root = new ArrayList<>();
 		ArrayList<TreeModel> tree = new ArrayList<>();
 		   for (Modules mod1:mod) {
@@ -61,10 +61,13 @@ public class RolesServiceImpl implements RolesService{
                node.setM_path(mod1.getM_path());
                tree.add(node);
 		   }
-		   root = TreeNode.getTree(tree); */
-		return rolesMapper.selectRolesModules(roles);	
+		   root = TreeNode.getTree(tree); 
+		return root;	
 	}
-	
-
+	@Override
+	public Integer insertRolesModules(RoleModules roleModules) {
+		// TODO Auto-generated method stub
+		return rolesMapper.insertRolesModules(roleModules);
+	}
 
 }

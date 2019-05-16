@@ -18,13 +18,6 @@ public class Students {
 	private String s_state;
 	private String s_education;
 	private String s_stuclass;
-	private Users users;
-	public Users getUsers() {
-		return users;
-	}
-	public void setUsers(Users users) {
-		this.users = users;
-	}
 	public String getS_stuclass() {
 		return s_stuclass;
 	}
@@ -348,9 +341,6 @@ public class Students {
 	public String toString() {
 		return "Students [s_id=" + s_id + ", s_name=" + s_name + ", s_age=" + s_age + ", s_sex=" + s_sex + ", s_phone="
 				+ s_phone + ", s_state=" + s_state + ", s_education=" + s_education + ", s_stuclass=" + s_stuclass
-				+ ", users=" + users + ", s_msgsource=" + s_msgsource + ", s_sourceurl=" + s_sourceurl
-				+ ", s_sourcekeyword=" + s_sourcekeyword + ", s_address=" + s_address + ", s_qq=" + s_qq + ", s_weixin="
-				+ s_weixin + ", s_content=" + s_content + ", s_createtime=" + s_createtime + ", s_isvalid=" + s_isvalid
 				+ ", s_msgsource=" + s_msgsource + ", s_sourceurl=" + s_sourceurl + ", s_sourcekeyword="
 				+ s_sourcekeyword + ", s_address=" + s_address + ", s_qq=" + s_qq + ", s_weixin=" + s_weixin
 				+ ", s_content=" + s_content + ", s_createtime=" + s_createtime + ", s_isvalid=" + s_isvalid

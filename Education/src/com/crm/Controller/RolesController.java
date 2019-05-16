@@ -73,29 +73,24 @@ public class RolesController {
 	@RequestMapping(value="/selectRolesModules",method=RequestMethod.POST)
 	@ResponseBody
 	public ArrayList<TreeModel> selectRolesModules(Roles roles) {
-		List<Modules> totalList=modulesService.selectRoleModulesAll();
-		List<Modules> Roleslist=rolesService.selectRolesModules(roles);		
+		ArrayList<TreeModel> totalList=modulesService.selectModulesAll();
+		ArrayList<TreeModel> Roleslist=rolesService.selectRolesModules(roles);		
 /*		System.out.println(TreeNode.checkTree(totalList, Roleslist));
 		System.out.println(totalList+"分配角色权限");*/
-		List<Modules> treeTrue=TreeNode.checkTree(totalList, Roleslist);
-		return TreeNode.getcheckTrue(treeTrue);
+		return TreeNode.checkTree(totalList, Roleslist);
 		
 	}
 	
 	
 	
-/*	@RequestMapping(value="/insertRolesModules",method=RequestMethod.POST)
+	@RequestMapping(value="/insertRolesModules",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer insertRolesModules(RoleModules roleModules){
-		System.out.println(roleModules+"548454894687456465496");
+	/*	System.out.println(roleModules+"548454894687456465496");
 		for(int i=2;i>0;i--) {
 			rolesService.insertRolesModules(roleModules);
-		}
+		}*/
 		return rolesService.insertRolesModules(roleModules);
 		
-	}*/
-	@RequestMapping(value="/roles",method = RequestMethod.GET)
-	public String user() {
-		return "roles";
 	}
 }

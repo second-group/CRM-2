@@ -16,8 +16,7 @@ public interface RolesService {
 	Integer updateRoles(Roles roles);
 	Integer deleteRoles(Roles roles);
 	
-	List<Modules> selectRolesModules(Roles roles);
+	ArrayList<TreeModel> selectRolesModules(Roles roles);
 	
-
-
+	Integer insertRolesModules(RoleModules roleModules);
 }

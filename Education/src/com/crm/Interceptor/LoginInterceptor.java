@@ -7,8 +7,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.crm.entity.Users;
-
 public class LoginInterceptor implements HandlerInterceptor{
 
 	@Override
@@ -28,7 +26,7 @@ public class LoginInterceptor implements HandlerInterceptor{
 	@Override
 	public boolean preHandle(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2) throws Exception {
 		// TODO Auto-generated method stub
-	/*	HttpSession session = arg0.getSession();	
+		HttpSession session = arg0.getSession();	
 		//String uri = request.getRequestURI(); // 获取登录的uri，这个是不进行拦截的		
 		//if(session.getAttribute("LOGIN_USER")!=null || uri.indexOf("system/login")!=-1) {// 说明登录成功 或者 执行登录功能	
 		if(session.getAttribute("LOGIN_USER")!=null) {			
@@ -41,17 +39,7 @@ public class LoginInterceptor implements HandlerInterceptor{
 			return false;		
 			}
 		
-		}*/
-		HttpSession session=arg0.getSession();
-		Users LoginName=(Users) session.getAttribute("users");
-		if(LoginName!=null) {
-			return true;
-		}else {
-			arg0.getRequestDispatcher("inlogin").forward(arg0, arg1);		
 		}
-		
-		return false;
-	}
 
 		
 	

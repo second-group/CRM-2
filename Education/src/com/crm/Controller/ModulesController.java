@@ -76,10 +76,14 @@ public class ModulesController {
 	
 	@RequestMapping(value="/selectModulesById",method=RequestMethod.POST)
 	@ResponseBody
-	public Modules selectModulesById(Modules modules) {
-	
-		   
-		return modulesService.selectModulesById(modules);	
+	public List<Modules> selectModulesById(Modules modules) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		 /*JSONObject jo = new JSONObject();*/
+		 List<Modules> list=modulesService.selectModulesById(modules);
+		/* jo.put("data", list);*/
+		 /*System.out.println(jo);*/
+		   map.put("data",list);
+		return list;		
 	}
 	
 	@RequestMapping(value="/updateModules",method=RequestMethod.POST)
@@ -87,9 +91,5 @@ public class ModulesController {
 	public Integer updateModules(Modules modules) {
 		return modulesService.updateModules(modules);
 		
-	}
-	@RequestMapping(value="/modules",method = RequestMethod.GET)
-	public String user() {
-		return "modules";
 	}
 }

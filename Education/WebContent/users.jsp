@@ -28,7 +28,7 @@
 						u_loginname: $("#u_loginname").textbox("getValue"),
 						Minu_createtime: $("#Minu_createtime").datebox ("getValue"),
 						Maxu_createtime: $("#Maxu_createtime").datebox("getValue"),
-						u_islockout: $("#u_islockout").combobox("getValue"),
+						u_islockout: $("#u_islockout").textbox("getValue"),
 						orderBy:$("#orderBy").combobox("getValue"),
 						u_lastlogintime:$("#orderBy").combobox("getValue")
 					} 
@@ -335,15 +335,15 @@
 <div id="usertb" style="padding:5px; height:auto">
 			<div style="margin-bottom:5px">
 				名称: <input class="easyui-textbox" id="u_loginname"  style="width:80px">
-				起止时间: <input class="easyui-datebox" id="Minu_createtime" style="width:120px">-<input class="easyui-datebox" id="Maxu_createtime" style="width:120px">
+				起止时间: <input class="easyui-datebox" id="Minu_createtime" style="width:80px">-<input class="easyui-datebox" id="Maxu_createtime" style="width:80px">
 				<span>是否锁定：</span>				
-				<select id="u_islockout" class="easyui-combobox" name="u_islockout" style="height:auto;width: 90px;">
+				<select id="u_islockout" class="easyui-combobox" name="u_islockout" style="height:auto;">
 				    <option value="">请选择</option>
 				    <option value="1">是</option>
 				    <option value="0">否</option>
 				</select>  				
 				   <span>排序：</span>
-				 <select id="orderBy" class="easyui-combobox" name="orderBy" style="height:auto;width: 90px;">
+				 <select id="orderBy" class="easyui-combobox" name="orderBy" style="height:auto;">
 				    <option value="">请选择</option>
 				    <option value="u_createtime">创建时间</option>
 				    <option value="u_lastlogintime">最后登录时间</option>
