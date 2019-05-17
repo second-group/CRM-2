@@ -26,14 +26,15 @@
   			<!-- 	<if test="users.u_islockout !=null and users.u_islockout != ''">
   					and u_islockout = #{users.u_islockout}
   				</if> -->
-  				<if test="users.u_createtime != null and users.u_createtime != ''">
-  					order by #{users.u_createtime}
-  				</if>
-  				<if test="users.u_lastlogintime != null and users.u_lastlogintime != ''">
-  					order by #{users.u_lastlogintime}
-  				</if>
+  				
+  				<!-- <if test="users.u_lastlogintime != null and users.u_lastlogintime != ''">
+  					order by ${users.u_lastlogintime}
+  				</if> -->
   			</if>
   			</where>
+  			<if test="users.u_createtime != null and users.u_createtime != ''">
+  					order by ${users.u_createtime}
+  			</if>
   		</sql>
   		<select id="selectUsersCount" parameterType="fenye" resultType="int">
   			select count(1) from users <include refid="us"></include>
@@ -132,4 +133,14 @@
   		<select id="selectUsersAll" resultType="users">
   			select * from users
   		</select>
+  		
+  		<update id="UpdatePassword" parameterType="users">
+  			update users 
+  			<set>
+  				u_password=#{u_password},
+  			</set>
+  			<where>
+  				u_id=#{u_id}
+  			</where>
+  		</update>
   </mapper>

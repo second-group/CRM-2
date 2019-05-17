@@ -28,6 +28,8 @@
 		if(s_isreturnvist == "huifang"){
 			s_isreturnvist = '';	
 		}
+		var n_userid='${sessionScope.users.u_id}';
+		/* alert(n_userid); */
 		$("#stuste").datagrid({
 			url:'stuss',
 			method:'post',
@@ -47,7 +49,8 @@
 				s_hometime:$("#s_hometime").datebox("getValue"),				
 				s_firstvisittime:$("#s_firstvisittime").datebox("getValue"),				
 				s_paytime:$("#s_paytime").datebox("getValue"),				
-				s_inclasstime:$("#s_inclasstime").datebox("getValue")		
+				s_inclasstime:$("#s_inclasstime").datebox("getValue"),
+				n_userid:n_userid
 				
 			}
 			
@@ -121,7 +124,7 @@
 		 var s_sex=$("#updates_sex").combobox('getValue')=="男"?"1":"0";
 		 var s_isbaobei=$("#updates_isbaobei").combobox('getValue')=="是"?"1":"0";
 		var s_sex=$("#updates_sex").combobox("getValue");
-		 alert(s_sex);
+		 /* alert(s_sex); */
 		$.post("updatestu",{
 			s_id:$("#updates_id").val(),
 			s_name:$("#updates_name").val(),
@@ -158,6 +161,8 @@
 	}
 		
 	function insertSubmission(){
+		var n_userid='${sessionScope.users.u_id}';
+		/* alert(n_userid); */
 		$.ajax({
 			type:"post",//提交方式
 			url:"insertStudents",//提交路径
@@ -175,7 +180,8 @@
 				"s_qq":$("#inserts_qq").val(),
 				"s_weixin":$("#inserts_weixin").val(),
 				"s_isbaobei":$("#inserts_isbaobei").combobox("getValue"),
-				"s_content":$("#inserts_content").val()
+				"s_content":$("#inserts_content").val(),
+				"s_userid":n_userid
 				
 			},
 			success:function(res){//回调

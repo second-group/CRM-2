@@ -17,7 +17,7 @@
 			function searchUserInfo() {
 				var Minu_createtime=$("#Minu_createtime").textbox("getValue");
 				var orderBy=$("#orderBy").combobox("getValue");
-				alert(orderBy);
+				/* alert(orderBy); */
 				$("#dg").datagrid({
 					url: 'selectUsers', //数据接口的地址
 					method:'post',
@@ -29,8 +29,8 @@
 						Minu_createtime: $("#Minu_createtime").datebox ("getValue"),
 						Maxu_createtime: $("#Maxu_createtime").datebox("getValue"),
 						u_islockout: $("#u_islockout").combobox("getValue"),
-						orderBy:$("#orderBy").combobox("getValue"),
-						u_lastlogintime:$("#orderBy").combobox("getValue")
+						u_createtime:$("#orderBy").combobox("getValue")
+						
 					} 
 				});
 			}

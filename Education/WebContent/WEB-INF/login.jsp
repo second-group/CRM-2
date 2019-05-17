@@ -135,7 +135,7 @@ $(document.body).ready(function () {
 
         var src1=document.getElementById('imgVerify')
 
-        src1.src = "/Education/getVerify"+Math.random();
+        src1.src = "/Education/getVerify?"+Math.random();
 
     }
 
@@ -292,7 +292,7 @@ $(document.body).ready(function () {
 			<div class="bxs-row">
 				 <input id="checks"  type="text" style="width: 112px;height: 44px; border: 1px solid #9da3a6;border-radius: 5px"/>
 			                 <img id="imgVerify" src="" alt="点击更换验证码" />
-			                 <a href="" rel="nofollow">看不清,换一张</a>			                          
+			                 <a href="javascript:void(0)" rel="nofollow" onclick="getVerify()">看不清,换一张</a>			                          
 			</div>
 			   <!-- <div class="formControls col-xs-8 col-xs-offset-3">              
 			   <input id="checks" class="input-text size-L" type="text" value="" style="width:150px;" />
@@ -305,7 +305,7 @@ $(document.body).ready(function () {
 				<p class="err err-password"></p>
 			</div> -->
 			<div class="bxs-row">
-				<input type="checkbox" id="ch" value="true">7天免登陆
+				<input type="checkbox" id="ch" value="true" style="width: 20px;height: 20px;"><a style="font-size: 17px;padding-bottom: 10px">7天免登陆</a>
 				<p class="err err-password"></p>
 			</div>
 			<div class="bxs-row">
@@ -316,13 +316,13 @@ $(document.body).ready(function () {
 			<div id="imgVer" style="display:inline-block;"></div>
 		</div>
 	</div>
-	      <c:forEach items="${uu}" var="u" varStatus="s">
+	     <%--  <c:forEach items="${uu}" var="u" varStatus="s">
 	      	<c:if test="${u.u_loginname}">
 	      	
 	      	</c:if>
         	<input type="text" id="name${s.index}" value="${u.u_loginname}">
         	<input type="text" id="pass${s.index}" value="${u.u_password}"><br>
-        </c:forEach> 
+        </c:forEach>  --%>
  	<%-- <input type="text" class="kie" id="kie" placeholder="${username}" value="${msg}"> --%>
 	 <%--<input type="text" class="pwd" id="pwd" placeholder="${password}">  --%>
 </body>

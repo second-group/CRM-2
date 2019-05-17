@@ -34,4 +34,6 @@ public interface UsersService {
 	List<Users> selectUsersByStudent();
 	
 	List<Users> selectUsersAll();
+	
+	Integer UpdatePassword(Users users);
 }

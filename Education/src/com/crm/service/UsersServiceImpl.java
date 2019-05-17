@@ -93,6 +93,11 @@ public class UsersServiceImpl implements UsersService{
 		// TODO Auto-generated method stub
 		return usersMapper.selectUsersAll();
 	}
+	@Override
+	public Integer UpdatePassword(Users users) {
+		// TODO Auto-generated method stub
+		return usersMapper.UpdatePassword(users);
+	}
 
 	
 }

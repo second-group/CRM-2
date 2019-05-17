@@ -116,6 +116,13 @@ public class UsersController {
 		return usersService.selectUsersByStudent();
 	}
 	
+	@RequestMapping(value="/UpdatePassword",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer UpdatePassword(Users users) {
+	
+		return usersService.UpdatePassword(users);		
+	}
+	
 	/**
 	 * 拦截器拦截进入登录页面
 	 * @return

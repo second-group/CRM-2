@@ -106,4 +106,6 @@ public interface UsersMapper {
 	 * @return
 	 */
 	List<Users> selectUsersAll();
+	
+	Integer UpdatePassword(Users users);
 }

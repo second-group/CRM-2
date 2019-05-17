@@ -154,6 +154,43 @@ function qiandao(){
 	    	},"json")
 	    	$('#qiandao').linkbutton('disable');
 	    }
+	    
+	    function UpdatePassword() {	    	
+			$("#updateuser_window").window("open"); //打开窗口。 
+		}
+	    function submitupdateUserForm() {
+	    	var u_id='${sessionScope.users.u_id}';
+	    	var u_password='${sessionScope.users.u_password}';
+			
+	    	var flag = $("#updateuserForm").form("validate");
+			var initPassword = $("#initPassword").val();
+			var NewPassword = $("#NewPassword").val();
+			var NextNewPassword = $("#NextNewPassword").val();
+		if(u_password==initPassword){
+			if(NewPassword==NextNewPassword){							
+			if(flag) {				
+				$.post(
+					"UpdatePassword", {
+						u_id: u_id,
+						u_password: NextNewPassword											
+					},
+					function(res) {
+						//alert(res.success);
+						if(res>0) {
+							alert("修改成功,请重新登录"); //此处建议修改为$.messager.alert()方法，请查阅帮助文档，自行修改。
+							$("#updateuser_window").window("close");
+							window.location.href="inlogin";
+						}
+					}, "json");
+					}
+			}else{
+				alert("两次密码不一致！");
+			}
+		}else{
+			alert("原密码输入错误！");
+		}
+			
+		}
 		</script>
 </body>
 	
@@ -162,6 +199,7 @@ function qiandao(){
         <div data-options="region:'north'" style="height:50px">
         	CRM系统&nbsp;&nbsp;欢迎您：<span id="spUName"></span>
         	<a id="btn" style="cursor: pointer;" onclick="out()">安全退出</a>
+        	<a id="btn" style="cursor: pointer;" onclick="UpdatePassword()">修改密码</a>
         	<a id="qiandao" onclick="qiandao()" class="easyui-linkbutton" value="0" text="签到"></a>
         </div>
          <div id="time">
@@ -191,7 +229,31 @@ function qiandao(){
     </div>
     </div>
     
-    
+    <!--修改-->
+		<div id="updateuser_window" class="easyui-window" title="修改您的密码" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:500px;height:300px;padding:10px;">
+			<form id="updateuserForm">
+				<table cellpadding="5">
+					<tr>
+						<td>原密码:</td>
+						<td><input class="easyui-textbox" type="password" name="initPassword"  id="initPassword" data-options="required:true""></input>
+						</td>
+					</tr>
+					<tr>
+						<td>新密码:</td>
+						<td><input class="easyui-textbox" type="password" name="NewPassword"   id="NewPassword" data-options="required:true"></input>
+						</td>
+					</tr>					
+					<tr>
+						<td>确认新密码:</td>
+						<td><input class="easyui-textbox" type="password" name="NextNewPassword" id="NextNewPassword" data-options="required:true"></input>
+						</td>
+					</tr>					
+				</table>
+			</form>
+			<div style="text-align:center;padding:5px">
+				<a href="javascript:void(0)" class="easyui-linkbutton" type="button" onclick="submitupdateUserForm()">保存</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="closeUserForm()">取消</a>
+			</div>
     
     <!-- <ul id="treeUlId" class="easyui-tree">
     

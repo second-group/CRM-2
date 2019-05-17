@@ -21,7 +21,7 @@
 	//学生表格
 	function init(){
 		var n_userid='${sessionScope.users.u_id}';
-		alert(n_userid);
+		/* alert(n_userid); */
 		$("#StuTab").datagrid({
 			url:'SelectStu',
 			method:'post',
@@ -126,7 +126,7 @@
 	//提交添加跟踪
 	function submitNetForm() {
 		var n_userid='${sessionScope.users.u_id}';
-		alert(n_userid);
+		/* alert(n_userid); */
 		$.post(
 				"InsertNet", {
 					n_studentid:$("#n_studentid").val(),

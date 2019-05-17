@@ -81,7 +81,7 @@
 		</if>
 	</sql>
 	<select id="selectStu" parameterType="fenye" resultMap="studentMap">
-		select * from students
+		select s.* from students s LEFT JOIN users u on s.s_userid=u.u_id and s.s_userid=#{students.s_userid}
 	<where>
 		<if test="s_name !=null and s_name !=''">
 			and s_name like "%"#{s_name}"%"
@@ -116,7 +116,6 @@
 		<if test="s_inclasstime !=null and s_inclasstime !=''">
 			and s_inclasstime like "%"#{s_inclasstime}"%"
 		</if>
-		
 	</where>
 		limit #{page},#{pageSize}
 	</select>
@@ -176,8 +175,8 @@
 		</where> 
 	</select>
 	<insert id="insertStu" parameterType="students">
-		insert into students(s_name,s_sex,s_age,s_phone,s_education,s_state,s_msgsource,s_sourceurl,s_sourcekeyword,s_qq,s_weixin,s_isbaobei,s_content)
-		value(#{s_name},#{s_sex},#{s_age},#{s_phone},#{s_education},#{s_state},#{s_msgsource},#{s_sourceurl},#{s_sourcekeyword},#{s_qq},#{s_weixin},#{s_isbaobei},#{s_content})
+		insert into students(s_name,s_sex,s_age,s_phone,s_education,s_state,s_msgsource,s_sourceurl,s_sourcekeyword,s_qq,s_weixin,s_isbaobei,s_content,s_userid)
+		value(#{s_name},#{s_sex},#{s_age},#{s_phone},#{s_education},#{s_state},#{s_msgsource},#{s_sourceurl},#{s_sourcekeyword},#{s_qq},#{s_weixin},#{s_isbaobei},#{s_content},#{s_userid})
 	</insert>
 	
 	<delete id="deleteStu" parameterType="int">
