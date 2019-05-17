@@ -122,6 +122,38 @@
 				});
     		
     	}
+function qiandao(){
+	    	
+	    
+	    	
+	    	var date=$("#time").text();
+	    	var dat=new Date();
+	    	
+	    	alert(dat.getMinutes());
+	    	
+	    	if(dat.getHours!="08"){
+	    		if(dat.getMinntes>15){
+	    			alert("抱歉不在签到时间");
+		    		return false;
+	    		}
+	    		
+	    	}
+	    	var uc_userid='${sessionScope.users.u_id}';
+	    	var uc_loginname='${sessionScope.users.u_loginname}';
+	    	alert(uc_userid);
+	    	alert(uc_loginname);
+	    	$.post("insertUserchaecks",{
+	    		uc_userid:uc_userid,
+	    		uc_loginname:uc_loginname
+	    	},function(res){
+	    		if(res>0){
+	    			alert("签到成功");
+	    		}else{
+	    			alert("签到 失败");
+	    		}
+	    	},"json")
+	    	$('#qiandao').linkbutton('disable');
+	    }
 		</script>
 </body>
 	
@@ -130,7 +162,17 @@
         <div data-options="region:'north'" style="height:50px">
         	CRM系统&nbsp;&nbsp;欢迎您：<span id="spUName"></span>
         	<a id="btn" style="cursor: pointer;" onclick="out()">安全退出</a>
+        	<a id="qiandao" onclick="qiandao()" class="easyui-linkbutton" value="0" text="签到"></a>
         </div>
+         <div id="time">
+			 <script>
+		        document.getElementById('time').innerHTML = new Date().toLocaleString()
+		                + ' 星期' + '日一二三四五六'.charAt(new Date().getDay());
+		        setInterval(
+		                "document.getElementById('time').innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",
+		                1000);
+    </script>			
+		</div>
         <div data-options="region:'south',split:true" style="height:50px;"></div>
         <!--<div data-options="region:'east',split:true" title="East" style="width:100px;"></div>-->
         <div data-options="region:'west',split:true" title="导航应用" style="width:150px;">

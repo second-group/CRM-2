@@ -17,6 +17,15 @@ public class Fenye<T> {
 	/*咨询师模块的*/
 	private Students students;
 	private Netrollows netrollows;
+	private UserChaecks userChaecks;
+	public UserChaecks getUserChaecks() {
+		return userChaecks;
+	}
+
+	public void setUserChaecks(UserChaecks userChaecks) {
+		this.userChaecks = userChaecks;
+	}
+
 	public Fenye(Students students, Netrollows netrollows) {
 		super();
 		this.students = students;
@@ -173,7 +182,12 @@ public class Fenye<T> {
 	@Override
 	public String toString() {
 		return "Fenye [page=" + page + ", pageSize=" + pageSize + ", total=" + total + ", rows=" + rows + ", users="
-				+ users + ", Minu_createtime=" + Minu_createtime + ", Maxu_createtime=" + Maxu_createtime + "]";
+				+ users + ", Minu_createtime=" + Minu_createtime + ", Maxu_createtime=" + Maxu_createtime
+				+ ", students=" + students + ", netrollows=" + netrollows + ", userChaecks=" + userChaecks + ", s_name="
+				+ s_name + ", s_phone=" + s_phone + ", s_ispay=" + s_ispay + ", s_isvalid=" + s_isvalid
+				+ ", s_isreturnvist=" + s_isreturnvist + ", s_qq=" + s_qq + ", s_createtime=" + s_createtime
+				+ ", s_hometime=" + s_hometime + ", s_firstvisittime=" + s_firstvisittime + ", s_paytime=" + s_paytime
+				+ ", s_inclasstime=" + s_inclasstime + "]";
 	}
 	
 	

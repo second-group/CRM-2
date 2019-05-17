@@ -43,38 +43,41 @@
 		<result  column="u_loginname" property="users.u_loginname"/>
 	</resultMap>
 	<sql id="studentsql">
-		<if test="s_name !=null and s_name !=''">
-			and s_name like "%"#{s_name}"%"
+		<if test="students.s_name !=null and students.s_name !=''">
+			and s_name like "%"#{students.s_name}"%"
 		</if>
-		<if test="s_phone !=null and s_phone !=''">
-			and s_phone like "%"#{s_phone}"%"
+		<if test="students.s_phone !=null and students.s_phone !=''">
+		 	and s_phone=#{students.s_phone}
 		</if>
-		<if test="s_ispay !=null">
-			and s_ispay=#{s_ispay}
+		<if test="students.s_userid !=null and students.s_userid !=''">
+			and s_userid=#{students.s_userid}
 		</if>
-		<if test="s_isvalid !=null">
-			and s_isvalid=#{s_isvalid}
+		<if test="students.s_ispay !=null">
+			and s_ispay=#{students.s_ispay}
 		</if>
-		<if test="s_isreturnvist !=null">
-			and s_isreturnvist=#{s_isreturnvist}
+		<if test="students.s_isvalid !=null ">
+			and s_isvalid=#{students.s_isvalid}
 		</if>
-		<if test="s_qq !=null and s_qq !=''">
-			and s_qq like "%"#{s_qq}"%"
+		<if test="students.s_isreturnvist !=null ">
+			and s_isreturnvist=#{students.s_isreturnvist}
 		</if>
-		<if test="s_createtime !=null and s_createtime !=''">
-			and s_createtime like "%"#{s_createtime}"%"
+		<if test="students.s_qq !=null and students.s_qq !=''">
+			and s_qq=#{students.s_qq}
 		</if>
-		<if test="s_hometime !=null and s_hometime !=''">
-			and s_hometime like "%"#{s_hometime}"%"
+		<if test="students.s_createtime !=null and students.s_createtime !=''">
+			and s_createtime=#{students.s_createtime}
 		</if>
-		<if test="s_firstvisittime !=null and s_firstvisittime !=''">
-			and s_firstvisittime like "%"#{s_firstvisittime}"%"
+		<if test="students.s_hometime !=null and students.s_hometime !=''">
+			and s_hometime=#{students.s_hometime}
 		</if>
-		<if test="s_paytime !=null and s_paytime !=''">
-			and s_paytime like "%"#{s_paytime}"%"
+		<if test="students.s_firstvisittime !=null and students.s_firstvisittime !=''">
+			and s_firstvisittime=#{students.s_firstvisittime}
 		</if>
-		<if test="s_inclasstime !=null and s_inclasstime !=''">
-			and s_inclasstime like "%"#{s_inclasstime}"%"
+		<if test=" students.s_paytime !=null and students.s_paytime !=''">
+			and s_paytime=#{students.s_paytime}
+		</if>
+		<if test="students.s_inclasstime !=null and students.s_inclasstime !=''">
+			and s_inclasstime=#{students.s_inclasstime}
 		</if>
 	</sql>
 	<select id="selectStu" parameterType="fenye" resultMap="studentMap">
@@ -248,7 +251,7 @@
 		</where>
 	</sql>
 		<select id="SelectStu" parameterType="fenye" resultMap="studentMap">
-			select s.*,u.u_loginname from students s inner join users u on s.s_userid = u.u_id
+			select s.*,u.u_loginname from students s INNER JOIN askers a INNER JOIN users u on s.s_id=a.a_studentid and a.a_userid = u.u_id and  u.u_id=#{users.u_id}
 			<include refid="stu"></include>
 			<!-- <where>u.u_id=#{users.u_id}</where> -->
 		</select>

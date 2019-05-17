@@ -33,4 +33,8 @@ public class NetrollowsController {
 		fenye.setNetrollows(netrollows);
 		return netrollowsService.SelectNet(fenye);
 	}
+	@RequestMapping(value="/genzong",method = RequestMethod.GET)
+	public String genzong() {
+		return "genzong";
+	}
 }

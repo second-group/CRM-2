@@ -3,5 +3,52 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.crm.dao.UserChaecksMapper">
-  
+ 	<resultMap type="userChaecks" id="userChaecksMap">
+ 		<id column="uc_id" property="uc_id"/>
+ 		<result column="uc_userid" property="uc_userid"/>
+ 		<result column="uc_loginname" property="uc_loginname"/>
+ 		<result column="uc_checkintime" property="uc_checkintime"/>
+ 		<result column="uc_checkstate" property="uc_checkstate"/>
+ 		<result column="uc_iscancel" property="uc_iscancel"/>
+ 		<result column="uc_checkouttime" property="uc_checkouttime"/>
+ 	</resultMap>
+  	<select id="selectAllChaeck" parameterType="fenye" resultType="userChaecks">
+  		select * from userchaecks
+  		<where>
+  			<if test="userChaecks.uc_loginname!=null and userChaecks.uc_loginname!=''">
+  				and uc_loginname like"%"#{userChaecks.uc_loginname}"%"
+  			</if>
+  			<if test="Minu_createtime!=null and Minu_createtime!=''">
+  				and uc_checkintime &gt;=#{Minu_createtime}
+  			</if>
+  			<if test="Maxu_createtime!=null and Maxu_createtime!=''">
+  				and uc_checkintime &lt;=#{Maxu_createtime}
+  			</if>
+  		</where>
+  		limit #{page},#{pageSize}
+  	</select>
+  	<select id="selectUserChecksTotal" parameterType="fenye" resultType="int">
+  		select count(1) from userchaecks
+  		<where>
+  			<if test="userChaecks.uc_loginname!=null and userChaecks.uc_loginname!=''">
+  				and uc_loginname like"%"#{userChaecks.uc_loginname}"%"
+  			</if>
+  			<if test="Minu_createtime!=null and Minu_createtime!=''">
+  				and uc_checkintime &gt;=#{Minu_createtime}
+  			</if>
+  			<if test="Maxu_createtime!=null and Maxu_createtime!=''">
+  				and uc_checkintime &lt;=#{Maxu_createtime}
+  			</if>
+  		</where>
+  	</select>
+  	<insert id="insertUserChecks" parameterType="userChaecks">
+  		insert into userchaecks(uc_userid,uc_loginname,uc_checkintime,uc_checkstate,uc_iscancel) values(#{uc_userid},#{uc_loginname},#{uc_checkintime},1,0)	
+  	</insert>
+  	<update id="updateUserChaecks" parameterType="int">
+  		update userchaecks 
+  		<set>
+  			uc_checkstate=2,uc_iscancel=2,uc_checkouttime=#{uc_checkouttime},
+  		</set>
+  		where uc_id=#{uc_id}
+  	</update>
   </mapper>

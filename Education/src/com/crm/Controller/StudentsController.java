@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crm.entity.Fenye;
 import com.crm.entity.Students;
+import com.crm.entity.Users;
 import com.crm.service.StudentsService;
 
 @Controller
@@ -63,8 +64,8 @@ public class StudentsController {
 	
 	@RequestMapping(value="/SelectStu",method=RequestMethod.POST)
 	@ResponseBody
-	private Fenye<Students> SelectStu(Integer page,Integer rows,Students students){
-		
+	private Fenye<Students> SelectStu(Integer page,Integer rows,Students students,Users users){
+		fenye.setUsers(users);
 		fenye.setPage((page-1)*rows);
 		fenye.setPageSize(rows);
 		fenye.setStudents(students);
@@ -79,8 +80,16 @@ public class StudentsController {
 	}
 	@RequestMapping(value="/UpdateStuent",method=RequestMethod.POST)
 	@ResponseBody
-	public Integer updateStudent(Students students) {
-		return studentsService.updateStudent(students);
+	public Integer updateStudent(Students students,String ids) {
+		System.out.println(ids);
+		String[] split = ids.split(",");
+		Integer updat=0;
+		for(int i=0;i<split.length;i++) {
+			students.setS_id(Integer.parseInt(split[i]));
+			updat=studentsService.updateStudent(students);
+		}
+		
+		return updat;
 	}
 	@RequestMapping(value="/students",method = RequestMethod.GET)
 	public String students() {
@@ -89,6 +98,10 @@ public class StudentsController {
 	@RequestMapping(value="/kh",method = RequestMethod.GET)
 	public String kh() {
 		return "kh";
+	}
+	@RequestMapping(value="/studen",method = RequestMethod.GET)
+	public String studen() {
+		return "studen";
 	}
 
 }

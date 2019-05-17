@@ -11,6 +11,8 @@
 <script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
+var ids = [];
+var s_uid=''
 	$(function(){
 		selectAllUser();
 		init();
@@ -24,13 +26,9 @@
 	}
 	function init(){
 		var userid=$("#studentTyp").combobox("getValue");
-		if(userid=="--请选择--"){
-			userid="";
-		}
-		/* var ispal=$("input[name='sispay']:checked").val();
-		console.log('[$(#appraiseItemResult'+i+').val()]',$(this).val());
-		alert(ispal); */
-		
+		var s_ispay=$("#sispay").combobox("getValue");
+		var s_isvalid=$("#sisvalid").combobox("getValue");				
+		var s_isreturnvist=$("#sisreturnvist").combobox("getValue");
 		$("#stuste").datagrid({
 			url:'selectStudent',
 			method:'post',
@@ -40,10 +38,9 @@
 				s_userid:userid,
 				s_name:$("#sname").val(),
 				s_phone:$("#sphone").val(),
-				/* s_ispay:$("#sispay").val(),	 */	
-				s_ispay:$("input[name='s_ispay']:checked").val(),
-				s_isvalid:$("#sisvalid").val(),				
-				s_isreturnvist:$("#sisreturnvist").val(),				
+				s_ispay:s_ispay,
+				s_isvalid:s_isvalid,				
+				s_isreturnvist:s_isreturnvist,				
 				s_qq:$("#sqq").val(),				
 				s_createtime:$("#screatetime").datebox("getValue"),				
 				s_hometime:$("#shometime").datebox("getValue"),				
@@ -97,25 +94,57 @@
 	function insertReset(){
 		$("#stu-tianjia-form").form("reset")
 	}
-	function updatezixunshi(){
+	function updatezixunshi(index){
+		
 		var sid=$("#stuste").datagrid("getSelections");
 		alert(sid);
+		
+		$(sid).each(function(){
+            ids.push(this.s_id);
+            s_uid+=this.s_id+","
+        });
+		$("#studentTyp1").combobox({
+			 url:'selectALLUsers',    
+			    valueField:'u_id',    
+			    textField:'u_loginname'  
+		})
 		$("#win").dialog("open");
+	
 	}
 	function AllUpdate(){
-		
+  		var s_userid=$("#studentTyp1").combobox("getValue");
+  		alert(ids);
+  	
+		$.post("UpdateStuent",{
+			ids:s_uid,
+			s_userid:s_userid
+		},function(res){
+			if(res>0){
+				alert("修改成功");
+				$("#stuste").datagrid("reload"); //通过调用reload方法，让datagrid刷新显示数据
+				$("#win").dialog("close");
+				
+			}else{
+				alert("修改失败");
+			}
+		})
 	}
 	function updatestu(index){
 		var arr=$("#stuste").datagrid("getData");//获取数据表格加载完成时返回的数据
 		 var row=arr.rows[index];//根据我们所选中的行的下标获取选中行的数据 */ 
-		 selectAllUser();
+		 $("#studentTyp2").combobox({
+			 url:'selectALLUsers',    
+			    valueField:'u_id',    
+			    textField:'u_loginname'  
+		})
 		$("#stu-xiugai-form").form("load",row);//把我们获取的行中的数据填充但form表单中去
-		$("#stu-xiugai-dialog").dialog("open");//打开我们的窗口		
+		$("#stu-xiugai-dialog").dialog("open");//打开我们的窗口	
+		
 		$("#studentTyp").combobox('setValue',row.s_userid); 
 		
 	}
 	function updateSub(){
-		var select=$("#studentTyp").combobox("getValue");
+		var select=$("#studentTyp2").combobox("getValue");
 		$.post(
 				"UpdateStuent", {
 					s_id:$("#updates_id").val(),
@@ -172,6 +201,7 @@
 	<table id="stuste" class="easyui-datagrid">
 		<thead>
 			<tr>
+				<th data-options="field:'che',checkbox:true"></th>
 				<th data-options="field:'s_id',title:'s_id'">id</th>
 				<th data-options="field:'s_name',title:'s_name'">姓名</th>
 				<th data-options="field:'s_sex',title:'s_sex',formatter:formattersex">性别</th>
@@ -211,16 +241,29 @@
 			<input class="easyui-validatebox" type="text" id="sphone" />
 			<label>咨询师</label>
 			<select id="studentTyp" class="easyui-combobox" name="dept" style="width:100px;">   
-   			 <option>--请选择--</option>
+   			 <option value="">--请选择--</option>
    			</select>
 			<label for="name">是否缴费:</label> 
-			<input type="radio" name="sispay" value="0" >是
-			<input type="radio" name="sispay" value="1">否
+			<select id="sispay" class="easyui-combobox" style="width:100px">
+				<option value=''>--请选择--</option>
+				<option value="0">是</option>
+				<option value="1">否</option>
+			</select>
 			<!-- input class="easyui-validatebox" type="text" id="sispay" /> -->
 			<label for="name">是否有效:</label> 
-			<input class="easyui-validatebox" type="text" id="sisvalid" />
+			<!-- <input class="easyui-validatebox" type="text" id="sisvalid" /> -->
+			<select id="sisvalid" class="easyui-combobox" style="width:100px">
+				<option value=''>--请选择--</option>
+				<option value="0">是</option>
+				<option value="1">否</option>
+			</select>
 			<label for="name">是否回访:</label> 
-			<input class="easyui-validatebox" type="text" id="sisreturnvist" />
+			<!-- <input class="easyui-validatebox" type="text" id="sisreturnvist" /> -->
+			<select id="sisreturnvist" class="easyui-combobox" style="width:100px">
+				<option value=''>--请选择--</option>
+				<option value="0">是</option>
+				<option value="1">否</option>
+			</select>
 			<label for="name">QQ:</label> 
 			<input class="easyui-validatebox" type="text" id="sqq"  />
 			<label for="name">创建时间:</label> 
@@ -444,7 +487,7 @@
 				</tr>
 				<tr>
 					<td>所属咨询师</td>
-					<td><select id="studentTyp" class="easyui-combobox" name="dept" style="width:100px;">   
+					<td><select id="studentTyp2" class="easyui-combobox" name="dept" style="width:100px;">   
 		   			</select></td>			
 					
 						<td>课程方向:</td>
@@ -597,6 +640,18 @@
 			</table>
 		</form>
 	</div>
-	 
+	 <div id="win" class="easyui-dialog" data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true,buttons:[{
+				text:'提交',
+				handler:function(){
+				AllUpdate()}
+			},{
+				text:'重置',
+				handler:function(){
+				insertReset()}
+			}]">
+	 	<select id="studentTyp1" class="easyui-combobox" name="dept" style="width:200px;">   
+   			 <option value="">--请选择--</option>
+   			</select>
+	 </div>
 </body>
 </html>

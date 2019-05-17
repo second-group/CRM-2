@@ -31,7 +31,7 @@
 				s_name:$("#s_name").val(),
 				s_curriculum:$("#s_curriculum").val(),
 				s_record:$("#s_record").val(),
-				n_userid:n_userid
+				u_id:n_userid
 				
 			}	
 			
