@@ -19,7 +19,7 @@
 	})
 	function init(){
 		$("#StuTab").datagrid({
-			url:'SelectStu',
+			url:'SelectNetAll',
 			method:'post',
 			toolbar:"#toolbar",
 			pagination:true
@@ -152,6 +152,9 @@
 		
 		return "<a href='javascript:void(0)' onclick='lookLog("+index+")'>查看</a>"
 	}
+	function formattername(value,row,index) {
+		return row.users.u_loginname;
+	}
 	
 	function lookLog(index) {
 		var data = $("#StuLogTab").datagrid("getData"); 
@@ -240,30 +243,23 @@
 		<thead>
 			<tr>
 				
-				<th data-options="field:'s_id'">id</th>
-				<th data-options="field:'s_name',title:'s_name'">姓名</th>
-				<th data-options="field:'s_userid'">咨询师</th>
-				<th data-options="field:'s_curriculum'">课程方向</th>	
-				<th data-options="field:'s_record'">打分</th>	
-				<th data-options="field:'s_isvalid',formatter:formatters_isvalid">是否有效</th>	
-				<th data-options="field:'s_lostvalid'">无效原因</th>	
-				<th data-options="field:'s_isreturnvist',formatter:formatters_isreturnvist">是否回访</th>	
-				<th data-options="field:'s_firstvisittime'">首次回访时间</th>	
-				<th data-options="field:'s_ishome',formatter:formatters_ishome">是否上门</th>	
-				<th data-options="field:'s_hometime'">上门时间</th>	
-				<th data-options="field:'s_premoney'">定金金额</th>	
-				<th data-options="field:'s_premoneytime'">定金时间</th>	
-				<th data-options="field:'s_ispay',formatter:formatters_ispay">是否缴费</th>	
-				<th data-options="field:'s_paytime'">缴费时间</th>	
-				<th data-options="field:'s_money'">缴费金额</th>	
-				<th data-options="field:'s_isreturnmoney',formatter:formatters_isreturnmoney">是否退费</th>	
-				<th data-options="field:'s_returnmoneycontent'">退费原因</th>	
-				<th data-options="field:'s_isinclass',formatter:formatters_isinclass">是否进班</th>	
-				<th data-options="field:'s_inclasstime'">进班时间</th>	
-				<th data-options="field:'s_inclasscontent'">进班备注</th>	
-				<th data-options="field:'s_content'">备注</th>	
-
-				<th data-options="field:'caozuo',title:'操作',formatter:formattercaozuo" class="right"></th>
+				<th data-options="field:'n_id'">ID</th>
+						
+						<th data-options="field:'n_studentid'">学生编号</th>
+						
+						<th data-options="field:'n_studentname'">学生名字</th>
+						<th data-options="field:'u_loginname',formatter:formattername">跟踪人</th> 
+						<th data-options="field:'n_createtime'">下次跟踪时间</th>	
+							
+						<th data-options="field:'n_content'">内容</th>
+						
+						<th data-options="field:'n_followtime'">开始跟踪时间</th>
+						
+						<th data-options="field:'n_nextfollowtime'">结束跟踪时间</th>
+						
+						<th data-options="field:'n_followtype'">操作</th>
+		
+						<th data-options="field:'look',title:'查看',formatter:formatterlook"></th>
 			</tr>
 		</thead>
 	</table>

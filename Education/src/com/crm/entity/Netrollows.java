@@ -19,6 +19,13 @@ public class Netrollows {
 	private String n_followtype;
 	private String n_createtime;
 	private Integer n_followstate;
+	private Users users;
+	public Users getUsers() {
+		return users;
+	}
+	public void setUsers(Users users) {
+		this.users = users;
+	}
 	public Netrollows(Integer n_id, Integer n_studentid, String n_studentname, String n_followtime,
 			String n_nextfollowtime, String n_content, Integer n_userid, String n_followtype, String n_createtime,
 			Integer n_followstate) {

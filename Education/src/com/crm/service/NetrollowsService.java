@@ -8,4 +8,8 @@ public interface NetrollowsService {
 	Fenye<Netrollows> SelectNet(Fenye<Netrollows> fenye);
 	
 	Integer InsertNet(Netrollows netrollows);
+	
+	Fenye<Netrollows> selectNet(Fenye<Netrollows> fenye);
+	
+	
 }

@@ -37,4 +37,12 @@ public class NetrollowsController {
 	public String genzong() {
 		return "genzong";
 	}
+	@RequestMapping(value = "/SelectNetAll", method = RequestMethod.POST)
+	@ResponseBody
+	private Fenye<Netrollows> SelectNetAll(Netrollows netrollows, Integer page, Integer rows) {
+		fenye.setPage((page - 1) * rows);
+		fenye.setPageSize(rows);
+		fenye.setNetrollows(netrollows);
+		return netrollowsService.selectNet(fenye);
+	}
 }

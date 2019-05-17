@@ -29,7 +29,7 @@
 			pagination:true,
 			queryParams:{
 				s_name:$("#s_name").val(),
-				s_curriculum:$("#s_curriculum").val(),
+				s_curriculum:$("#s_curriculums").val(),
 				s_record:$("#s_record").val(),
 				u_id:n_userid
 				
@@ -51,10 +51,43 @@
 		var data = $("#StuTab").datagrid("getData"); 
 		var row = data.rows[index];
 		
-		$("#s_isvalid").textbox('setValue',row.s_isvalid == 0? "否":"是");
-		$("#s_isreturnvist").textbox('setValue',row.s_isreturnvist == 0? "否":"是");
+		function formatters() {
+			var res = '';
+			switch(row.s_isvalid){
+			case 0:
+				res='否';
+				break;
+			case 1:
+				res='是';
+				break;
+			case 2:
+				res='待定';
+				break;
+			}
+			return res;
+		}
+		function formatterss_curriculum() {
+			var res = '';
+			switch(row.s_curriculum){
+			case '1':
+				res='软件开发';
+				break;
+			case '2':
+				res='软件设计';
+				break;
+			case '3':
+				res='网络营销';
+				break;
+			}
+			return res;
+		}
+		
+		$("#s_isvalid").textbox('setValue',formatters());
+		$("#s_curriculum").textbox('setValue',formatterss_curriculum());
+		
+		$("#s_isreturnvist").textbox('setValue',row.s_isreturnvist == 0? "未回访":"已回访");
 		$("#s_ishome").textbox('setValue',row.s_ishome == 0? "否":"是");
-		$("#s_ispay").textbox('setValue',row.s_ispay == 0? "否":"是");
+		$("#s_ispay").textbox('setValue',row.s_ispay == 0? "未缴费":"已缴费");
 		$("#s_isreturnmoney").textbox('setValue',row.s_isreturnmoney == 0? "否":"是");
 		$("#s_isinclass").textbox('setValue',row.s_isinclass == 0? "否":"是");
 		
@@ -72,6 +105,7 @@
 		$("#updates_ispay").combobox('setValue',row.s_ispay);
 		$("#updates_isreturnmoney").combobox('setValue',row.s_isreturnmoney);
 		$("#updates_isinclass").combobox('setValue',row.s_isinclass);
+		$("#updates_curriculum").combobox('setValue',row.s_curriculum);
 		
 		$("#updateStuForm").form("load", row);
 		$("#updateStu_window").window("open");
@@ -83,7 +117,7 @@
 					s_id:$("#updates_id").val(),
 					s_name:$("#updates_name").val(),
 					s_userid:$("#updates_userid").val(),
-					s_curriculum:$("#updates_curriculum").val(),
+					s_curriculum:$("#updates_curriculum").combobox("getValue"),
 					s_record:$("#updates_record").val(),
 					s_isvalid:$("#updates_isvalid").combobox("getValue"),
 					s_lostvalid:$("#updates_lostvalid").val(),
@@ -184,24 +218,53 @@
 		$("#LookNetForm").form("load", row);
 		$("#LookNet_window").window("open");
 	}
+	
+	
 	//格式化1/0，是/否
 	function formatters_isvalid(value,row,index) {
-		return value == 1 ? '是':'否';
+		var res = '';
+		switch(value){
+		case 0:
+			res='否';
+			break;
+		case 1:
+			res='是';
+			break;
+		case 2:
+			res='待定';
+			break;
+		}
+		return res;
 	}
 	function formatters_isreturnvist(value,row,index) {
-		return value == 1 ? '是':'否';
+		return value == 1 ? '<font color="blue">已回访</font>':'<font color="red">未回访</font>';
 	}
 	function formatters_ishome(value,row,index) {
 		return value == 1 ? '是':'否';
 	}
 	function formatters_ispay(value,row,index) {
-		return value == 1 ? '是':'否';
+		return value == 1 ? '<font color="blue">已缴费</font>':'<font color="red">未缴费</font>';
 	}
 	function formatters_isreturnmoney(value,row,index) {
 		return value == 1 ? '是':'否';
 	}
 	function formatters_isinclass(value,row,index) {
 		return value == 1 ? '是':'否';
+	}
+	function formatters_curriculum(value,row,index) {
+		var res = '';
+		switch(value){
+		case '1':
+			res='软件开发';
+			break;
+		case '2':
+			res='软件设计';
+			break;
+		case '3':
+			res='网络营销';
+			break;
+		}
+		return res;
 	}
 	
 	//设置动态显示列表
@@ -268,7 +331,7 @@
 				<th data-options="field:'s_id'">id</th>
 				<th data-options="field:'s_name',title:'s_name'">姓名</th>
 				<th data-options="field:'u_loginname',formatter:formatters_userid">咨询师</th>
-				<th data-options="field:'s_curriculum'">课程方向</th>	
+				<th data-options="field:'s_curriculum',formatter:formatters_curriculum">课程方向</th>	
 				<th data-options="field:'s_record'">打分</th>	
 				<th data-options="field:'s_isvalid',formatter:formatters_isvalid">是否有效</th>	
 				<th data-options="field:'s_lostvalid'">无效原因</th>	
@@ -298,7 +361,7 @@
 			<label for="name">名称:</label>
 			<input class="easyui-textbox" type="text" id="s_name">
 			<label for="name">课程方向:</label>
-			<input class="easyui-textbox" type="text" id="s_curriculum">
+			<input class="easyui-textbox" type="text" id="s_curriculums">
 			<label for="name">打分:</label>
 			<input class="easyui-textbox" type="text" id="s_record">
 			<!-- <label for="name">类别</label>
@@ -332,7 +395,7 @@
 					</tr>
 					<tr>
 						<td>课程方向:</td>
-						<td><input class="easyui-textbox" name="s_curriculum" id="s_curriculum" readonly="readonly"></input>
+						<td><input class="easyui-textbox" name="s_curriculums" id="s_curriculum" readonly="readonly"></input>
 						</td>
 					</tr>
 					<tr>
@@ -453,7 +516,12 @@
 					</tr>
 					<tr>
 						<td>课程方向:</td>
-						<td><input class="easyui-textbox" name="s_curriculum" id="updates_curriculum" data-options="required:true"></input>
+						<td><!-- <input class="easyui-textbox" name="s_curriculum" id="updates_curriculum" data-options="required:true"></input> -->
+							<select style="width: 100px" id="updates_curriculum" class="easyui-combobox">
+								<option value="1">软件开发</option>
+								<option value="2">软件设计</option>
+								<option value="3">网络营销</option>
+							</select>
 						</td>
 					</tr>
 					<tr>
@@ -465,6 +533,7 @@
 						<td>是否有效:</td>
 						<td><!-- <input class="easyui-textbox" name="s_isvalids" id="updates_isvalid"  data-options="required:true"></input> -->
 							<select style="width: 100px" id="updates_isvalid" class="easyui-combobox">
+								<option value="2">待定</option>
 								<option value="1">是</option>
 								<option value="0">否</option>
 							</select>
@@ -479,8 +548,8 @@
 						<td>是否回访:</td>
 						<td><!-- <input class="easyui-textbox" name="s_isreturnvist" id="updates_isreturnvist" data-options="required:true"></input> -->
 							<select style="width: 100px" id="updates_isreturnvist" class="easyui-combobox">
-								<option value="1">是</option>
-								<option value="0">否</option>
+								<option value="1">已回访</option>
+								<option value="0">未回访</option>
 							</select>
 						</td>
 					</tr>
@@ -517,8 +586,8 @@
 						<td>是否缴费:</td>
 						<td><!-- <input class="easyui-textbox" name="s_ispay"  id="updates_ispay" data-options="required:true"></input> -->
 							<select style="width: 100px" id="updates_ispay" class="easyui-combobox">
-								<option value="1">是</option>
-								<option value="0">否</option>
+								<option value="1">已缴费</option>
+								<option value="0">未缴费</option>
 							</select>
 						</td>
 					</tr>

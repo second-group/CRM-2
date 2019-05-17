@@ -27,4 +27,9 @@ public interface NetrollowsMapper {
 	 * @return
 	 */
 	List<Netrollows> selectNet(Fenye<Netrollows> fenye);
+	
+	/**
+	 * 查询所有跟踪条数
+	 */
+	Integer SelectNetALLCount(Fenye<Netrollows> fenye);
 }

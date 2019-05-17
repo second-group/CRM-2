@@ -4,8 +4,17 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.crm.dao.NetrollowsMapper">
   <resultMap type="netrollows" id="netrollowsMap">
-  	
-  
+  	<id column="n_id" property="n_id" />
+  	<result column="n_studentid" property="n_studentid"/>
+  	<result column="n_studentname" property="n_studentname"/>
+  	<result column="n_followtime" property="n_followtime"/>
+  	<result column="n_nextfollowtime" property="n_nextfollowtime"/>
+  	<result column="n_content" property="n_content"/>
+  	<result column="n_userid" property="n_userid"/>
+  	<result column="n_followtype" property="n_followtype"/>
+  	<result column="n_createtime" property="n_createtime"/>
+  	<result column="n_followstate" property="n_followstate"/>
+  	<result column="u_loginname" property="users.u_loginname"/>
   </resultMap>
   		<sql id="Net">
 			<where>
@@ -42,11 +51,16 @@
 	  		insert into netrollows (n_studentid,n_studentname,n_followtime,n_nextfollowtime,n_content,n_userid,n_followtype,n_createtime,n_followstate) value(#{n_studentid},#{n_studentname},#{n_followtime},#{n_nextfollowtime},#{n_content},#{n_userid},#{n_followtype},#{n_createtime},#{n_followstate})
 	  	</insert>
 	  	
-	  	<select id="" parameterType="fenye" resultType="netrollows">
+	  	<select id="selectNet" parameterType="fenye" resultMap="netrollowsMap">
 	  		SELECT users.u_loginname,netrollows.* from users,netrollows 
-	  		<where> users.u_id=netrollows.n_userid 
-	  			<include refid="Net"></include>
+	  		<where> 
+	  		users.u_id=netrollows.n_userid 
 	  		</where>
 	  		limit #{page},#{pageSize}
 	  	</select>
+	  		<select id="SelectNetALLCount" parameterType="fenye" resultType="int">
+	  		select count(1) from netrollows
+	  		
+	  	</select>
+	  	
   </mapper>

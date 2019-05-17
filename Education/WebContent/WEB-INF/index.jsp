@@ -27,7 +27,7 @@
 	                            content: "<iframe width='100%' height='100%' src='"+node.m_path+"'/>"    //此处做了调整，推荐使用iframe的方式实现
 	                       });
 	                    } else {
-	                        $("#tt").tabs('select', re); //直接选中title对应的选项卡
+	                        $("#tt").tabs('select',node.text); //直接选中title对应的选项卡
 	                    }
 	                }
 	 			}
@@ -113,7 +113,7 @@
 		function out(){
     		$.messager.confirm('确认', '您确认想要退出登录吗？', function(r) {
 					if(r) { // 用户点击了确认按钮
-						
+						sessionStorage.clear();
 							window.location.href="tologin"; 
 						 
 			

@@ -29,4 +29,14 @@ public class NetrollowsServiceImpl implements NetrollowsService {
 		return fenye;
 	}
 
+
+	@Override
+	public Fenye<Netrollows> selectNet(Fenye<Netrollows> fenye) {
+		List<Netrollows> selectNet = netrollowsMapper.selectNet(fenye);
+		Integer selectNetCount = netrollowsMapper.SelectNetALLCount(fenye);
+		fenye.setRows(selectNet);
+		fenye.setTotal(selectNetCount);
+		return fenye;
+	}
+
 }
