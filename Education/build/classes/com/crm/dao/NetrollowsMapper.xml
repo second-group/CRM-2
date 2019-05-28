@@ -18,6 +18,10 @@
   </resultMap>
   		<sql id="Net">
 			<where>
+				<if test="netrollows.n_studentid!='' and netrollows.n_studentid!=null">
+					and n_studentid =#{netrollows.n_studentid}
+				</if>
+				
 				<if test="netrollows.n_studentname!='' and netrollows.n_studentname!=null">
 					and n_studentname like "%"#{netrollows.n_studentname}"%" 
 				</if>
@@ -34,17 +38,24 @@
 				<if test="netrollows.n_followtype!='' and netrollows.n_followtype!=null">
 					and n_followtype like "%"#{netrollows.n_followtype}"%" 
 				</if>
+				<if test="netrollows.n_followtype!='' and netrollows.n_followtype!=null">
+					and n_followtype like "%"#{netrollows.n_followtype}"%" 
+				</if>
+				<if test="netrollows.n_userid!='' and netrollows.n_userid!=null">
+					and n_userid=${netrollows.n_userid}
+				</if>
 			</where>
 		</sql>
   
 	  	<select id="SelectNet" parameterType="fenye" resultType="netrollows">
-	  		select * from netrollows
-	  		<include refid="Net"></include>
-	  		
+	  		select n_id,n_studentid,n_studentname,n_followtime,n_nextfollowtime,n_content,n_userid,n_followtype,n_createtime,n_followstate from netrollows 
+	  		<include refid="Net"></include>	  		
+	  		order by n_id desc  
+	  		limit #{page},#{pageSize}
 	  	</select>
 	  	
 	  	<select id="SelectNetCount" parameterType="fenye" resultType="int">
-	  		select count(1) from netrollows
+	  		select count(1) from netrollows 
 	  		<include refid="Net"></include>
 	  	</select>
 	  	<insert id="InsertNet" parameterType="netrollows">

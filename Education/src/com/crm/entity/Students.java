@@ -19,6 +19,20 @@ public class Students {
 	private String s_education;
 	private String s_stuclass;
 	private Users users;
+	private String s_zixunname;
+	private String s_createname;
+	public String getS_zixunname() {
+		return s_zixunname;
+	}
+	public void setS_zixunname(String s_zixunname) {
+		this.s_zixunname = s_zixunname;
+	}
+	public String getS_createname() {
+		return s_createname;
+	}
+	public void setS_createname(String s_createname) {
+		this.s_createname = s_createname;
+	}
 	public Users getUsers() {
 		return users;
 	}
@@ -348,9 +362,7 @@ public class Students {
 	public String toString() {
 		return "Students [s_id=" + s_id + ", s_name=" + s_name + ", s_age=" + s_age + ", s_sex=" + s_sex + ", s_phone="
 				+ s_phone + ", s_state=" + s_state + ", s_education=" + s_education + ", s_stuclass=" + s_stuclass
-				+ ", users=" + users + ", s_msgsource=" + s_msgsource + ", s_sourceurl=" + s_sourceurl
-				+ ", s_sourcekeyword=" + s_sourcekeyword + ", s_address=" + s_address + ", s_qq=" + s_qq + ", s_weixin="
-				+ s_weixin + ", s_content=" + s_content + ", s_createtime=" + s_createtime + ", s_isvalid=" + s_isvalid
+				+ ", users=" + users + ", s_zixunname=" + s_zixunname + ", s_createname=" + s_createname
 				+ ", s_msgsource=" + s_msgsource + ", s_sourceurl=" + s_sourceurl + ", s_sourcekeyword="
 				+ s_sourcekeyword + ", s_address=" + s_address + ", s_qq=" + s_qq + ", s_weixin=" + s_weixin
 				+ ", s_content=" + s_content + ", s_createtime=" + s_createtime + ", s_isvalid=" + s_isvalid

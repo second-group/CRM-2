@@ -6,142 +6,157 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link type="text/css" rel="stylesheet" href="js/style.css">
+		<link type="text/css" rel="stylesheet" href="js/style.css">
+		<script type="text/javascript" src="js/md5.js"></script>
+		<script src="js/jquery-1.10.2.js"></script>
+		<script src="js/img_ver.js"></script>
+		<link rel="stylesheet" type="text/css" href="js/insdep.easyui.min.css" />
+		<link rel="stylesheet" type="text/css" href="js/icon.css" />
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="js/insdep.extend.min.js"></script>
+		<script type="text/javascript" src="js/locale/easyui-lang-zh_CN.js"></script>
+		<script type="text/javascript">
 
-<script src="js/jquery-1.10.2.js"></script>
-<script src="js/img_ver.js"></script>
-<script type="text/javascript">
-function btnLogin(){
-/*      var username = "";
-    var password = "";
-    //获取当前站点的所有Cookie
-    Cookie[] cookies = request.getCookies();
-    for (int i = 0; i < cookies.length; i++) {//对cookies中的数据进行遍历，找到用户名、密码的数据
-        if ("u_loginname".equals(cookies[i].getName())) {
-               username = cookies[i].getValue();
-        } else if ("password".equals(cookies[i].getName())) {
-            password = cookies[i].getValue();
-        }
-    }  */
-/* var flag=$("#login").form("validate"); */  //使用validate验证表单的所有验证是否全部通过，通过为true，否则为false
-/* if(u_loginname!=null && u_loginname==kie){
-		
-		
-	} */
-	var useru_loginname='${sessionScope.users.u_loginname}';
+ 
+	
+
+	
+	 //遍历获取cookie中的值
+	  function getCookie(name){
+		  var strCookie=document.cookie; 
+		 
+		  var arrCookie=strCookie.split("; "); 
+		  for(var i=0;i<arrCookie.length;i++){ 
+		  var arr=arrCookie[i].split("="); 
+		  if(arr[0]==name)return arr[1]; 
+		  } 
+		  return ""; 
+	 } 
+
+
+/* $(function(){
+	var nameCookie= decodeURI(document.cookie.split("nameCookie=")[1].split(";")[0]);
+	var pwdCookie= decodeURI(document.cookie.split("pwdCookie=")[1].split(";")[0]);	
+	var JLogname = document.getElementById("u_loginname").value;  */
+	/*  var Logname= $("input[id='u_loginname']").attr("value"); */ 
+/* 	if(nameCookie!=null && nameCookie!="" && pwdCookie!=null && pwdCookie!=""){
+		var chk = document.getElementById('ch');
+		chk.checked = true;
+	}
+}) 
+ */
+function btnLogin(){	
+/* 	var useru_loginname='${sessionScope.users.u_loginname}';
 	var useru_password='${sessionScope.users.u_password}';
 	var useru_islockout='${sessionScope.users.u_islockout}';
-
 	var kie=$("#kie").val();
-	var pwd=$("#pwd").val();
+	var pwd=$("#pwd").val(); */
 	var u_loginname=$("#u_loginname").val();  //获取表单中的用户名。注意：验证框可以使用jQuery的val方法获取，如果是textbox，则需要通过$("#ename").textbox("getValue"); 来获取
 	var u_password=$("#u_password").val();//获取用户密码 
 	var inputStr = $("#checks").val();
-	var ch=$("#ch").val();
-	 
-	/* var japtcha=$("#japtcha").val();
-	alert(japtcha); */
-if(u_loginname==null || u_loginname ==""){	 
-	  /* alert(inputStr); */
-	  	alert("用户名不可为空");
-}else if(u_password==null || u_password ==""){
-		alert("密码不可为空");
-}else if(inputStr==null || inputStr==""){
-		alert("请输入验证码");
-}else{			
-	inputStr = inputStr.toUpperCase();//将验证码转为大写	
-	    $.post(
-	        "login",  //注意地址
-	        {    
-	        	u_loginname:u_loginname,
-	        	u_password:u_password,
-	        	ch:ch,
-	        	inputStr:inputStr
-	        	/* japtcha:japtcha */
-	        },  
-	        function(res){
-	        	/* var uu='${sessionScope.uu}';
-	        	alert(uu); */
-	        	/* alert(res); */
-	    		/* for (var i = 0; i < uu.length; i++) {
-	    			alert(u_loginname);
-	    			if(uu.get(i).getU_lastlogintime()!=u_loginname){
-	    				
-	    				alert(uu.get(i).getU_lastlogintime());
-	    				
-	    				alert("用户名不存在");
-	    				window.location.href="inlogin";
-	    			}else if(uu.get(i).getU_password()!=u_password){
-	    				alert("密码错误");
-	    				window.location.href="inlogin";
-	    			}else if(uu.get(i).getU_islockout()=1) {
-	    				alert("该用户已锁定");
-	    				window.location.href="inlogin";
-	    			}else{ */
-	        /* 	if(u_loginname!=useru_loginname){
-	        		window.location.href="inlogin";
-	        		alert("用户名错误或者不存在");
-	        	}else if(u_password!=useru_password){
-	        		window.location.href="inlogin";
-	        		alert("密码错误");
-	        	}else if(useru_islockout!=0){
-	        		window.location.href="inlogin";
-	        		alert("用户已被锁定");
-	        	}else{ */
-	        	 /* 	var imgCheck='${sessionScope.imgCheck}';
-	        		alert(imgCheck); */
-	        		if(res!="inindex"){
-	        			alert("验证码错误");
-	        			window.location.href="inlogin";
-	        		}else{ 
-	        			sessionStorage.setItem("u_loginname",u_loginname);
-		                sessionStorage.setItem("u_password",u_password);
-		                /*window.location.href="index.jsp"; */               
-		            	window.location.href=res;  
-	        			
-	        		 } 
-	        		
-	        	
-	        		  
-	        	/* } */
-	    		/* 	}
-	    			
-	    		} */
-	                         
-	    });
-
-
+	var ch=$("#ch").prop("checked");
+	var yh = /^[\u4E00-\u9FA5]{2,5}$/;
+	var patt1 = /^[a-zA-Z]\w{5,17}$/;
+/* 	var nameCookie= decodeURI(document.cookie.split("nameCookie=")[1].split(";")[0]);
+	var pwdCookie= decodeURI(document.cookie.split("pwdCookie=")[1].split(";")[0]); */
+	 var nameCookie= decodeURI(getCookie('nameCookie'));
+	 var pwdCookie= decodeURI(getCookie('pwdCookie'));
+/*  	alert(nameCookie);
+	alert(pwdCookie);			
+	alert(u_loginname);	  */
+	if(nameCookie!=null && nameCookie!="" && pwdCookie!=null && pwdCookie!="" && nameCookie== u_loginname){
+		  		$.post(
+			        "login",  //注意地址
+			        {    
+			        	nameCookie:nameCookie,
+			        	pwdCookie:pwdCookie			        		        	
+			        },  
+			        function(res){			        	        	
+			        		if(res.success){	        				                             
+				            	window.location.href="inindex";  
+			        		}else{ 
+			        			alert(res.message);
+			        			window.location.href="inlogin";	        			
+			        		 } 	        			        		        		  	        	                         
+			    },"json");
+		}else{
 	
-	
-}
+				if(u_loginname==null || u_loginname ==""){	 
+					  /* alert(inputStr); */
+					  	alert("用户名不可为空");
+				}else if(u_password==null || u_password ==""){
+						alert("密码不可为空");
+				}else if(inputStr==null || inputStr==""){
+						alert("请输入验证码");
+				}/* else if(!yh.test(u_loginname)){
+					    alert("用户名只能是汉字并且在2-5位之间");
+				} */else if(!patt1.test(u_password)){			
+					    alert("密码以字母开头，长度在6~18之间，只能包含字符、数字和下划线");	
+				}else{
+					inputStr = inputStr.toUpperCase();//将验证码转为大写
+					var upwd=hex_md5(u_password);
+				    $.post(
+				        "login",  //注意地址
+				        {    
+				        	u_loginname:u_loginname,
+				        	u_password:upwd,
+				        	ch:ch,
+				        	inputStr:inputStr	        	
+				        },  
+				        function(res){				               	
+				        		if(res.success){	        				                             
+					            	window.location.href="inindex";  
+				        		}else{
+				        			if(res.message=="验证码错误！！！"){
+				        				getVerify();
+				        				document.getElementById("checks").value="";
+				        			}else{
+				        				alert(res.message);
+					        			window.location.href="inlogin";	      
+				        			}
+				        			  			
+				        		 } 	        			        		        		  	        	                         
+				    },"json");
+				}
+			}
+		}
 
-}
+
+	//清除cookie
+	function clearCookie(name) {
+		   var exp = new Date();
+		    exp.setTime(exp.getTime() - 1);
+		    var cval=getMyCookie(name);
+
+	}
+	function ClearPassword() {
+		alert(11);
+		
+		 $.messager.confirm('确认', '您确认想要忘记密码吗？', function(r) {
+				if(r) { // 用户点击了确认按钮
+					clearCookie(getCookie('nameCookie')); 
+					clearCookie(getCookie('pwdCookie')); 
+					alert(11);
+				}
+			});
+	}
 
 
 
-
-
-$(document.body).ready(function () {
-
-        //首次获取验证码
-
-        $("#imgVerify").attr("src","/Education/getVerify?"+Math.random());
-
-    });
-
-    //获取验证码
-
-    function getVerify(){
-
-        var src1=document.getElementById('imgVerify')
-
-        src1.src = "/Education/getVerify?"+Math.random();
-
-    }
+	$(document.body).ready(function () {	
+	        //首次获取验证码	
+	        $("#imgVerify").attr("src","/Education/getVerify?"+Math.random());	
+	    });	
+	    //获取验证码	
+	    function getVerify(){	
+	        var src1=document.getElementById('imgVerify')	
+	        src1.src = "/Education/getVerify?"+Math.random();	
+	    }
 
     //校验验证码
 
-    function checkSum(){
+/*     function checkSum(){
 
         var html1=document.getElementById('loginingForm');
 
@@ -159,7 +174,7 @@ $(document.body).ready(function () {
 
         }
 
-    }
+    } */
 
     //登录验证
 
@@ -183,7 +198,11 @@ $(document.body).ready(function () {
 
     } */
 
-
+    function _b()//绑定回车键登录
+    {
+    if(event.keyCode ==13)
+    	btnLogin();
+    }
 
 </script>
 <style>
@@ -260,29 +279,11 @@ $(document.body).ready(function () {
 
 </head>
 
-<body>
-
-<%-- <%
-         String username = "";
-         String password = "";
-         //获取当前站点的所有Cookie
-         Cookie[] cookies = request.getCookies();
-         for (int i = 0; i < cookies.length; i++) {//对cookies中的数据进行遍历，找到用户名、密码的数据
-             if ("邝成坤".equals(cookies[i].getName())) {
-                    username = cookies[i].getValue();
-             } else if ("123456".equals(cookies[i].getName())) {
-                 password = cookies[i].getValue();
-             }
-         }
-%> --%>
+<body onKeyDown = "_b()">
 	<div class="logo-box">
-		<div class="login">
-			<!-- <div class="bxs-row" style="text-align:center;">
-				<img id="logo" src="images/logo.jpg" style="width:72px;"><span class="tips" style="color:red;">忍住不哭来段口技</span>
-			</div> -->
-			
+		<div class="login">			
 			<div class="bxs-row">
-				<input type="text" class="username" id="u_loginname" placeholder="用户名">
+				<input type="text" class="username" id="u_loginname" name="Logname" placeholder="用户名/手机号/邮箱">
 				<p class=" err err-username"></p>
 			</div>
 			<div class="bxs-row">
@@ -294,20 +295,12 @@ $(document.body).ready(function () {
 			                 <img id="imgVerify" src="" alt="点击更换验证码" />
 			                 <a href="javascript:void(0)" rel="nofollow" onclick="getVerify()">看不清,换一张</a>			                          
 			</div>
-			   <!-- <div class="formControls col-xs-8 col-xs-offset-3">              
-			   <input id="checks" class="input-text size-L" type="text" value="" style="width:150px;" />
-			                 <img id="imgVerify" src="" alt="点击更换验证码" />
-			                 <a href="" rel="nofollow">看不清，换一张</a>          
-			   </div> -->
-
-		<!-- 	<div class="bxs-row">
-				 <img src="jcaptcha.jpg"/> <input type="text" id="japtcha" name="japtcha" value="" />
-				<p class="err err-password"></p>
-			</div> -->
 			<div class="bxs-row">
-				<input type="checkbox" id="ch" value="true" style="width: 20px;height: 20px;"><a style="font-size: 17px;padding-bottom: 10px">7天免登陆</a>
+				<input type="checkbox" id="ch" value="" style="width: 20px;height: 20px;"><a style="font-size: 17px;padding-bottom: 10px">记住密码</a><a href="javascript:void(0)" style="font-size: 17px;padding-bottom: 10px;padding-left: 150px" onclick="ClearPassword()">忘机密码</a>
 				<p class="err err-password"></p>
+				
 			</div>
+
 			<div class="bxs-row">
 				<input type="submit" class="submit btn" onclick="btnLogin()" value="登录">
 			</div>
@@ -316,14 +309,5 @@ $(document.body).ready(function () {
 			<div id="imgVer" style="display:inline-block;"></div>
 		</div>
 	</div>
-	     <%--  <c:forEach items="${uu}" var="u" varStatus="s">
-	      	<c:if test="${u.u_loginname}">
-	      	
-	      	</c:if>
-        	<input type="text" id="name${s.index}" value="${u.u_loginname}">
-        	<input type="text" id="pass${s.index}" value="${u.u_password}"><br>
-        </c:forEach>  --%>
- 	<%-- <input type="text" class="kie" id="kie" placeholder="${username}" value="${msg}"> --%>
-	 <%--<input type="text" class="pwd" id="pwd" placeholder="${password}">  --%>
 </body>
 </html>

@@ -9,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crm.entity.Fenye;
 import com.crm.entity.Modules;
 import com.crm.entity.RoleModules;
 import com.crm.entity.Roles;
+import com.crm.entity.UserRoles;
 import com.crm.entity.Users;
 import com.crm.service.ModulesService;
 import com.crm.service.RolesService;
@@ -64,9 +66,18 @@ public class RolesController {
 	
 	@RequestMapping(value="/deleteRoles",method=RequestMethod.POST)
 	@ResponseBody
-	public Integer deleteRoles(Roles roles){
+	public Integer deleteRoles(@RequestParam("r_id")Integer r_id){
+		rolesService.deleteRoleModulesById(r_id);
+		return rolesService.deleteRoles(r_id);
 		
-		return rolesService.deleteRoles(roles);
+	}
+	
+	
+	@RequestMapping(value="/selectUserRolesExitUsers",method=RequestMethod.POST)
+	@ResponseBody
+	public List<UserRoles> selectUserRolesExitUsers(@RequestParam("r_id")Integer r_id){
+		/*System.out.println(rolesService.selectRolesExict(roles)+"roles");*/
+		return rolesService.selectUserRolesExitUsers(r_id);
 		
 	}
 	
@@ -75,25 +86,12 @@ public class RolesController {
 	public ArrayList<TreeModel> selectRolesModules(Roles roles) {
 		List<Modules> totalList=modulesService.selectRoleModulesAll();
 		List<Modules> Roleslist=rolesService.selectRolesModules(roles);		
-/*		System.out.println(TreeNode.checkTree(totalList, Roleslist));
-		System.out.println(totalList+"分配角色权限");*/
 		List<Modules> treeTrue=TreeNode.checkTree(totalList, Roleslist);
 		return TreeNode.getcheckTrue(treeTrue);
 		
 	}
 	
 	
-	
-/*	@RequestMapping(value="/insertRolesModules",method=RequestMethod.POST)
-	@ResponseBody
-	public Integer insertRolesModules(RoleModules roleModules){
-		System.out.println(roleModules+"548454894687456465496");
-		for(int i=2;i>0;i--) {
-			rolesService.insertRolesModules(roleModules);
-		}
-		return rolesService.insertRolesModules(roleModules);
-		
-	}*/
 	@RequestMapping(value="/roles",method = RequestMethod.GET)
 	public String user() {
 		return "roles";

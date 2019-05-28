@@ -11,6 +11,7 @@ import com.crm.entity.Fenye;
 import com.crm.entity.Modules;
 import com.crm.entity.RoleModules;
 import com.crm.entity.Roles;
+import com.crm.entity.UserRoles;
 import com.crm.util.TreeModel;
 import com.crm.util.TreeNode;
 @Service
@@ -42,29 +43,27 @@ public class RolesServiceImpl implements RolesService{
 		return rolesMapper.updateRoles(roles);
 	}
 	@Override
-	public Integer deleteRoles(Roles roles) {
+	public Integer deleteRoleModulesById(Integer r_id) {
 		// TODO Auto-generated method stub
-		return rolesMapper.deleteRoles(roles);
+		return rolesMapper.deleteRoleModulesById(r_id);
+	}
+	
+	@Override
+	public Integer deleteRoles(Integer r_id) {
+		// TODO Auto-generated method stub
+		return rolesMapper.deleteRoles(r_id);
 	}
 	@Override
 	public List<Modules> selectRolesModules(Roles roles) {
 		// TODO Auto-generated method stub
-/*		List<Modules> mod=rolesMapper.selectRolesModules(roles);
-		ArrayList<TreeModel> root = new ArrayList<>();
-		ArrayList<TreeModel> tree = new ArrayList<>();
-		   for (Modules mod1:mod) {
-			   System.out.println(mod1);
-			   TreeModel node = new TreeModel();
-			   node.setId(mod1.getM_id());
-               node.setText(mod1.getM_name());             
-               node.setM_parentid(mod1.getM_parentid());
-               node.setM_path(mod1.getM_path());
-               tree.add(node);
-		   }
-		   root = TreeNode.getTree(tree); */
 		return rolesMapper.selectRolesModules(roles);	
 	}
-	
+	@Override
+	public List<UserRoles> selectUserRolesExitUsers(Integer r_id) {
+		// TODO Auto-generated method stub
+		return rolesMapper.selectUserRolesExitUsers(r_id);
+	}
+
 
 
 }

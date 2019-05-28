@@ -3,29 +3,62 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.crm.dao.ModulesMapper">
+ <!--  <sql id="QuanXian">
+  	<where>
+  		<if test="">
+  		
+  		</if>
+  	</where>
+  </sql> -->
   <select id="selectUsersByLogin" parameterType="users" resultType="users">
-  		select * from users <where>u_loginname=#{u_loginname} and u_password=#{u_password}</where>
+  		select * from users 	
+  		<where>
+			<if test="u_loginname!=null and u_loginname != ''">
+				and u_loginname=#{u_loginname}
+			</if>			
+			<if test="u_protectmtel!=null and u_protectmtel != ''">
+				and u_protectmtel=#{u_protectmtel}
+			</if>
+			<if test="u_protectemail!=null and u_protectemail != ''">
+				and u_protectemail=#{u_protectemail}
+			</if>
+			<if test="u_password!=null and u_password != ''">
+				and u_password=#{u_password}
+			</if>
+		</where> 
   </select>
   		<select id="selectModules" parameterType="users" resultType="modules">
   			select DISTINCT m.m_id,m.m_name,m.m_parentid,m.m_path,m.m_weight from users u INNER JOIN userroles ur INNER JOIN roles r INNER JOIN  rolemodules rm INNER JOIN modules m on u.u_id=ur.ur_userid and r.r_id = rm.rm_roleid 
 			and m.m_id = rm.rm_moduleid and r.r_id = ur.ur_roleid
-			<where>u.u_loginname=#{u_loginname} and u.u_password=#{u_password} and u_islockout =0 </where> 
+			<where>
+			<if test="u_loginname!=null and u_loginname != ''">
+				and u.u_loginname=#{u_loginname}
+			</if>
+			<if test="u_password!=null and u_password != ''">
+				and u.u_password=#{u_password}
+			</if>
+			 and u_islockout =0 
+			</where> 
   		</select>
   	
   		<select id="selectModulesAll"  resultType="modules">
-  		select * from modules
+  		select m_id,m_name,m_parentid,m_path,m_weight,checked from modules
   		</select>
   		<select id="selectModulesExict" parameterType="modules" resultType="modules">
-  			select * from modules <where>m_name=#{m_name}</where>
+  			select m_name from modules <where>m_name=#{m_name}</where>
   		</select>
   		<insert id="insertModules" parameterType="modules">
   			insert into modules(m_name,m_parentid,m_path,m_weight) values(#{m_name},#{m_parentid},#{m_path},#{m_weight})
   		</insert>
+  		<select id="selectRoleModulesExict" parameterType="int" resultType="roleModules">
+	  		select rm_moduleid from roleModules <where>rm_moduleid=#{m_id}</where>
+	  	</select>
+
   		<delete id="deleteModules" parameterType="modules">
   			delete from modules <where>m_id=#{m_id}</where>
   		</delete>
   		<select id="selectModulesById" parameterType="modules" resultType="modules">
-  			select * from modules <where>m_id=#{m_id}</where>
+  			select m_name,m_path,m_weight from modules <where>m_id=#{m_id}</where>
   		</select>
   		<update id="updateModules" parameterType="modules">
   			update modules
@@ -44,4 +77,6 @@
   				m_id=#{m_id}
   			</where>
   		</update>
+  		
+  		
   </mapper>

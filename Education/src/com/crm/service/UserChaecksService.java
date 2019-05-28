@@ -8,4 +8,5 @@ public interface UserChaecksService {
 	Fenye<UserChaecks> selectAllUserchaecks(Fenye<UserChaecks> fenye);
 	Integer updateUserchaecks(UserChaecks chaecks);
 	Integer insertUserchaecks(UserChaecks chaecks);
+	Integer selectUserqiandao(UserChaecks chaecks);
 }

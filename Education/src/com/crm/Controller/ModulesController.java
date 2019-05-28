@@ -11,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crm.entity.Fenye;
 import com.crm.entity.Modules;
+import com.crm.entity.RoleModules;
 import com.crm.entity.Users;
 import com.crm.service.ModulesService;
 import com.crm.service.UsersService;
@@ -31,13 +33,8 @@ public class ModulesController {
 	@RequestMapping(value="/ModulesAll",method=RequestMethod.POST)
 	@ResponseBody
 	public ArrayList<TreeModel> selectModules(Users users) {
-		System.out.println(users);
-		System.out.println(modulesService.selectModules(users)+"13216546");
 		Map<String, Object> map = new HashMap<String, Object>();
-		Users us=modulesService.selectUsersByLogin(users);
-		/*ArrayList<TreeModel> user=modulesService.selectModules(users);*/
-		
-	
+		Users us=modulesService.selectUsersByLogin(users);	
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 		users.setU_lastlogintime(df.format(new Date()));
 		usersService.updateUsersU_lastlogintime(users);
@@ -65,6 +62,13 @@ public class ModulesController {
 		
 	}
 	
+	
+	@RequestMapping(value="/selectRoleModulesExict",method=RequestMethod.POST)
+	@ResponseBody
+	public List<RoleModules> selectRoleModulesExict(@RequestParam("m_id")Integer m_id) {
+		return modulesService.selectRoleModulesExict(m_id);
+		
+	}
 	
 	@RequestMapping(value="/deleteModules",method=RequestMethod.POST)
 	@ResponseBody

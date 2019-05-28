@@ -2,9 +2,12 @@ package com.crm.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.crm.entity.Fenye;
 import com.crm.entity.Modules;
 import com.crm.entity.Roles;
+import com.crm.entity.UserRoles;
 import com.crm.entity.Users;
 
 public interface UsersMapper {
@@ -37,7 +40,7 @@ public interface UsersMapper {
 	 * @param u_id
 	 * @return
 	 */
-	Integer updateResetU_password(Integer u_id);
+	Integer updateResetU_password(Users users);
 	/**
 	 * 锁定用户
 	 * @param u_id
@@ -73,6 +76,12 @@ public interface UsersMapper {
 	 * @return
 	 */
 	List<Roles> selectRoles();
+	/**
+	 * 查询该角色是否存在
+	 * @param userRoles
+	 * @return
+	 */
+	List<UserRoles> SelectUserRolesEXIT(UserRoles userRoles);
 	/*
 	 * 给相应用户新增角色
 	 */
@@ -95,12 +104,17 @@ public interface UsersMapper {
 	 * @param users
 	 * @return
 	 */
-	List<Users> selectUsersIsExect(Users users);
+	Users selectUsersIsExect(Users users);
 	/**
 	 * 查询所有咨询师
 	 * @return
 	 */
 	List<Users> selectUsersByStudent();
+	/**
+	 * 查询当天签到并且状态为已签到的所有咨询师
+	 * @return
+	 */
+	List<Users> selectUsersByDay();
 	/**
 	 * 查询所有用户，登录时进行验证
 	 * @return
@@ -108,4 +122,35 @@ public interface UsersMapper {
 	List<Users> selectUsersAll();
 	
 	Integer UpdatePassword(Users users);
+	/**
+	 * 删除相应用户
+	 * @param users
+	 * @return
+	 */
+	Integer deleteUsersById(Integer u_id);
+	/**
+	 * 删除用户时同时删除给用户设置的角色信息
+	 * @param u_id
+	 * @return
+	 */
+	Integer deleteUserRolesById(Integer u_id);
+	/**
+	 * 设置用户登录时密码的错误次数
+	 * @param u_id
+	 * @param cs
+	 * @return
+	 */
+	Integer updateUsersU_psdwrongtime(@Param("u_id")Integer u_id,@Param("cs")Integer cs);
+	/**
+	 * 查询用户密码的错误次数
+	 * @param u_id
+	 * @return
+	 */
+	Integer  selectUsersU_psdwrongtime(Integer u_id);
+	
+	/**
+	 * 查询所有咨询师进行自动分配
+	 * @return
+	 */
+	List<Users> selectUsersZiXunShi();
 }

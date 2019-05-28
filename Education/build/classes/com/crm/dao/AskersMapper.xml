@@ -3,5 +3,24 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.crm.dao.AskersMapper">
-  
+  		<select id="selectStudentsAskers"  resultType="students">
+  			select s.* from  students s LEFT JOIN askers a on s.s_id=a.a_studentid where  s.s_id not in(select a_studentid from askers)
+  		</select>
+  		<insert id="insertAskers" parameterType="askers">
+  		INSERT INTO askers (a_userid,a_studentid,a_bakcontent,a_checkstate,a_createtime) 
+  		value(#{a_userid},#{a_studentid},#{a_bakcontent},#{a_checkstate},now())
+  	</insert>
+  		<update id="updateAskers" parameterType="askers">
+  		update askers 
+  		<set>
+  			<if test="users.u_loginname!=null and users.u_loginname!=''">
+  				a_userid=(select u_id from users where u_loginname=#{users.u_loginname}),
+  			</if>
+  			<if test="a_userid>0">
+  				a_userid=#{a_userid}
+  			</if>
+  		</set>
+  		where a_studentid=#{a_studentid}
+  	</update>
+  	
   </mapper>

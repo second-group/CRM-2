@@ -16,6 +16,13 @@ public class Askers {
 	private Integer a_weight;
 	private Integer a_userid;
 	private String a_bakcontent;
+	private Users users;
+	public Users getUsers() {
+		return users;
+	}
+	public void setUsers(Users users) {
+		this.users = users;
+	}
 	public Askers(Integer a_id, Integer a_studentid, Integer a_checkstate, String a_createtime, Integer a_weight,
 			Integer a_userid, String a_bakcontent) {
 		super();

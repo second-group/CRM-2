@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crm.entity.Fenye;
 import com.crm.entity.Netrollows;
+import com.crm.entity.Users;
 import com.crm.service.NetrollowsService;
 
 @Controller
@@ -28,6 +29,7 @@ public class NetrollowsController {
 	@RequestMapping(value = "/SelectNet", method = RequestMethod.POST)
 	@ResponseBody
 	private Fenye<Netrollows> SelectNet(Netrollows netrollows, Integer page, Integer rows) {
+		
 		fenye.setPage((page - 1) * rows);
 		fenye.setPageSize(rows);
 		fenye.setNetrollows(netrollows);

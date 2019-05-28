@@ -8,10 +8,10 @@
   		</select>
   		
   		<select id="selectRolesAll" parameterType="fenye" resultType="roles">
-  			select * from roles limit #{page},#{pageSize}
+  			select r_id,r_name from roles limit #{page},#{pageSize}
   		</select>
   		<select id="selectRolesExict" parameterType="fenye" resultType="roles">
-  			select * from roles <where>r_name=#{r_name}</where>
+  			select r_name from roles <where>r_name=#{r_name}</where>
   		</select>
   		<insert id="insertRoles" parameterType="roles">
   			insert into roles(r_name) values(#{r_name})
@@ -27,7 +27,11 @@
   				r_id=#{r_id}
   			</where>
   		</update>
-  		<delete id="deleteRoles" parameterType="roles">
+  		
+  		<delete id="deleteRoleModulesById" parameterType="int">
+  			delete from rolemodules <where>rm_roleid=#{r_id}</where>
+  		</delete>
+  		<delete id="deleteRoles" parameterType="int">
   			delete from roles <where>r_id=#{r_id}</where>
   		</delete>
   		<select id="selectRolesModules" parameterType="roles" resultType="modules">
@@ -37,4 +41,8 @@
   		<insert id="insertRolesModules" parameterType="roleModules">
   			insert into rolemodules(rm_roleid,rm_moduleid) values(#{rm_roleid},#{rm_moduleid})
   		</insert>
+  		
+  		<select id="selectUserRolesExitUsers" parameterType="int" resultType="userroles">
+  			select ur_id from userroles <where>ur_roleid=#{r_id}</where>
+  		</select>
   </mapper>

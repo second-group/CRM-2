@@ -14,18 +14,14 @@ public class NetrollowsServiceImpl implements NetrollowsService {
 	@Autowired 
 	private NetrollowsMapper netrollowsMapper;
 	
-	public Integer InsertNet(Netrollows netrollows) {
-		
+	public Integer InsertNet(Netrollows netrollows) {		
 		return netrollowsMapper.InsertNet(netrollows);
-	}
-
-	
+	}	
 	public Fenye<Netrollows> SelectNet(Fenye<Netrollows> fenye) {
 		List<Netrollows> selectNet = netrollowsMapper.SelectNet(fenye);
 		Integer selectNetCount = netrollowsMapper.SelectNetCount(fenye);
 		fenye.setRows(selectNet);
-		fenye.setTotal(selectNetCount);
-		
+		fenye.setTotal(selectNetCount);		
 		return fenye;
 	}
 

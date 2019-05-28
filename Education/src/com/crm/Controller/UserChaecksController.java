@@ -24,8 +24,6 @@ public class UserChaecksController {
 		fenye.setUserChaecks(userChaecks);
 		fenye.setPage((page-1)*rows);
 		fenye.setPageSize(rows);
-		System.out.println(fenye.getUserChaecks());
-		System.out.println(chaecksService.selectAllUserchaecks(fenye));
 		Fenye<UserChaecks> selectAllUserchaecks = chaecksService.selectAllUserchaecks(fenye);
 		return selectAllUserchaecks;
 		
@@ -43,5 +41,10 @@ public class UserChaecksController {
 	@RequestMapping(value="/userscheck",method = RequestMethod.GET)
 	public String userscheck() {
 		return "userscheck";
+	}
+	@RequestMapping(value="/qiandao",method=RequestMethod.POST)
+	@ResponseBody
+	public Integer selectUserqiandao(UserChaecks chaecks) {
+		return chaecksService.selectUserqiandao(chaecks);
 	}
 }

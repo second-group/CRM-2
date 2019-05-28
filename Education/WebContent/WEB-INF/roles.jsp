@@ -5,13 +5,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-		<link rel="stylesheet" type="text/css" href="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/themes/icon.css" />
-		<link rel="stylesheet" type="text/css" href="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/themes/default/easyui.css" />
-		<script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/jquery.min.js"></script>
-		<script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
-		<script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+		<link rel="stylesheet" type="text/css" href="js/insdep.easyui.min.css" />
+		<link rel="stylesheet" type="text/css" href="js/icon.css" />
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="js/insdep.extend.min.js"></script>
+		<script type="text/javascript" src="js/locale/easyui-lang-zh_CN.js"></script>
 			<script type="text/javascript">
-			var token = "1dd8841f-7f39-4986-b798-cff41410f31b";
 			$(function() {
 				$("#dg").datagrid({
 					url: 'selectRolesAll',//数据接口的地址
@@ -19,27 +19,25 @@
 					rownumbers:true,
 					singleSelect:true,
 					pagination:true,					
-					toolbar:'#usertb'
-					
+					toolbar:'#usertb'					
 				});
 			})
 
 			function formatOper(val, row, index) {
 				return "<a href='javascript:void(0)' onclick='gets(" + index + ")'>设置</a> <a href='javascript:void(0)' onclick='updataJS(" + index + ")'>修改</a> <a href='javascript:void(0)' onclick='deletdata(" + index + ")'>删除</a>";
-				/*return '<a href="javascript:void(0)" onclick="get('+index+')">设置</a> <a href="javascript:void(0)" onclick="updataJS('+index+')">修改</a> <a href="javascript:void(0)" onclick="deletdata('+index+')">删除</a>';*/
 			}
-			/*function formatOper(value, row, index) {
-			    return "<a style='cursor: pointer;' onclick='resetPassword(" + index + ")'>重置密码</a>";
-			}*/
 
 			//点击新增按钮
 			function addInfo() {
 				$("#adduser_window").window("open");
 			}
 			//点击新增窗体保存按钮
-			function submitUserForm() {
+			function submitUserForm() {				
+				var r_name = $("#r_name").val().trim();
+				/* r_name.trim(); */
+				if(r_name!=null && r_name !=""){
+					
 				
-				var r_name = $("#r_name").val();
 				$.post(
 						"selectRolesExict", {
 							r_name: r_name							
@@ -54,21 +52,21 @@
 									},
 									function(res) {
 										if(res>0) {
-											alert("新增成功");
+											$.messager.alert("操作提示", "新增成功","info");
 											$("#adduser_window").window("close");
 											$("#dg").datagrid("reload"); //通过调用reload方法，让datagrid刷新显示数据
 										}
 									}, "json");
 							}
 							}else{
-								alert("角色名称重复，请重新输入");
+								$.messager.alert("操作提示", "角色名称重复，请重新输入","error");
 							}
-						}, "json");
-				
+						}, "json");	
+				}else{
+					$.messager.alert("操作提示", "不支持空格","error");
+				}
 			}
-			/*function searchUserInfo(){
-			    
-			}*/
+
 			function updataJS(index) {
 				//将当前行数据填入表单
 				var data = $("#dg").datagrid("getData"); //获取datagrid对应的json数据（对象集合）
@@ -83,8 +81,9 @@
 
 			function submitupdateUserForm() {
 				var row = $("#dg").datagrid("getSelected");
-				var r_name = $("#updater_name").val();
+				var r_name = $("#updater_name").val().trim();
 				var r_id = row.r_id;
+				if(r_name!=null && r_name !=""){
 				$.post(
 						"selectRolesExict", {
 							r_name: r_name						
@@ -94,19 +93,23 @@
 							$.post(
 									"updateRoles", {
 										r_name: r_name,
-										r_id: r_id
-										
+										r_id: r_id										
 									},
 									function(res) {
 										//alert(res.success);
 										if(res>0) {
-											alert("修改成功"); //此处建议修改为$.messager.alert()方法，请查阅帮助文档，自行修改。
+											$.messager.alert("操作提示", "修改成功","info");
 											$("#updateuser_window").window("close");
 											$("#dg").datagrid("reload");
 										}
 									}, "json");
+							}else{
+								$.messager.alert("操作提示", "角色名重复，请重新输入","error");
 							}
 						}, "json");
+				}else{
+					$.messager.alert("操作提示", "不支持空格","error");
+				}
 				
 			}
 			//删除
@@ -118,17 +121,25 @@
 						var data = $("#dg").datagrid("getData"); //获取datagrid对应的json对象集合（再来一遍）。
 						var row = data.rows[index]; //获取第index行对应的json对象（再来一遍）。
 						var r_id = row.r_id;
-						$.post("deleteRoles", {
-							r_id: r_id
-							
+						$.post("selectUserRolesExitUsers", {
+							r_id: r_id						
 						}, function(res) {
 							/* var deleteInfo = eval("(" + deleteInfo + ")"); //你知道这里可以如何修改从而变得更简单么？                  */
-							if(res>0) {
-								alert("删除成功");
-								$("#dg").datagrid("load");
+							if(res==null||res=="") {
+								$.post("deleteRoles", {
+									r_id: r_id
+									
+								}, function(res) {
+									/* var deleteInfo = eval("(" + deleteInfo + ")"); //你知道这里可以如何修改从而变得更简单么？                  */
+									if(res>0) {
+										$.messager.alert("操作提示", "删除成功","info");
+										$("#dg").datagrid("load");
+									}
+								});
+							}else{
+								$.messager.alert("操作提示", "该角色正在使用不可删除","error");
 							}
-						});
-
+						});											
 					}
 				});
 			}
@@ -136,11 +147,9 @@
 			var r_id;
 				function myTree(){
 					$('#tt').tree({ url: 'selectRolesModules',
-						lines:true,
-						
+						lines:true,						
 		    			queryParams: { //要发送的参数列表
-		    				r_id:r_id
-		           		        	
+		    				r_id:r_id		           		        	
 	        		},onContextMenu:function(e,node){
 	        			$("#tt").tree('select',node.target);
 	        		}
@@ -157,45 +166,21 @@
 	                    title: "您正在设置" + row.r_name + "的角色信息"
 	                });
 				}
-				
-				
-				/*function formatterSetRight(value, row, index) {
-                return "<a style='cursor: pointer;' onclick='①______(" + index + ")'>设置</a>";
-            }
-            var cur_roleId; //正在编辑的角色id
-            function gets(index) {
-            	var token = "1dd8841f-7f39-4986-b798-cff41410f31b";
-                var data = $("#dg").datagrid("getRows");
-                $("#diaSetRigh").dialog({
-                    closed: false,
-                    title: "您正在设置" + data[index].Name
-                });
-                $.post("http://stuapi.ysd3g.com/api/GetModulesByRoleId", {
-                    token: token,
-                    roleId: data[index].Id
-                }, function(r) {
-                    cur_roleId = data[index].Id;
-                    $("#tt").tree("loadData", r);
-                }, "json");
-            }*/
+												
            function server(){
            		var nodes = $('#tt').tree('getChecked', ['checked','indeterminate']);
-           		
-           		/*alert(nodes.id);*/
            		var s = '';
 				for(var i=0; i<nodes.length; i++){
 					if (s != '') s += ',';
 					s += nodes[i].id;
 				}
-				alert(s);
            		$.post("insertRolesModules", {
            					moduleid:s,
-           					rm_roleid: r_id
-							
+           					rm_roleid: r_id							
 						}, function(res) {
 						/* 	var res = eval("(" + res + ")"); //你知道这里可以如何修改从而变得更简单么？       */           
 							if(res>0) {
-								alert("设置成功");
+								$.messager.alert("操作提示", "设置成功","info");
 								$("#diaSetRigh").window("close");
 								$("#dg").datagrid("load");
 							}

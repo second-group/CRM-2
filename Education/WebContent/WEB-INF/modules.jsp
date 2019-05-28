@@ -5,13 +5,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/themes/icon.css" />
-		<link rel="stylesheet" type="text/css" href="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/themes/default/easyui.css" />
-		<script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/jquery.min.js"></script>
-		<script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
-		<script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
-		<script type="text/javascript">
-		
+		<link rel="stylesheet" type="text/css" href="js/insdep.easyui.min.css" />
+		<link rel="stylesheet" type="text/css" href="js/icon.css" />
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="js/insdep.extend.min.js"></script>
+		<script type="text/javascript" src="js/locale/easyui-lang-zh_CN.js"></script>
+		<script type="text/javascript">		
 		$(function(){
 			myTree();
 			})
@@ -33,35 +33,32 @@
 			
 		
 			
-//点击新增按钮
+		//点击新增按钮
         function addModuleInfo(){
             var nodes = $('#tt').tree("getSelected");    // get checked nodes
             // alert(nodes.text);//获取
-            alert(nodes.id);//获取节点id
             if(nodes!=null){
                 //将当前行数据填入表单
                 $("#parentModulename").text(nodes.text);
                 /* $("#parentModulename").text(nodes.id); */
                 $("#addModule_window").window("open");
             }else{
-                alert("请选择父节点！");
+            	$.messager.alert("操作提示", "请选择父节点","error");
             }
         }
         //点击新增保存按钮
         function submitModuleForm(){
             var nodes = $('#tt').tree('getSelected');
             var flag=$("#addModuleForm").form("validate");
-            var m_name=$("#m_name").val();
+            var m_name=$("#m_name").val().trim();
             var m_weight=$("#m_weight").val();
             var m_path=$("#m_path").val();
-            alert(nodes.id);
+            if(m_name!=null && m_name !=""){
             $.post("selectModulesExict",
                     {    
-                	m_name:m_name
-                             
+                	m_name:m_name                           
                     }, 
                     function(res){
-                        //alert(res.message);
                         if(res == null || res == ""){
                         	 if(flag){
                                  $.post("insertModules",
@@ -74,19 +71,21 @@
                                      function(res){
                                          //alert(res.message);
                                          if(res>0){
-                                             alert("新增成功");
+                                        	 $.messager.alert("操作提示", "新增成功","info");                                       
                                              $("#addModule_window").window("close");
                                              
-                                             myTree();
-                                             
+                                             myTree();                                            
                                          }                            
                                  },"json");
                              }    
                             
                         }else{
-                        	alert("该节点名称已存在，请重新输入");
+                        	 $.messager.alert("操作提示", "该节点名称已存在，请重新输入","error");                       	
                         }                            
                 },"json");
+            }else{
+            	 $.messager.alert("操作提示", "不支持空格","error");
+            }
            
         }
          //点击新增取消按钮
@@ -96,39 +95,20 @@
         }
         //修改
         function updateModuleInfo(index) {
-    	var nodes = $('#tt').tree('getSelected');
-    	/* alert(nodes.text);
-    	console.log(nodes);
-    	alert(nodes.m_weight); */
-	if(nodes!=null){
-		$.post("selectModulesById",{
-			m_id:nodes.id		
-		},function(data){
-			 /* alert(data); */
-			/*alert(data.m_name); */
-          /*   console.log("data = "+data);
-			alert(data.m_name); */
-					/* var data=eval("("+data.m_name+")"); */
-					/* alert(data); */
-					/* $("#updatem_name").textbox("setValue",data.m_name); */
-					$("#UpdateModuleForm").form("load",data);
-                	$("#updateModule_window").window("open");				
-				},"json");
-			}else{
-                alert("请选择父节点！");
-            }
-  	/*var nodes = $('#tt').tree("getSelected");
-
-            // alert(nodes.text);//获取
-            //alert(nodes.id);//获取节点id
-            if(nodes!=null){
-                //将当前行数据填入表单
-                
-                $("#Modulename_1").text(nodes.text);
-                $("#updateModule_window").window("open");
-            }else{
-                alert("请选择父节点！");
-            }*/
+	    	var nodes = $('#tt').tree('getSelected');
+	    	/* alert(nodes.text);
+	    	console.log(nodes);
+	    	alert(nodes.m_weight); */
+				if(nodes!=null){
+					$.post("selectModulesById",{
+						m_id:nodes.id		
+					},function(data){
+						$("#UpdateModuleForm").form("load",data);
+	                	$("#updateModule_window").window("open");				
+					},"json");
+				}else{
+					$.messager.alert("操作提示", "请选择父节点","error");
+	            }
        
 			}
 
@@ -137,32 +117,40 @@
 			}
 
 			function submitupdateModuleForm() {
-				/*var row = data.rows[index]; //获取第index行对应的json对象（再来一遍）。
-				var mId = row.Id;*/
 				var nodes = $('#tt').tree('getSelected');
-				 var m_name=$("#updatem_name").val();
+				 var m_name=$("#updatem_name").val().trim();
 		         var m_weight=$("#updatem_weight").val();
 		         var m_path=$("#updatem_path").val();
-		         alert(nodes.id);
-
-				$.post("updateModules", 
-				{
-						m_id: nodes.id, 
-						m_name:m_name, 
-						m_path:m_path,
-                        m_weight:m_weight,
-						
-					},
-					function(res) {
-						//alert(res.success);
-						if(res>0) {
-							alert("修改成功"); //此处建议修改为$.messager.alert()方法，请查阅帮助文档，自行修改。
-							$("#updateModule_window").window("close");
-                            myTree();
-                            
-						}
-					}, "json");
-					
+		         if(m_name!=null && m_name !=""){
+		         $.post("selectModulesExict",
+		                    {    
+		                	m_name:m_name		                             
+		                    }, 
+		                    function(res){
+			                    	if(res == null || res == ""){
+							$.post("updateModules", 
+							{
+									m_id: nodes.id, 
+									m_name:m_name, 
+									m_path:m_path,
+			                        m_weight:m_weight,									
+								},
+								function(res) {								
+									if(res>0) {
+										$.messager.alert("操作提示", "修改成功","info");
+										/* $.messager.alert("修改成功"); */
+										/* alert("修改成功"); */ //此处建议修改为$.messager.alert()方法，请查阅帮助文档，自行修改。
+										$("#updateModule_window").window("close");
+			                            myTree();			                            
+									}
+							},"json");
+						}else{
+							$.messager.alert("操作提示", "该节点名称已存在，请重新输入","error");
+                        } 					
+					}, "json");	
+		         }else{
+		        	 $.messager.alert("操作提示", "不支持空格","error");
+		            }
 			}
 				//删除
 			function deleteModuleInfo(index) {
@@ -170,21 +158,26 @@
 				$.messager.confirm('确认', '您确认想要删除记录吗？', function(r) {
 					if(r) { // 用户点击了确认按钮
 						//真正执行删除的代码……
-						var nodes = $('#tt').tree('getSelected');
-						
+						var nodes = $('#tt').tree('getSelected');						
 						var m_id = nodes.id;
-						alert(m_id);
-						
-						$.post("deleteModules", {
+						$.post("selectRoleModulesExict", {
 							m_id: m_id							
 						}, function(res) {
 							/* var deleteInfo = eval("(" + deleteInfo + ")"); //你知道这里可以如何修改从而变得更简单么？ */                 
-							if(res>0) {
-								alert("删除成功");
-								myTree();
+							if(res==null||res=="") {
+								$.post("deleteModules", {
+									m_id: m_id							
+								}, function(res) {
+									/* var deleteInfo = eval("(" + deleteInfo + ")"); //你知道这里可以如何修改从而变得更简单么？ */                 
+									if(res>0) {
+										$.messager.alert("操作提示", "删除成功","info");
+										myTree();
+									}
+								});
+							}else{
+								$.messager.alert("操作提示", "该模块已被角色引用不能删除","error");							
 							}
-						});
-
+						});												
 					}
 				});
 			}

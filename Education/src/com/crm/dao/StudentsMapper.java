@@ -24,7 +24,12 @@ public interface StudentsMapper {
 	Integer selectStudentTotal(Fenye<Students> fenye);
 	
 	Integer updateStudent(Students  students);
-	
+	/**
+	 * 查询所有等待分配的客户
+	 * @return
+	 */
+	List<Students> selectStudenteNotAsker(Fenye<Students> fenye);
+	Integer selectStudenteNotAskerTotal(Fenye<Students> fenye);
 
 	//下面是咨询师
 	/**
@@ -48,4 +53,7 @@ public interface StudentsMapper {
 	 * @return
 	 */
 	Integer UpdateStu(Students students);
+	
+	List<Students> SelectTongJi();
+	Integer selectTongJiCount(Students students);
 }

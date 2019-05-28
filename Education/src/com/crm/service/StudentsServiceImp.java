@@ -1,20 +1,25 @@
 package com.crm.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.crm.dao.AskersMapper;
 import com.crm.dao.StudentsMapper;
+import com.crm.entity.Askers;
 import com.crm.entity.Fenye;
 import com.crm.entity.Students;
+import com.crm.entity.Users;
 
 @Service
 public class StudentsServiceImp implements StudentsService {
 	@Autowired
 	private StudentsMapper studentsMapper;
-
+	@Autowired
+	private AskersMapper askersMapper;
 	@Override
 	public Fenye<Students> selectStu(Fenye<Students> fenye) {
 		// TODO Auto-generated method stub
@@ -63,7 +68,9 @@ public class StudentsServiceImp implements StudentsService {
 		return fenye;
 	}
 
-	
+	public Integer SelectStuCount(Fenye<Students> fenye) {
+		return studentsMapper.SelectStuCount(fenye);
+	}
 	public Integer UpdateStu(Students students) {
 		
 		return studentsMapper.UpdateStu(students);
@@ -71,8 +78,38 @@ public class StudentsServiceImp implements StudentsService {
 
 	@Override
 	public Integer updateStudent(Students students) {
-		
+		/*SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+		if(students.getS_firstvisittime()==null) {
+			students.setS_firstvisittime(dateFormat.format(new Date()));
+		}*/
+		Askers askers = new Askers();
+		Users users = new Users();
+		users.setU_loginname(students.getS_zixunname());
+		askers.setUsers(users);
+		askers.setA_studentid(students.getS_id());
+		askersMapper.updateAskers(askers);
 		return studentsMapper.updateStudent(students);
 	}
 
+	@Override
+	public Fenye<Students> selectStudenteNotAsker(Fenye<Students> fenye) {
+		List<Students> selectStudenteNotAsker = studentsMapper.selectStudenteNotAsker(fenye);
+		Integer selectStudenteNotAskerTotal = studentsMapper.selectStudenteNotAskerTotal(fenye);
+		fenye.setTotal(selectStudenteNotAskerTotal);
+		fenye.setRows(selectStudenteNotAsker);
+		
+		return fenye;
+	}
+
+	@Override
+	public List<Students> SelectTongJi() {
+		// TODO Auto-generated method stub
+		return studentsMapper.SelectTongJi();
+	}
+
+	@Override
+	public Integer selectTongJiCount(Students students) {
+		// TODO Auto-generated method stub
+		return studentsMapper.selectTongJiCount(students);
+	}
 }

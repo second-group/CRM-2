@@ -15,10 +15,6 @@ public class RoleModulesController {
 		@RequestMapping(value="/insertRolesModules",method=RequestMethod.POST)
 	@ResponseBody
 	public Integer insertRolesModules(String moduleid, Integer rm_roleid){
-			System.out.println(moduleid+"一堆");
-			System.out.println(rm_roleid);
-		
-		return roleModulesService.insertRolesModulesById(moduleid, rm_roleid);
-		
+		return roleModulesService.insertRolesModulesById(moduleid, rm_roleid);		
 	}
 }

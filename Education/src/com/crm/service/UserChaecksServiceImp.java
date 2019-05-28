@@ -25,8 +25,7 @@ public class UserChaecksServiceImp  implements UserChaecksService{
 	}
 	@Override
 	public Integer updateUserchaecks(UserChaecks chaecks) {
-		Date date = new Date();
-		
+		Date date = new Date();	
 		String uc_checkouttime = format.format(date);
 		chaecks.setUc_checkouttime(uc_checkouttime);
 		return mapper.updateUserChaecks(chaecks);
@@ -38,6 +37,11 @@ public class UserChaecksServiceImp  implements UserChaecksService{
 		chaecks.setUc_checkintime(uc_checkintime);
 		
 		return mapper.insertUserChecks(chaecks);
+	}
+	@Override
+	public Integer selectUserqiandao(UserChaecks chaecks) {
+		  List<UserChaecks> selectqiandao = mapper.selectqiandao(chaecks);
+		return selectqiandao.size();
 	}
 
 }

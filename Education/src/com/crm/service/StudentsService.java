@@ -1,5 +1,7 @@
 package com.crm.service;
 
+import java.util.List;
+
 import com.crm.entity.Fenye;
 import com.crm.entity.Students;
 
@@ -24,7 +26,7 @@ public interface StudentsService {
 	 */
 	Fenye<Students> SelectStu(Fenye<Students> fenye);
 	
-	
+	Integer SelectStuCount(Fenye<Students> fenye);
 	
 	/**
 	 * 修改
@@ -32,5 +34,14 @@ public interface StudentsService {
 	 * @return
 	 */
 	Integer UpdateStu(Students students);
-
+	/**
+	 * 分页显示所有待分配的客户
+	 * @param fenye
+	 * @return
+	 */
+	Fenye<Students> selectStudenteNotAsker(Fenye<Students> fenye);
+	
+	List<Students> SelectTongJi();
+	
+	Integer selectTongJiCount(Students students);
 }

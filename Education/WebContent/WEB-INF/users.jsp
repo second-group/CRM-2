@@ -5,19 +5,23 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-		<link rel="stylesheet" type="text/css" href="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/themes/icon.css" />
-		<link rel="stylesheet" type="text/css" href="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/themes/default/easyui.css" />
-		<script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/jquery.min.js"></script>
-		<script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
-		<script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
-		
+		<link rel="stylesheet" type="text/css" href="js/insdep.easyui.min.css" />
+		<link rel="stylesheet" type="text/css" href="js/icon.css" />
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="js/insdep.extend.min.js"></script>
+		<script type="text/javascript" src="js/locale/easyui-lang-zh_CN.js"></script>
+		<script type="text/javascript" src="js/md5.js"></script>
 		<script type="text/javascript">
 			
 			
 			function searchUserInfo() {
 				var Minu_createtime=$("#Minu_createtime").textbox("getValue");
-				var orderBy=$("#orderBy").combobox("getValue");
-				/* alert(orderBy); */
+				var Maxu_createtime=$("#Maxu_createtime").textbox("getValue");
+				if(Minu_createtime>Maxu_createtime){
+					$.messager.alert("操作提示", "截止时间不能小于起始时间","error");					
+					return false;
+				}
 				$("#dg").datagrid({
 					url: 'selectUsers', //数据接口的地址
 					method:'post',
@@ -29,8 +33,7 @@
 						Minu_createtime: $("#Minu_createtime").datebox ("getValue"),
 						Maxu_createtime: $("#Maxu_createtime").datebox("getValue"),
 						u_islockout: $("#u_islockout").combobox("getValue"),
-						u_createtime:$("#orderBy").combobox("getValue")
-						
+						u_createtime:$("#orderBy").combobox("getValue")						
 					} 
 				});
 			}
@@ -64,48 +67,54 @@
 			//点击新增窗体保存按钮
 			function submitUserForm() {
 				var u_loginname = $("#insertu_loginname").val();
-				
+				var u_protectemail = $("#insertu_protectemail").val();
+				var u_protectmtel = $("#insertu_protectmtel").val();
 				$.post(
 						"selectUsersIsExect", {
-							u_loginname: u_loginname														
+							u_loginname: u_loginname,
+							u_protectemail:u_protectemail,
+							u_protectmtel:u_protectmtel
 						},
 						function(res) {
-							if(res==null||res=="") {
+							if(res.success) {
 								var flag = $("#adduserForm").form("validate");
-								var u_loginname = $("#insertu_loginname").val();
-								var u_islockout=0;				
-								/* var u_createtime=new Date();
-								alert(u_createtime); */
+								var u_loginname = $("#insertu_loginname").val();											
 								var u_password = $("#insertu_password").val();
 								var u_protectemail = $("#insertu_protectemail").val();
 								var u_protectmtel = $("#insertu_protectmtel").val();
-								
+								var yh = /^[\u4E00-\u9FA5]{2,5}$/;
+								var patt1 = /^[a-zA-Z]\w{5,17}$/;
 								if(!(/^1(3|5|7|8)\d{9}$/.test(u_protectmtel))) {
-									alert("手机号码有误，请从新输入！");
+									$.messager.alert("操作提示", "手机号码有误，请从新输入","error");								
+									return false;
+								}else if(!yh.test(u_loginname)){
+									$.messager.alert("操作提示", "用户名只能是汉字并且在2-5位之间","error");
+									return false;
+								}else if(!patt1.test(u_password)){
+									$.messager.alert("操作提示", "密码以字母开头，长度在6~18之间，只能包含字符、数字和下划线","error");
 									return false;
 								}
 								if(flag) {
+									var upwd=hex_md5(u_password);
 									$.post(
 										"insertUsers", {
-											u_loginname: u_loginname,
-											u_islockout: u_islockout,
-											u_password: u_password,
-											u_protectemail: u_protectemail
-											
+											u_loginname: u_loginname,						
+											u_password: upwd,
+											u_protectemail: u_protectemail,
+											u_protectmtel:u_protectmtel
 										},
 										function(res) {
 											if(res>0) {
-												alert("新增成功");
+												$.messager.alert("操作提示", "新增成功","info");
 												$("#adduser_window").window("close");
 												$("#dg").datagrid("reload"); //通过调用reload方法，让datagrid刷新显示数据
 											}
 										}, "json");
 								}
 							}else{
-								alert("用户名重复");
+								$.messager.alert("操作提示", res.message,"error");
 							}
-						}, "json");
-				
+						}, "json");			
 			}
 
 			function updateInfo(index) {
@@ -124,27 +133,40 @@
 			function submitupdateUserForm() {
 				var flag = $("#updateuserForm").form("validate");
 				var u_id = $("#updateu_id").val();
-				var u_protectemail = $("#u_protectemail").val();
+				var u_protectemail = $("#updateu_protectemail").val();
 				var u_protectmtel = $("#updateu_protectmtel").val();
 				if(!(/^1(3|5|7|8)\d{9}$/.test(u_protectmtel))) {
-					alert("手机号码有误，请从新输入！");
+					$.messager.alert("操作提示", "手机号码有误，请从新输入","error");
 					return false;
 				}
-				if(flag) {				
-				$.post(
-					"updateUsers", {
-						u_id: u_id,
-						u_protectemail: u_protectemail,
-						u_protectmtel: u_protectmtel						
-					},
-					function(res) {
-						//alert(res.success);
-						if(res>0) {
-							alert("修改成功"); //此处建议修改为$.messager.alert()方法，请查阅帮助文档，自行修改。
-							$("#updateuser_window").window("close");
-							$("#dg").datagrid("reload");
-						}
-					}, "json");
+				if(flag) {
+					$.post(
+							"selectUsersIsExect", {								
+								u_protectemail:u_protectemail,
+								u_protectmtel:u_protectmtel
+							},
+							function(res) {
+								if(res.success) {
+									$.post(
+											"updateUsers", {
+												u_id: u_id,
+												u_protectemail: u_protectemail,
+												u_protectmtel: u_protectmtel						
+											},
+											function(res) {
+												//alert(res.success);
+												if(res>0) {
+													$.messager.alert("操作提示", "修改成功","info");
+													/* alert("修改成功"); */ //此处建议修改为$.messager.alert()方法，请查阅帮助文档，自行修改。
+													$("#updateuser_window").window("close");
+													$("#dg").datagrid("reload");
+												}
+									}, "json");
+								}else{
+									$.messager.alert("操作提示", res.message,"error");
+								}
+				
+							}, "json");		
 					}
 			}
 			//删除
@@ -155,22 +177,19 @@
 						//真正执行删除的代码……
 						var data = $("#dg").datagrid("getData"); //获取datagrid对应的json对象集合（再来一遍）。
 						var row = data.rows[index]; //获取第index行对应的json对象（再来一遍）。
-						var uid = row.Id;
-						var token = "1dd8841f-7f39-4986-b798-cff41410f31b";
-						$.post("http://stuapi.ysd3g.com/api/DeleteUser", {
-							uid: uid,
-							token: token
-						}, function(deleteInfo) {
-							var deleteInfo = eval("(" + deleteInfo + ")"); //你知道这里可以如何修改从而变得更简单么？                 
-							if(deleteInfo.success) {
-								alert("删除成功");
-								$("#dg").datagrid("load");
+						var u_id = row.u_id;						
+						$.post("deleteUsersById", {
+							u_id:u_id						
+						}, function(res) {
+							/* var deleteInfo = eval("(" + deleteInfo + ")"); //你知道这里可以如何修改从而变得更简单么？ */                 
+							if(res>0) {
+								$.messager.alert("操作提示", "删除成功","info");
+								$("#dg").datagrid("reload");
 							}
 						});
 
 					}
 				});
-
 			}
 			//重置密码
 			function resetPassword(index){
@@ -179,29 +198,29 @@
 						var data=$("#dg").datagrid("getData");
 						var row=data.rows[index];
 						var u_id=row.u_id;
-						alert(u_id);
+						var u_password="a123456";
+						var upwd=hex_md5(u_password);	
 						var name = sessionStorage.getItem("name");
 						var SelectName = $("#dg").datagrid("getSelected"); //获取datagrid对应的json对象集合（再来一遍）。																								
 						$.post("updateResetU_password", {
-							u_id: u_id					
+							u_id: u_id,
+							u_password:upwd
 						}, function(res) {
 							/* var deleteInfo = eval("(" + deleteInfo + ")"); //你知道这里可以如何修改从而变得更简单么？ */                 
 							if(res>0) {
-								alert("重置成功");
+								$.messager.alert("操作提示", "重置成功","info");
 								$("#dg").datagrid("load");
 							}else{
-								alert("重置失败");
+								$.messager.alert("操作提示", "重置失败","error");
 							}
 						});
-
 					}
 				});
 			}
 			//锁定用户
 			function lockUser(index){
 					$.messager.confirm('确认', '您确认想要锁定用户吗？', function(r) {
-					if(r) { // 用户点击了确认按钮
-						
+					if(r) { // 用户点击了确认按钮						
 						var data=$("#dg").datagrid("getData");
 						var row=data.rows[index];
 						var u_id=row.u_id;
@@ -210,13 +229,12 @@
 						}, function(res) {
 							/* var deleteInfo = eval("(" + deleteInfo + ")"); //你知道这里可以如何修改从而变得更简单么？    */              
 							if(res>0) {
-								alert("锁定成功");
+								$.messager.alert("操作提示", "锁定成功","info");
 								$("#dg").datagrid("load");
 							}else{
-								alert("锁定失败");
+								$.messager.alert("操作提示", "锁定失败","error");
 							}
 						});
-
 					}
 				});
 			}
@@ -232,13 +250,12 @@
 						}, function(res) {
 							if(res>0) {
 								/* var deleteInfo = eval("(" + deleteInfo + ")"); //你知道这里可以如何修改从而变得更简单么？    */              
-								alert("解锁成功");
+								$.messager.alert("操作提示", "解锁成功","info");
 								$("#dg").datagrid("load");
 							}else{
-								alert("解锁失败");
+								$.messager.alert("操作提示", "解锁失败","error");
 							}
 						});
-
 					}
 				});
 			}
@@ -249,8 +266,7 @@
             	 $("#dgMyRole").datagrid({             	
                      url: 'selectUsersRole', //调用数据接口
                      queryParams: { //传递参数
-                    	 u_id: u_id
-                                              
+                    	 u_id: u_id                                             
                      }
                  });
             }
@@ -258,8 +274,7 @@
             function showRoles(index) {
             	var data=$("#dg").datagrid("getData");
 				var row=data.rows[index];
-				u_id=row.u_id;	
-						 
+				u_id=row.u_id;							 
                 loadMyRole();
                 $("#dd").dialog({
                     closed: false,
@@ -273,23 +288,31 @@
                 });
                  //把用户加入到选中的角色
                 $("#btnToRight").click(function() {
-                var row = $("#dgAllRole").datagrid("getSelected");
-                
-              
+                var row = $("#dgAllRole").datagrid("getSelected");                            
                     /*var row = $("#dgAllRole").datagrid("getSelected");*/
                     if(row != null) {
                     	r_id = row.r_id;
-                    	
-                        $.post( "insertUserRoles", {                      	
+                        $.post( "SelectUserRolesEXIT", {                      	
                         	ur_userid: u_id,
                         	ur_roleid: r_id
                         }, function(res) {
-                            if(res>0) {
-                                loadMyRole();
-                            } else {
-                                $.messager.alert("设置失败", r.message, "info");
-                            }
-                        }, "json");
+                        	if(res==null||res==""){
+                        		 $.post( "insertUserRoles", {                      	
+                                  	ur_userid: u_id,
+                                  	ur_roleid: r_id
+                                  }, function(res) {
+                                      if(res>0) {
+                                          loadMyRole();
+                                      } else {
+                                          $.messager.alert("设置失败", r.message, "error");
+                                      }
+                                  }, "json");
+                        	}else{
+                        		$.messager.alert("操作提示", "该角色已存在","error");
+                        	}                       	
+                        }, "json");                       
+                    }else{
+                    	$.messager.alert("操作提示", "请选择角色","error");
                     }
                 });
                 //移除已经拥有的角色
@@ -304,7 +327,7 @@
                             if(res) {
                                 loadMyRole();
                             } else {
-                                $.messager.alert("设置失败", r.message, "info");
+                                $.messager.alert("设置失败", r.message, "error");
                             }
                         }, "json");
                     }
@@ -393,7 +416,7 @@
 				    <option value="0">否</option>
 				</select>  				
 				   <span>排序：</span>
-				 <select id="orderBy" class="easyui-combobox" name="orderBy" style="height:auto;width: 90px;">
+				 <select id="orderBy" class="easyui-combobox" name="orderBy" style="height:auto;width: 120px;">
 				    <option value="">请选择</option>
 				    <option value="u_createtime">创建时间</option>
 				    <option value="u_lastlogintime">最后登录时间</option>

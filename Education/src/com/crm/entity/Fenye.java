@@ -14,6 +14,8 @@ public class Fenye<T> {
 	private String  Minu_createtime;
 	private String Maxu_createtime;
 	
+	private Notice notice;
+	
 	/*咨询师模块的*/
 	private Students students;
 	private Netrollows netrollows;
@@ -57,6 +59,7 @@ public class Fenye<T> {
 	private String s_firstvisittime;
 	private String s_paytime;
 	private String s_inclasstime;
+	private Integer s_userid;
 	public String getS_name() {
 		return s_name;
 	}
@@ -123,8 +126,13 @@ public class Fenye<T> {
 	public void setS_inclasstime(String s_inclasstime) {
 		this.s_inclasstime = s_inclasstime;
 	}
+	
+
 	public Fenye(Integer page, Integer pageSize, Integer total, List<T> rows, Users users, String minu_createtime,
-			String maxu_createtime) {
+			String maxu_createtime, Notice notice, Students students, Netrollows netrollows, UserChaecks userChaecks,
+			String s_name, String s_phone, Integer s_ispay, Integer s_isvalid, Integer s_isreturnvist, String s_qq,
+			String s_createtime, String s_hometime, String s_firstvisittime, String s_paytime, String s_inclasstime,
+			Integer s_userid) {
 		super();
 		this.page = page;
 		this.pageSize = pageSize;
@@ -133,7 +141,24 @@ public class Fenye<T> {
 		this.users = users;
 		Minu_createtime = minu_createtime;
 		Maxu_createtime = maxu_createtime;
+		this.notice = notice;
+		this.students = students;
+		this.netrollows = netrollows;
+		this.userChaecks = userChaecks;
+		this.s_name = s_name;
+		this.s_phone = s_phone;
+		this.s_ispay = s_ispay;
+		this.s_isvalid = s_isvalid;
+		this.s_isreturnvist = s_isreturnvist;
+		this.s_qq = s_qq;
+		this.s_createtime = s_createtime;
+		this.s_hometime = s_hometime;
+		this.s_firstvisittime = s_firstvisittime;
+		this.s_paytime = s_paytime;
+		this.s_inclasstime = s_inclasstime;
+		this.s_userid = s_userid;
 	}
+
 	public Fenye() {
 		super();
 	}
@@ -179,16 +204,38 @@ public class Fenye<T> {
 	public void setMaxu_createtime(String maxu_createtime) {
 		Maxu_createtime = maxu_createtime;
 	}
+	
+	public Integer getS_userid() {
+		return s_userid;
+	}
+
+	public void setS_userid(Integer s_userid) {
+		this.s_userid = s_userid;
+	}
+	
+
+	public Notice getNotice() {
+		return notice;
+	}
+
+	public void setNotice(Notice notice) {
+		this.notice = notice;
+	}
+
 	@Override
 	public String toString() {
 		return "Fenye [page=" + page + ", pageSize=" + pageSize + ", total=" + total + ", rows=" + rows + ", users="
-				+ users + ", Minu_createtime=" + Minu_createtime + ", Maxu_createtime=" + Maxu_createtime
-				+ ", students=" + students + ", netrollows=" + netrollows + ", userChaecks=" + userChaecks + ", s_name="
-				+ s_name + ", s_phone=" + s_phone + ", s_ispay=" + s_ispay + ", s_isvalid=" + s_isvalid
+				+ users + ", Minu_createtime=" + Minu_createtime + ", Maxu_createtime=" + Maxu_createtime + ", notice="
+				+ notice + ", students=" + students + ", netrollows=" + netrollows + ", userChaecks=" + userChaecks
+				+ ", s_name=" + s_name + ", s_phone=" + s_phone + ", s_ispay=" + s_ispay + ", s_isvalid=" + s_isvalid
 				+ ", s_isreturnvist=" + s_isreturnvist + ", s_qq=" + s_qq + ", s_createtime=" + s_createtime
 				+ ", s_hometime=" + s_hometime + ", s_firstvisittime=" + s_firstvisittime + ", s_paytime=" + s_paytime
-				+ ", s_inclasstime=" + s_inclasstime + "]";
+				+ ", s_inclasstime=" + s_inclasstime + ", s_userid=" + s_userid + "]";
 	}
+
+	
+
+	
 	
 	
 	

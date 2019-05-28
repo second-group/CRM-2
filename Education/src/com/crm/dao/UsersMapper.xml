@@ -3,11 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.crm.dao.UsersMapper">
-  	<!-- 	<select id="selectModules" parameterType="users" resultType="modules">
-  			select m.m_id,m.m_name,m.m_parentid,m.m_path,m.m_weight from users u INNER JOIN userroles ur INNER JOIN roles r INNER JOIN  rolemodules rm INNER JOIN modules m on u.u_id=ur.ur_userid and r.r_id = rm.rm_roleid 
-			and m.m_id = rm.rm_moduleid and r.r_id = ur.ur_roleid
-			where u.u_loginname=#{邝成坤} and u.u_password=#{107521} and u_islockout =#{0} 
-  		</select> -->
   		<sql id="us">
   			<where>
   			<if test="users != null">
@@ -23,13 +18,6 @@
   				<if test="users.u_islockout !=null">
   					and u_islockout = #{users.u_islockout}
   				</if>
-  			<!-- 	<if test="users.u_islockout !=null and users.u_islockout != ''">
-  					and u_islockout = #{users.u_islockout}
-  				</if> -->
-  				
-  				<!-- <if test="users.u_lastlogintime != null and users.u_lastlogintime != ''">
-  					order by ${users.u_lastlogintime}
-  				</if> -->
   			</if>
   			</where>
   			<if test="users.u_createtime != null and users.u_createtime != ''">
@@ -40,7 +28,7 @@
   			select count(1) from users <include refid="us"></include>
   		</select>
   		<select id="selectUsers" parameterType="fenye" resultType="users">
-  			select * from users  
+  			select u_id,u_loginname,u_password,u_islockout,u_lastlogintime,u_createtime,u_psdwrongtime,u_locktime,u_protectemail,u_protectmtel,u_weight from users  
   			<include refid="us"></include>
   			limit #{page},#{pageSize}
   		</select>
@@ -53,10 +41,10 @@
   				u_loginname=#{u_loginname}
   			</where>
   		</update>
-  		<update id="updateResetU_password" parameterType="int">
+  		<update id="updateResetU_password" parameterType="users">
   			update users
   			<set>
-  				u_password=123456,
+  				u_password=#{u_password},
   			</set>
   			<where>
   				u_id=#{u_id}
@@ -89,6 +77,9 @@
   				<if test="u_protectmtel != null and u_protectmtel != ''">
   				u_protectmtel=#{u_protectmtel},
   			</if>
+  			<if test="u_weight != null and u_weight != ''">
+  				u_weight=#{u_weight},
+  			</if>
   			</set>
   						
   			<where>
@@ -109,7 +100,10 @@
   			<where>u.u_id=#{u_id}</where> 
   		</select>
   		<select id="selectRoles" resultType="roles">
-  			select * from roles
+  			select r_id,r_name from roles
+  		</select>
+  		<select id="SelectUserRolesEXIT" parameterType="userRoles" resultType="userRoles">
+  			select ur_id,ur_userid,ur_roleid from userroles	<where>ur_userid=#{ur_userid} and ur_roleid=#{ur_roleid}</where> 
   		</select>
   		<insert id="insertUserRoles" parameterType="int">
   			insert into userroles(ur_userid,ur_roleid) values(#{0},#{1})
@@ -119,19 +113,43 @@
   		</delete>
   		
   		<insert id="insertUsers" parameterType="users">
-  			insert into users(u_loginname,u_password,u_islockout,u_createtime,u_protectemail,u_protectmtel) values(#{u_loginname},#{u_password},#{u_islockout},#{u_createtime},#{u_protectemail},#{u_protectmtel})
+  			insert into users(u_loginname,u_password,u_createtime,u_protectemail,u_protectmtel) values(#{u_loginname},#{u_password},#{u_createtime},#{u_protectemail},#{u_protectmtel})
   		</insert>
   		
   		<select id="selectUsersIsExect" parameterType="users" resultType="users">
-  			select * from users where u_loginname=#{u_loginname}
+  			select u_loginname,u_protectmtel,u_protectemail from users 
+  			<where>
+  				<if test="u_loginname != null and u_loginname != ''">
+  					and u_loginname=#{u_loginname}
+  				</if>
+  				<if test="u_protectmtel != null and u_protectmtel != ''">
+  					or u_protectmtel=#{u_protectmtel}
+  				</if>
+  				<if test="u_protectemail != null and u_protectemail != ''">
+  					or u_protectemail=#{u_protectemail}
+  				</if>
+  			</where>
   		</select>
   		<select id="selectUsersByStudent" resultType="users">
-  			select users.u_id,users.u_loginname
-			from users ,userroles,roles where users.u_id=userroles.ur_userid and userroles.ur_roleid=roles.r_id and roles.r_name='咨询师'
+  			select users.u_id,users.u_loginname,u_weight
+			from users ,userroles,roles where users.u_id=userroles.ur_userid and userroles.ur_roleid=roles.r_id and roles.r_id=3 order by u_weight desc
   		</select>
-  		
+  		<!--查询当天签到的所有咨询师并按照权重排序-->
+  		<select id="selectUsersByDay" resultType="users">
+  			select users.u_id,users.u_loginname,u_weight
+			from users ,userroles,roles where users.u_id=userroles.ur_userid and userroles.ur_roleid=roles.r_id and roles.r_id=3 and users.u_id  in
+			(select uc_userid from userchaecks where uc_checkintime>current_date  and
+			 uc_checkstate=1)  order by u_weight desc
+  		</select>
   		<select id="selectUsersAll" resultType="users">
-  			select * from users
+  			select u_id,u_loginname,u_password,u_islockout,u_psdwrongtime,u_protectemail,u_protectmtel,u_weight from users
+  		</select>
+  		<!-- 查询所有咨询师进行自动分配 -->
+  		<select id="selectUsersZiXunShi" resultType="users">
+  			select users.u_id,users.u_loginname,u_weight
+			from users ,userroles,roles where users.u_id=userroles.ur_userid and userroles.ur_roleid=roles.r_id and roles.r_id=3 and users.u_id  in
+			(select uc_userid from userchaecks where uc_checkintime>current_date  and
+			 uc_checkstate=1)  order by u_weight desc
   		</select>
   		
   		<update id="UpdatePassword" parameterType="users">
@@ -143,4 +161,22 @@
   				u_id=#{u_id}
   			</where>
   		</update>
+  		<delete id="deleteUsersById" parameterType="int">
+  			delete from users <where>u_id=#{u_id}</where>
+  		</delete>
+  		<delete id="deleteUserRolesById" parameterType="int">
+  			delete from userRoles <where>ur_userid=#{u_id}</where>
+  		</delete>
+  		<update id="updateUsersU_psdwrongtime" parameterType="int">
+  			update users
+  			<set>
+  				u_psdwrongtime=#{cs}
+  			</set>
+  			<where>
+  				u_id=#{u_id}
+  			</where>
+  		</update>
+  		<select id="selectUsersU_psdwrongtime" parameterType="int" resultType="int">
+  			select u_psdwrongtime from users <where>u_id=#{u_id}</where>
+  		</select>
   </mapper>

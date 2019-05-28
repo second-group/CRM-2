@@ -19,9 +19,10 @@ public class Users {
 	private String u_locktime;
 	private String u_protectemail;
 	private String u_protectmtel;
+	private Integer u_weight;
 	public Users(Integer u_id, String u_loginname, String u_password, Integer u_islockout, String u_lastlogintime,
-			String u_createtime, Integer u_psdwrongtime, String u_locktime, String u_protectemail,
-			String u_protectmtel) {
+			String u_createtime, Integer u_psdwrongtime, String u_locktime, String u_protectemail, String u_protectmtel,
+			Integer u_weight) {
 		super();
 		this.u_id = u_id;
 		this.u_loginname = u_loginname;
@@ -33,6 +34,7 @@ public class Users {
 		this.u_locktime = u_locktime;
 		this.u_protectemail = u_protectemail;
 		this.u_protectmtel = u_protectmtel;
+		this.u_weight = u_weight;
 	}
 	public Users() {
 		super();
@@ -97,12 +99,19 @@ public class Users {
 	public void setU_protectmtel(String u_protectmtel) {
 		this.u_protectmtel = u_protectmtel;
 	}
+	public Integer getU_weight() {
+		return u_weight;
+	}
+	public void setU_weight(Integer u_weight) {
+		this.u_weight = u_weight;
+	}
 	@Override
 	public String toString() {
 		return "Users [u_id=" + u_id + ", u_loginname=" + u_loginname + ", u_password=" + u_password + ", u_islockout="
 				+ u_islockout + ", u_lastlogintime=" + u_lastlogintime + ", u_createtime=" + u_createtime
 				+ ", u_psdwrongtime=" + u_psdwrongtime + ", u_locktime=" + u_locktime + ", u_protectemail="
-				+ u_protectemail + ", u_protectmtel=" + u_protectmtel + "]";
+				+ u_protectemail + ", u_protectmtel=" + u_protectmtel + ", u_weight=" + u_weight + "]";
 	}
+
 	
 }

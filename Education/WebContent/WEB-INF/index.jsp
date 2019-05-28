@@ -1,19 +1,118 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" import="com.crm.util.MD5" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-		<link rel="stylesheet" type="text/css" href="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/themes/icon.css" />
-		<link rel="stylesheet" type="text/css" href="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/themes/default/easyui.css" />
-		<script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/jquery.min.js"></script>
-		<script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
-		<script type="text/javascript" src="js/JQuery-EasyUI-EDT-1.4.3-build1/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+		<link rel="stylesheet" type="text/css" href="js/insdep.easyui.min.css" />
+		<link rel="stylesheet" type="text/css" href="js/icon.css" />
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="js/insdep.extend.min.js"></script>
+		<script type="text/javascript" src="js/locale/easyui-lang-zh_CN.js"></script>
+		<script type="text/javascript" src="js/md5.js"></script>
 		<script type="text/javascript" src="https://unpkg.com/vue"></script>
+		<script type="text/javascript" src="js/incubator-echarts-4.2.1/dist/echarts.min.js"></script>
+		<!-- <script type="text/javascript" src="js/incubator-echarts-4.2.1/dist/echarts.js"></script>
+		<script type="text/javascript" src="js/incubator-echarts-4.2.1/test/lib/esl.js"></script>
+        <script type="text/javascript" src="js/incubator-echarts-4.2.1/test/lib/config.js"></script>
+       
+        <script type="text/javascript" src="js/incubator-echarts-4.2.1/test/lib/facePrint.js"></script>
+        <script type="text/javascript" src="js/incubator-echarts-4.2.1/test/lib/testHelper.js"></script> -->
 		<script type="text/javascript">
 	 	$(function(){
+	 		var myChart = echarts.init(document.getElementById('main'));
+	 		 $.ajax({
+	 			url:'SelectTongJi',
+	 			type:'post',
+	 			async: true,
+	 			dataType:'json',
+	 			success:function (result) {
+	 				var option = {
+	 					    title : {
+	 					        text: 'CRM系统用户来源渠道',
+	 					        subtext: '数据显示',
+	 					        x:'center'
+	 					    },
+	 					    tooltip : {
+	 					        trigger: 'item',
+	 					        formatter: "{a} <br/>{b} : {c} ({d}%)"
+	 					    },
+	 					    legend: {
+	 					        orient: 'vertical',
+	 					        left: 'left',
+	 					        data:result
+	 					    },
+	 					    series : [
+	 					        {
+	 					            name: '访问来源',
+	 					            type: 'pie',
+	 					            radius : '55%',
+	 					            center: ['50%', '60%'],
+	 					           data:result,
+	 					            itemStyle: {
+	 					                emphasis: {
+	 					                    shadowBlur: 10,
+	 					                    shadowOffsetX: 0,
+	 					                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+	 					                }
+	 					            }
+	 					        }
+	 					    ]
+	 					};
+	 				myChart.setOption(option);
+	 			}
+	 		 })
 	 		
+			/* // 基于准备好的dom，初始化echarts实例
+			var myChart = echarts.init(document.getElementById('main'));
+
+			// 指定图表的配置项和数据
+			var option = {
+				    title : {
+				        text: '某站点用户访问来源',
+				        subtext: '纯属虚构',
+				        x:'center'
+				    },
+				    tooltip : {
+				        trigger: 'item',
+				        formatter: "{a} <br/>{b} : {c} ({d}%)"
+				    },
+				    legend: {
+				        orient: 'vertical',
+				        left: 'left',
+				        data: ['百度','百度移动端','360','360移动端','搜狗','搜狗移动端']
+				    },
+				    series : [
+				        {
+				            name: '访问来源',
+				            type: 'pie',
+				            radius : '55%',
+				            center: ['50%', '60%'],
+				            data:[
+				                {value:335, name:'百度'},
+				                {value:310, name:'百度移动端'},
+				                {value:234, name:'360'},
+				                {value:135, name:'360移动端'},
+				                {value:1548, name:'搜狗'},
+				                {value:666, name:'搜狗移动端'}
+				            ],
+				            itemStyle: {
+				                emphasis: {
+				                    shadowBlur: 10,
+				                    shadowOffsetX: 0,
+				                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+				                }
+				            }
+				        }
+				    ]
+				};
+
+
+			// 使用刚指定的配置项和数据显示图表。
+			myChart.setOption(option); */
+	 		qiandaosize();
 	 		$('#tt').tree({
 	 			onClick: function(node){
 	 				
@@ -32,8 +131,9 @@
 	                }
 	 			}
 	 		});
-	 		var u_loginname = sessionStorage.getItem("u_loginname");
-	 		var u_password = sessionStorage.getItem("u_password");
+	 		var u_loginname='${sessionScope.users.u_loginname}';
+	 		var u_password='${sessionScope.users.u_password}';
+	 		
 	 		$("#spUName").text(u_loginname);
 	 		/* alert(u_loginname);
 	 		alert(u_password); */
@@ -129,27 +229,27 @@ function qiandao(){
 	    	var date=$("#time").text();
 	    	var dat=new Date();
 	    	
-	    	alert(dat.getMinutes());
+	    	/* alert(dat.getMinutes()); */
 	    	
 	    	if(dat.getHours!="08"){
 	    		if(dat.getMinntes>15){
-	    			alert("抱歉不在签到时间");
+	    			$.messager.alert("操作提示", "抱歉不在签到时间","error");
 		    		return false;
 	    		}
 	    		
 	    	}
 	    	var uc_userid='${sessionScope.users.u_id}';
 	    	var uc_loginname='${sessionScope.users.u_loginname}';
-	    	alert(uc_userid);
-	    	alert(uc_loginname);
+	    /* 	alert(uc_userid);
+	    	alert(uc_loginname); */
 	    	$.post("insertUserchaecks",{
 	    		uc_userid:uc_userid,
 	    		uc_loginname:uc_loginname
 	    	},function(res){
 	    		if(res>0){
-	    			alert("签到成功");
+	    			$.messager.alert("操作提示", "签到成功","info");
 	    		}else{
-	    			alert("签到 失败");
+	    			$.messager.alert("操作提示", "签到失败","error");
 	    		}
 	    	},"json")
 	    	$('#qiandao').linkbutton('disable');
@@ -165,32 +265,162 @@ function qiandao(){
 	    	var flag = $("#updateuserForm").form("validate");
 			var initPassword = $("#initPassword").val();
 			var NewPassword = $("#NewPassword").val();
-			var NextNewPassword = $("#NextNewPassword").val();
-		if(u_password==initPassword){
-			if(NewPassword==NextNewPassword){							
+			var NextNewPassword = $("#NextNewPassword").val();	
+			var patt1 = /^[a-zA-Z]\w{5,17}$/;
+			var upwd=hex_md5(initPassword);			
+		if(u_password==upwd){
+			if(NewPassword==NextNewPassword){
+				if(!patt1.test(NextNewPassword)){
+					$.messager.alert("操作提示", "密码以字母开头，长度在6~18之间，只能包含字符、数字和下划线","error");
+					return false;
+				}
 			if(flag) {				
+				var Newupwd=hex_md5(NextNewPassword);
 				$.post(
 					"UpdatePassword", {
 						u_id: u_id,
-						u_password: NextNewPassword											
+						u_password: Newupwd											
 					},
 					function(res) {
 						//alert(res.success);
 						if(res>0) {
-							alert("修改成功,请重新登录"); //此处建议修改为$.messager.alert()方法，请查阅帮助文档，自行修改。
+							$.messager.alert("操作提示", "修改成功,请重新登录","info");
 							$("#updateuser_window").window("close");
 							window.location.href="inlogin";
 						}
 					}, "json");
 					}
 			}else{
-				alert("两次密码不一致！");
+				$.messager.alert("操作提示", "两次密码不一致","error");
 			}
 		}else{
-			alert("原密码输入错误！");
+			$.messager.alert("操作提示", "原密码输入错误","error");
 		}
 			
 		}
+	    function qiandaosize(){
+	    	var date=new Date();
+	    	var year=date.getFullYear();/* 年 */
+	    	var Moth=date.getMonth()+1;/*月*/
+	    	var Day=date.getDate();/*日*/
+	    	
+	    	var time='';
+	    	if(Moth<10){
+	    		time=year+"-"+"0"+Moth+"-"+Day
+	    	}else{
+	    		time=year+"-"+Moth+"-"+Day
+	    	}
+	    	
+	    	var uc_userid='${sessionScope.users.u_id}';
+	 		$.post("qiandao",{
+	 			uc_userid:uc_userid,
+	 			uc_checkintime:time
+	 		},function(res){
+	 			if(res>0){
+	 				$('#qiandao').linkbutton('disable');
+	 			}else{
+	 				
+	 			}
+	 		},"json")
+	    }
+function qiandao(){
+	    	
+	    
+	    	
+	    	
+	    	var dat=new Date();
+	    	var hours=dat.getHours();   
+	    	var Minntes=dat.getMinutes();
+	    	/* alert(hours);
+	    	alert(Minntes); */
+	    	if(hours!=8){
+	    		$.messager.alert("操作提示", "抱歉，不在签到时间","error");
+	    		return ;
+	    	}else{
+	    		if(Minntes>15){
+	    			$.messager.alert("操作提示", "抱歉，不在签到时间","error");
+	    			return;
+	    		}else{
+	    			var uc_userid='${sessionScope.users.u_id}';
+	    	    	var uc_loginname='${sessionScope.users.u_loginname}';
+	    	    	$.post("insertUserchaecks",{
+	    	    		uc_userid:uc_userid,
+	    	    		uc_loginname:uc_loginname
+	    	    	},function(res){
+	    	    		if(res>0){
+	    	    			$.messager.alert("操作提示", "签到成功","info")
+	    	    		}else{
+	    	    			$.messager.alert("操作提示", "签到失败","error");
+	    	    		}
+	    	    	},"json")
+	    	    	$('#qiandao').linkbutton('disable');
+	    		}
+	    	}
+	    	
+	    	
+	    }
+	    
+   
+
+
+//打开消息表单
+function xiaoxi() {
+	$("#Notice_window").window("open");
+	initNotice();
+}
+
+//初始化消息表格
+function initNotice() {
+	var n_userid='${sessionScope.users.u_id}';
+	$("#NoticeTab").datagrid({
+		url:'SelectNotice',
+		method:'post',
+		pagination:true,
+		queryParams:{
+			no_userid:n_userid
+			
+		}	
+		
+	})
+	 window.addEventListener("mousewheel", (e) => {
+		   if (e.deltaY === 1) {
+		     e.preventDefault();
+		   }
+		 })
+}
+//格式化查看日志详情
+function formatterLookNotice(value,row,index){	
+	return "<a href='javascript:void(0)' onclick='lookNotice("+index+")'>查看</a>"
+}
+//格式化状态
+	function formatterno_state(value,row,index) {
+		return value == 1 ? '<font color="blue">已读</font>':'<font color="red">未读</font>';
+	}
+//日志详情查看
+function lookNotice(index) {
+	var data = $("#NoticeTab").datagrid("getData"); 
+	var row = data.rows[index]; 
+	$("#no_state").textbox('setValue',row.no_state == 0? "未读":"已读");
+	$("#LookNoticeForm").form("load", row);
+	$("#LookNotice_window").window("open");
+	$.post("UpdateNotice", {
+				no_id:$("#no_id").val(),
+				no_state:1
+						
+		},
+		function(res) {
+		if(res>0) {
+			
+			$("#NoticeTab").datagrid("reload"); //通过调用reload方法，让datagrid刷新显示数据
+			
+		}else{
+			
+		}
+	}, "json");
+
+	
+}  
+
 		</script>
 </body>
 	
@@ -201,6 +431,7 @@ function qiandao(){
         	<a id="btn" style="cursor: pointer;" onclick="out()">安全退出</a>
         	<a id="btn" style="cursor: pointer;" onclick="UpdatePassword()">修改密码</a>
         	<a id="qiandao" onclick="qiandao()" class="easyui-linkbutton" value="0" text="签到"></a>
+        	<a style="float:right;margin-top:5px" id="xiaoxi" onclick="xiaoxi()" class="easyui-linkbutton" iconCls="icon-tip"><span style="background-color: red" class="badge">1</span></a>
         </div>
          <div id="time">
 			 <script>
@@ -220,17 +451,94 @@ function qiandao(){
 			</ul>
 		</div>
         </div>
+        
         <div id="centerTabs" data-options="region:'center',split:true" style="width: 100%;">
+        
             <div id="ta" class="easyui-tabs" data-options="fit:'true'"> <!--这个地方采用tabs控件进行布局-->
-             
+              <div data-options="region:'center',split:true" title="首页" >
+                <div id="main" style="width: 600px;height:400px;"></div>
+
+              </div>
             </div>
         </div>
         
     </div>
     </div>
     
+    <!-- 消息表格  -->
+		  <div id="Notice_window" class="easyui-window" title="消息信息" data-options="closed:true,   
+            left:'1730px',top:'55px'" style="width:390px;height:300px;">
+			<table id="NoticeTab" class="easyui-datagrid">
+				<thead>
+					<tr>
+						<!-- <th data-options="field:'no_id'">ID</th> -->
+						
+						<th data-options="field:'username'">发送人姓名</th>
+						
+						<!-- <th data-options="field:'no_userid'">接收人id</th> -->
+						
+						<th data-options="field:'sendingtime'">发送时间</th>	
+							
+						<!-- <th data-options="field:'receivingtime'">接收时间</th> -->
+						
+						<!-- <th data-options="field:'no_content'">消息内容</th> -->
+						
+						<th data-options="field:'no_state',formatter:formatterno_state">状态</th>
+		
+						<th data-options="field:'look',title:'查看',formatter:formatterLookNotice"></th>
+					</tr>
+				</thead>
+			</table>
+		  </div>
+		  <!-- Look消息  -->
+		  <div id="LookNotice_window" class="easyui-window" title="消息详情" data-options="closed:true, left:'1730px',top:'55px'" style="width:390px;height:300px;padding:10px;">
+			<form id="LookNoticeForm" class="easyui-form">
+				<table cellpadding="5">
+					
+					<tr style="display: none">
+						<td>ID:</td>
+						<td><input class="easyui-textbox" name="no_id" id="no_id"></input>
+						</td>
+					</tr>
+					<tr>
+						<td>发送人姓名:</td>
+						<td><input class="easyui-textbox" name="username" id="username"></input>
+						</td>
+					</tr>
+					<!-- <tr style="display: none">
+						<td>接收人id:</td>
+						<td><input class="easyui-textbox" name="no_userid" id="no_userid"></input>
+						</td>
+					</tr> -->
+					<tr>
+						<td>发送时间:</td>
+						<td><input class="easyui-textbox" name="sendingtime" id="sendingtime"></input>
+						</td>
+					</tr>
+					<!-- <tr> 
+						<td>接收时间:</td>
+						<td><input class="easyui-textbox" name="receivingtime" id="receivingtime"></input>
+						</td>
+					</tr> -->
+					<tr>
+						<td>消息内容:</td>
+						<td><input class="easyui-textbox" name="no_content" id="no_content"></input>
+						</td>
+					</tr>
+					<tr>
+						<td>状态:</td>
+						<td><input class="easyui-textbox" name="no_states"  id="no_state"></input>
+						</td>
+					</tr>
+					
+
+				</table>
+			</form>
+			
+		</div>
+    
     <!--修改-->
-		<div id="updateuser_window" class="easyui-window" title="修改您的密码" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:500px;height:300px;padding:10px;">
+		<div id="updateuser_window" class="easyui-window" title="修改您的密码" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:500px;height:300px;padding:15px;">
 			<form id="updateuserForm">
 				<table cellpadding="5">
 					<tr>

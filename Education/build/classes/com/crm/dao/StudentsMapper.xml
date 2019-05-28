@@ -37,6 +37,8 @@
 		<result column="s_concern" property="s_concern"/>
 		<result column="s_isbaobei" property="s_isbaobei"/>
 		<result column="s_userid" property="s_userid"/>
+		<result column="s_createname" property="s_createname"/>
+		<result column="s_zixunname" property="s_zixunname"/>
 		<result column="s_returnmoneycontent" property="s_returnmoneycontent"/>
 		
 		<result column="u_id" property="users.u_id"/>
@@ -79,9 +81,16 @@
 		<if test="students.s_inclasstime !=null and students.s_inclasstime !=''">
 			and s_inclasstime=#{students.s_inclasstime}
 		</if>
+		<if test="students.s_createname!=null and students.s_createname!=''">
+			and s_createname=#{students.s_createname}
+		</if>
+		<if test="students.s_zixunname!=null and students.s_zixunname!=''">
+			and s_zixunname=#{students.s_zixunname}
+		</if>
 	</sql>
 	<select id="selectStu" parameterType="fenye" resultMap="studentMap">
-		select s.* from students s LEFT JOIN users u on s.s_userid=u.u_id and s.s_userid=#{students.s_userid}
+		select s.s_id,s.s_name,s.s_age,s.s_sex,s.s_phone,s.s_state,s.s_msgsource,s.s_sourceurl,s.s_sourcekeyword,s.s_address,s.s_qq,s.s_weixin,s.s_content,s.s_createtime,s.s_isbaobei,s.s_userid,s.s_education,s.s_stuclass,s.s_frompart,s.s_concern 
+		from students s LEFT JOIN users u on s.s_userid=u.u_id  
 	<where>
 		<if test="s_name !=null and s_name !=''">
 			and s_name like "%"#{s_name}"%"
@@ -116,12 +125,17 @@
 		<if test="s_inclasstime !=null and s_inclasstime !=''">
 			and s_inclasstime like "%"#{s_inclasstime}"%"
 		</if>
+		<if test="s_userid !=null and s_userid != ''">
+			 and s_userid=${s_userid} 
+		</if>
+		
 	</where>
+		ORDER BY s_createtime DESC
 		limit #{page},#{pageSize}
 	</select>
 
 	<select id="selectCount" parameterType="fenye" resultType="int">
-		select count(s_id) from students
+		select count(s_id) from students s LEFT JOIN users u on s.s_userid=u.u_id 
 	<where>
 		<if test="s_name!=null and s_name!=''">
 			and s_name like "%"#{s_name}"%"
@@ -142,7 +156,7 @@
 			and s_qq=#{s_qq}
 		</if>
 		<if test="s_createtime !=null and s_createtime !=''">
-			and s_createtime=#{s_createtime}
+			and s_createtime like "%"#{s_createtime}"%"
 		</if>
 		<if test="s_hometime !=null and s_hometime !=''">
 			and s_hometime=#{s_hometime}
@@ -156,27 +170,34 @@
 		<if test="s_inclasstime !=null and s_inclasstime !=''">
 			and s_inclasstime=#{s_inclasstime}
 		</if>
+		<if test="s_userid !=null and s_userid != ''">
+			 and s_userid=${s_userid} 
+		</if>
 	</where>
 	</select>
 	<!-- 咨询师经理 查询所有咨询师-->
 	<select id="selectStudent" parameterType="fenye" resultMap="studentMap">
-		SELECT students.*,users.u_loginname from students LEFT JOIN users on students.s_userid=users.u_id
+		SELECT s.s_id,s.s_name,s.s_age,s.s_sex,s.s_phone,s.s_state,s.s_msgsource,s.s_sourceurl,s.s_sourcekeyword,s.s_address,s.s_qq,s.s_weixin,s.s_content,s.s_createtime,
+		s.s_isvalid,s.s_record,s.s_isreturnvist,s.s_firstvisittime,s.s_ishome,s.s_hometime,
+		s.s_lostvalid,s.s_ispay,s.s_paytime,s.s_money,s.s_isreturnmoney,s.s_isinclass,s.s_inclasstime,s.s_inclasscontent,
+		s.s_isdel,s.s_frompart,s.s_concern,s.s_isbaobei,s.s_userid,s.s_returnmoneycontent,s.s_premoney,
+		s.s_premoneytime,s.s_curriculum,s.s_education,s.s_stuclass,s.s_zixunname,s.s_createname,u.u_loginname from students s INNER JOIN users  u on s.s_userid=u.u_id
 		<where>
-			
 			<include refid="studentsql"></include>
 		</where> 
+		ORDER BY s_id desc
+		limit #{page},#{pageSize}
 	</select>
 	<!-- 咨询师经理查询所有客户总条数 -->
 	<select id="selectStudentTotal" parameterType="fenye" resultType="int">
-		SELECT count(s_id) from students LEFT JOIN users on students.s_userid=users.u_id
+		SELECT count(s_id) from students 
 		<where>
-			students.s_userid=users.u_id
 			<include refid="studentsql"></include>
 		</where> 
 	</select>
 	<insert id="insertStu" parameterType="students">
-		insert into students(s_name,s_sex,s_age,s_phone,s_education,s_state,s_msgsource,s_sourceurl,s_sourcekeyword,s_qq,s_weixin,s_isbaobei,s_content,s_userid)
-		value(#{s_name},#{s_sex},#{s_age},#{s_phone},#{s_education},#{s_state},#{s_msgsource},#{s_sourceurl},#{s_sourcekeyword},#{s_qq},#{s_weixin},#{s_isbaobei},#{s_content},#{s_userid})
+		insert into students(s_name,s_sex,s_age,s_phone,s_education,s_address,s_state,s_msgsource,s_sourceurl,s_sourcekeyword,s_concern,s_frompart,s_qq,s_weixin,s_isbaobei,s_content,s_userid,s_createtime)
+		value(#{s_name},#{s_sex},#{s_age},#{s_phone},#{s_education},#{s_address},#{s_state},#{s_msgsource},#{s_sourceurl},#{s_sourcekeyword},#{s_concern},#{s_frompart},#{s_qq},#{s_weixin},#{s_isbaobei},#{s_content},#{s_userid},now())
 	</insert>
 	
 	<delete id="deleteStu" parameterType="int">
@@ -228,7 +249,12 @@
 			<if test="s_isbaobei >=0">
 				s_isbaobei=#{s_isbaobei},			
 			</if>
-		
+			<if test="s_sourcekeyword !=null and s_sourcekeyword !=''">
+				s_sourcekeyword=#{s_sourcekeyword},			
+			</if>
+			<if test="s_content !=null and s_content !=''">
+				s_content=#{s_content},			
+			</if>
 		</set>
 			where s_id=#{s_id}
 	</update>
@@ -246,17 +272,25 @@
 			<if test="students.s_record !=null and students.s_record !=''">
 				and s_record=#{students.s_record}
 			</if>
-			<!-- and u.u_id=#{users.u_id} -->
+			<if test="users.u_id !=null and users.u_id != ''">
+			 and u.u_id=${users.u_id} 
+			 </if>
 		</where>
 	</sql>
 		<select id="SelectStu" parameterType="fenye" resultMap="studentMap">
-			select s.*,u.u_loginname from students s INNER JOIN askers a INNER JOIN users u on s.s_id=a.a_studentid and a.a_userid = u.u_id and  u.u_id=#{users.u_id}
+			select s.s_id,s.s_name,s.s_userid,s.s_curriculum,s.s_record,s.s_isvalid,s.s_lostvalid,s.s_isreturnvist,s.s_firstvisittime,
+			s.s_ishome,s.s_hometime,s.s_premoney,s.s_premoneytime,s.s_ispay,s.s_paytime,s.s_money,s.s_isreturnmoney,s.s_returnmoneycontent,
+			s.s_isinclass,s.s_inclasstime,s.s_inclasscontent,s.s_content,u.u_loginname 
+			from students s INNER JOIN askers a INNER JOIN users u on s.s_id=a.a_studentid and a.a_userid = u.u_id 
 			<include refid="stu"></include>
+			
+			order by s_id desc  
+			limit #{page},#{pageSize}
 			<!-- <where>u.u_id=#{users.u_id}</where> -->
 		</select>
 		
 		<select id="SelectStuCount" parameterType="fenye" resultType="int">
-			select count(1) from students
+			select count(1) from students s INNER JOIN askers a INNER JOIN users u on s.s_id=a.a_studentid and a.a_userid = u.u_id  <include refid="stu"></include>
 		</select>
 		
 		
@@ -273,19 +307,19 @@
 			<if test="s_record!=null and s_record!=''">
 				s_record=#{s_record},			
 			</if>
-			<if test="s_isvalid!=null and s_isvalid!=''">
+			<if test="s_isvalid>=0">
 				s_isvalid=#{s_isvalid},		
 			</if>
 			<if test="s_lostvalid!=null and s_lostvalid!=''">
 				s_lostvalid=#{s_lostvalid},			
 			</if>
-			<if test="s_isreturnvist!=null and s_isreturnvist!=''">
+			<if test="s_isreturnvist>=0">
 				s_isreturnvist=#{s_isreturnvist},			
 			</if>
 			<if test="s_firstvisittime!=null and s_firstvisittime!=''">
 				s_firstvisittime=#{s_firstvisittime},			
 			</if>
-			<if test="s_ishome!=null and s_ishome!=''">
+			<if test="s_ishome>=0">
 				s_ishome=#{s_ishome},			
 			</if>
 			<if test="s_hometime!=null and s_hometime!=''">
@@ -297,7 +331,7 @@
 			<if test="s_premoneytime!=null and s_premoneytime!=''">
 				s_premoneytime=#{s_premoneytime},			
 			</if>
-			<if test="s_ispay!=null and s_ispay!=''">
+			<if test="s_ispay>=0">
 				s_ispay=#{s_ispay},			
 			</if>
 			<if test="s_paytime!=null and s_paytime!=''">
@@ -306,13 +340,13 @@
 			<if test="s_money!=null and s_money!=''">
 				s_money=#{s_money},			
 			</if>
-			<if test="s_isreturnmoney!=null and s_isreturnmoney!=''">
+			<if test="s_isreturnmoney>=0">
 				s_isreturnmoney=#{s_isreturnmoney},			
 			</if>
 			<if test="s_returnmoneycontent!=null and s_returnmoneycontent!=''">
 				s_returnmoneycontent=#{s_returnmoneycontent},			
 			</if>
-			<if test="s_isinclass!=null and s_isinclass!=''">
+			<if test="s_isinclass>=0">
 				s_isinclass=#{s_isinclass},			
 			</if>
 			<if test="s_inclasstime!=null and s_inclasstime!=''">
@@ -329,24 +363,56 @@
 			where s_id=#{s_id}
 	</update>
 	<!-- 咨询师经理的修改 -->
+	<!-- 咨询师经理的修改 -->
 	<update id="updateStudent" parameterType="students">
 			update students
+			<include refid="updatestudent"></include>
+			where s_id=#{s_id}
+	</update>
+	<!--修改客户的sql片段 -->
+	<sql id="updatestudent">
 		<set>
-			
-			<if test="s_userid!=null and s_userid!=''">
-				s_userid=#{s_userid},			
+			<if test="s_name !=null and s_name !=''">
+				s_name=#{s_name},		
 			</if>
-			<if test="s_curriculum!=null and s_curriculum!=''">
-				s_curriculum=#{s_curriculum},			
+			<if test="s_sex>=0">
+				s_sex=#{s_sex},			
 			</if>
-			<if test="s_record!=null and s_record!=''">
-				s_record=#{s_record},			
+			<if test="s_age !=null and s_age !=''">
+				s_age=#{s_age},			
+			</if>
+			<if test="s_phone !=null and s_phone !=''">
+				s_phone=#{s_phone},			
+			</if>
+			<if test="s_state !=null and s_state !=''">
+				s_state=#{s_state},			
+			</if>
+			<if test="s_msgsource !=null and s_msgsource !=''">
+				s_msgsource=#{s_msgsource},			
+			</if>
+			<if test="s_sourceurl !=null and s_sourceurl !=''">
+				s_sourceurl=#{s_sourceurl},			
+			</if>
+			<if test="s_address !=null and s_address !=''">
+				s_address=#{s_address},			
+			</if>
+			<if test="s_qq !=null and s_qq !=''">
+				s_qq=#{s_qq},			
+			</if>
+			<if test="s_weixin !=null and s_weixin !=''">
+				s_weixin=#{s_weixin},			
+			</if>
+			<if test="s_content!=null and s_content!=''">
+				s_content=#{s_content},			
+			</if>
+			<if test="s_createtime!=null and s_createtime!=''">
+				s_createtime=#{s_createtime},
 			</if>
 			<if test="s_isvalid!=null and s_isvalid!=''">
 				s_isvalid=#{s_isvalid},		
 			</if>
-			<if test="s_lostvalid!=null and s_lostvalid!=''">
-				s_lostvalid=#{s_lostvalid},			
+			<if test="s_record!=null and s_record!=''">
+				s_record=#{s_record},			
 			</if>
 			<if test="s_isreturnvist!=null and s_isreturnvist!=''">
 				s_isreturnvist=#{s_isreturnvist},			
@@ -360,11 +426,8 @@
 			<if test="s_hometime!=null and s_hometime!=''">
 				s_hometime=#{s_hometime},			
 			</if>
-			<if test="s_premoney!=null and s_premoney!=''">
-				s_premoney=#{s_premoney},			
-			</if>
-			<if test="s_premoneytime!=null and s_premoneytime!=''">
-				s_premoneytime=#{s_premoneytime},			
+			<if test="s_lostvalid!=null and s_lostvalid!=''">
+				s_lostvalid=#{s_lostvalid},			
 			</if>
 			<if test="s_ispay!=null and s_ispay!=''">
 				s_ispay=#{s_ispay},			
@@ -378,9 +441,6 @@
 			<if test="s_isreturnmoney!=null and s_isreturnmoney!=''">
 				s_isreturnmoney=#{s_isreturnmoney},			
 			</if>
-			<if test="s_returnmoneycontent!=null and s_returnmoneycontent!=''">
-				s_returnmoneycontent=#{s_returnmoneycontent},			
-			</if>
 			<if test="s_isinclass!=null and s_isinclass!=''">
 				s_isinclass=#{s_isinclass},			
 			</if>
@@ -390,52 +450,60 @@
 			<if test="s_inclasscontent!=null and s_inclasscontent!=''">
 				s_inclasscontent=#{s_inclasscontent},			
 			</if>
-			<if test="s_content!=null and s_content!=''">
-				s_content=#{s_content},			
+			<if test="s_isdel!=null>=0">
+				s_isdel=#{s_isdel},
 			</if>
-			<if test="s_name !=null and s_name !=''">
-				s_name=#{s_name},		
+		   <if test="s_frompart !=null and s_frompart !=''">
+				s_frompart=#{s_frompart},			
+			</if> 
+			<if test="s_concern !=null and s_concern !=''">
+				s_concern=#{s_concern},			
 			</if>
-			<if test="s_sex >=0">
-				s_sex=#{s_sex},			
+			 <if test="s_isbaobei >=0">
+				s_isbaobei=#{s_isbaobei},			
 			</if>
-			<if test="s_age !=null and s_age !=''">
-				s_age=#{s_age},			
+			<if test="s_returnmoneycontent!=null and s_returnmoneycontent!=''">
+				s_returnmoneycontent=#{s_returnmoneycontent},			
 			</if>
-			<if test="s_phone !=null and s_phone !=''">
-				s_phone=#{s_phone},			
+			<if test="s_premoney!=null and s_premoney!=''">
+				s_premoney=#{s_premoney},			
 			</if>
-			<if test="s_state !=null and s_state !=''">
-				s_state=#{s_state},			
+			 <if test="s_premoneytime!=null and s_premoneytime!=''">
+				s_premoneytime=#{s_premoneytime},			
+			</if>
+			<if test="s_curriculum!=null and s_curriculum!=''">
+				s_curriculum=#{s_curriculum},			
 			</if>
 			<if test="s_education !=null and s_education !=''">
 				s_education=#{s_education},			
 			</if>
-			<if test="s_msgsource !=null and s_msgsource !=''">
-				s_msgsource=#{s_msgsource},			
+			<if test="s_stuclass!=null and s_stuclass!=''">
+				s_stuclass=#{s_stuclass},
 			</if>
-			<if test="s_sourceurl !=null and s_sourceurl !=''">
-				s_sourceurl=#{s_sourceurl},			
+			<if test="s_zixunname!=null and s_zixunname!=''">
+				s_zixunname=#{s_zixunname},
 			</if>
-			<if test="s_address !=null and s_address !=''">
-				s_address=#{s_address},			
+			<if test="s_createname!=null and s_createname!=''">
+				s_createname=#{s_createname},
 			</if>
-			<if test="s_concern !=null and s_concern !=''">
-				s_concern=#{s_concern},			
-			</if>
-			<if test="s_frompart !=null and s_frompart !=''">
-				s_frompart=#{s_frompart},			
-			</if>
-			<if test="s_qq !=null and s_qq !=''">
-				s_qq=#{s_qq},			
-			</if>
-			<if test="s_weixin !=null and s_weixin !=''">
-				s_weixin=#{s_weixin},			
-			</if>
-			<if test="s_isbaobei >=0">
-				s_isbaobei=#{s_isbaobei},			
-			</if>
+			<!-- <if test="users.u_id>0">
+				s_zixunname=(select u_loginname from users WHERE u_id=#{users.u_id}),
+			</if> -->
 		</set>
-			where s_id=#{s_id}
-	</update>
+	</sql>
+	<select id="selectStudenteNotAsker" parameterType="fenye" resultType="students">
+		SELECT s_id,s_name,s_content,s_record
+		from students where  NOT EXISTS (select a_studentid from askers where a_studentid=s_id)
+		 ORDER BY s_id desc LIMIT #{page},#{pageSize}
+	</select>
+	<select id="selectStudenteNotAskerTotal" parameterType="fenye" resultType="int">
+		SELECT count(s_id)
+		from students where  NOT EXISTS (select a_studentid from askers where a_studentid=s_id) ORDER BY s_id desc
+	</select>
+	<select id="SelectTongJi" resultType="Students">
+		select DISTINCT s_msgsource from students 
+	</select>
+	<select id="selectTongJiCount" parameterType="students" resultType="int">
+	select DISTINCT count(1) from students GROUP BY s_msgsource HAVING  s_msgsource=#{s_msgsource}
+	</select>
 </mapper>

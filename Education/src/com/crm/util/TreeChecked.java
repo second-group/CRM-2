@@ -18,8 +18,7 @@ public class TreeChecked {
 			 for (int j = 0; j < totalList.size(); j++) {
 				if(totalList.get(j).getId()==list.get(i).getId()) {
 					if(totalList.get(j).getM_parentid()!=0)
-					  totalList.get(j).setChecked(true);
-					
+					  totalList.get(j).setChecked(true);					
 				}
 			}
 		}

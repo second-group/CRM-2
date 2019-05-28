@@ -30,4 +30,5 @@ public interface UserChaecksMapper {
 	 */
 	Integer selectUserChecksTotal(Fenye<UserChaecks> fenye);
 	
+	List<UserChaecks> selectqiandao(UserChaecks chaecks);
 }

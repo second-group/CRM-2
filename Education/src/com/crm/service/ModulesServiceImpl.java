@@ -10,6 +10,7 @@ import com.crm.dao.ModulesMapper;
 import com.crm.dao.UsersMapper;
 import com.crm.entity.Fenye;
 import com.crm.entity.Modules;
+import com.crm.entity.RoleModules;
 import com.crm.entity.Users;
 import com.crm.util.TreeModel;
 import com.crm.util.TreeNode;
@@ -21,11 +22,9 @@ public class ModulesServiceImpl implements ModulesService{
 	public ArrayList<TreeModel> selectModules(Users users) {
 		// TODO Auto-generated method stub
 		List<Modules> mod=modulesMapper.selectModules(users);
-		/*System.out.println(mod);*/
 		ArrayList<TreeModel> root = new ArrayList<>();
 		ArrayList<TreeModel> tree = new ArrayList<>();
 		   for (Modules mod1:mod) {
-			   System.out.println(mod1);
 			   TreeModel node = new TreeModel();
 			   node.setId(mod1.getM_id());
                node.setText(mod1.getM_name());             
@@ -33,7 +32,6 @@ public class ModulesServiceImpl implements ModulesService{
                node.setM_path(mod1.getM_path());
                tree.add(node);
 		   }
-		   /*System.out.println(tree+"tree");*/
 		   root = TreeNode.getTree(tree); 
 		return root;		
 	}
@@ -41,11 +39,9 @@ public class ModulesServiceImpl implements ModulesService{
 	public ArrayList<TreeModel> selectModulesAll() {
 		// TODO Auto-generated method stub
 		List<Modules> mod=modulesMapper.selectModulesAll();
-		/*System.out.println(mod);*/
 		ArrayList<TreeModel> root = new ArrayList<>();
 		ArrayList<TreeModel> tree = new ArrayList<>();
 		   for (Modules mod1:mod) {
-			   System.out.println(mod1);
 			   TreeModel node = new TreeModel();
 			   node.setId(mod1.getM_id());
                node.setText(mod1.getM_name());             
@@ -53,7 +49,6 @@ public class ModulesServiceImpl implements ModulesService{
                node.setM_path(mod1.getM_path());
                tree.add(node);
 		   }
-		  /* System.out.println(tree+"tree");*/
 		   root = TreeNode.getTree(tree); 
 		return root;	
 	}
@@ -91,6 +86,11 @@ public class ModulesServiceImpl implements ModulesService{
 	public List<Modules> selectRoleModulesAll() {
 		// TODO Auto-generated method stub
 		return modulesMapper.selectModulesAll();
+	}
+	@Override
+	public List<RoleModules> selectRoleModulesExict(Integer m_id) {
+		// TODO Auto-generated method stub
+		return modulesMapper.selectRoleModulesExict(m_id);
 	}
 	
 }

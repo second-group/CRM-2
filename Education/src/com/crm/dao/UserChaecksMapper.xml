@@ -25,6 +25,7 @@
   				and uc_checkintime &lt;=#{Maxu_createtime}
   			</if>
   		</where>
+  		order by uc_checkintime
   		limit #{page},#{pageSize}
   	</select>
   	<select id="selectUserChecksTotal" parameterType="fenye" resultType="int">
@@ -51,4 +52,8 @@
   		</set>
   		where uc_id=#{uc_id}
   	</update>
+  	<select id="selectqiandao" parameterType="userChaecks" resultType="userChaecks">
+  		SELECT uc_loginname,uc_checkstate from userchaecks where  uc_userid=#{uc_userid} and DATE_FORMAT(uc_checkintime,'%Y-%m-%d')=#{uc_checkintime} 
+  		  ORDER BY uc_checkintime desc LIMIT 1
+  	</select>
   </mapper>
