@@ -23,4 +23,10 @@ public interface NoticeService {
 	 * @return
 	 */
 	Integer UpdateNotice(Notice notice);
+	/**
+	 * 添加通知
+	 * @param Notice
+	 * @return
+	 */
+	Integer insertNotice(Notice Notice);
 }

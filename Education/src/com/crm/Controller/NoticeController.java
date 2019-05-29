@@ -27,10 +27,23 @@ public class NoticeController {
 		return noticeService.SelectNoticeAll(fenye);
 	}
 	
+	@RequestMapping(value="/SelectNoticeCount",method=RequestMethod.POST)
+	@ResponseBody
+	private Integer SelectNoticeCount(Notice notice) {
+		fenye.setNotice(notice);
+		return noticeService.SelectNoticeCount(fenye);
+	}
+	
 	@RequestMapping(value="/UpdateNotice",method=RequestMethod.POST)
 	@ResponseBody
 	private Integer UpdateNotice(Notice notice) {
 		
 		return noticeService.UpdateNotice(notice);
+	}
+	@RequestMapping(value="/InsetNotice",method=RequestMethod.POST)
+	@ResponseBody
+	private Integer InsetNotice(Notice notice) {
+		
+		return noticeService.insertNotice(notice);
 	}
 }

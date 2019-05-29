@@ -384,6 +384,43 @@ var s_uid=''
 	    		otherDiv.style.display="none";
 	    	}
 	}
+	
+	function insertNotice(index) {
+		$("#insertNotice_window").window("open"); //打开窗口。 
+		var u_loginname='${sessionScope.users.u_loginname}';
+		$("#username").textbox('setValue',u_loginname);
+    	$("#no_userid").combobox({
+			 url:'selectALLUsers',    
+			    valueField:'u_id',    
+			    textField:'u_loginname'  
+		})
+		
+	}
+	
+	function submitNoticeForm() {
+		var no_userid= $("#no_userid").combobox('getValue');
+		if(no_userid=="--请选择--"){
+			alert("请选择您要通知的咨询师！！");
+		}else{
+			$.post(
+					"InsetNotice", {
+						username:$("#username").val(),
+						no_userid:no_userid,
+						no_content:$("#no_content").val()
+				},
+				function(res) {
+				if(res>0) {
+					$.messager.alert("操作提示", "发送成功","info");
+					$("#insertNotice_window").window("close");
+					$("#insertNoticeForm").form("clear");
+				}else{
+					$.messager.alert("操作提示", "发送失败","error");
+				}
+			}, "json");
+		}
+		
+	}
+	
 </script>
 </head>
 <body>
@@ -476,6 +513,7 @@ var s_uid=''
 			 <a href="javascript:void(0)" onclick="updatezixunshi()" class="easyui-linkbutton" data-options="iconCls:'icon-cut'">批量修改</a>
 			 <a href="javascript:void(0)" onclick="init()"	class="easyui-linkbutton"	data-options="iconCls:'icon-search',plain:true">搜索</a>
 			 <a href="javascript:void(0)" onclick="tianjiastu()"	class="easyui-linkbutton"	data-options="iconCls:'icon-add',plain:true">添加</a>
+			 <a href="javascript:void(0)" onclick="insertNotice()"	class="easyui-linkbutton"	data-options="iconCls:'icon-add',plain:true">通知</a>
 		</form>
 	</div>
 	<!-- 查看 -->
@@ -912,5 +950,60 @@ var s_uid=''
    			 <option value="">--请选择--</option>
    			</select>
 	 </div>
+	 
+	 <div id="insertNotice_window" class="easyui-window" title="消息详情" data-options="closed:true" style="width:360px;height:300px;padding:10px;">
+			<form id="insertNoticeForm" class="easyui-form">
+				<table cellpadding="5">
+					
+					
+					<tr>
+						<td>发送人姓名:</td>
+						<td><input class="easyui-textbox" name="username" id="username" readonly="readonly"></input>
+						</td>
+					</tr>
+					<!-- <tr style="display: none">
+						<td>接收人id:</td>
+						<td><input class="easyui-textbox" name="no_userid" id="no_userid"></input>
+						</td>
+					</tr> -->
+					<!-- <tr>
+						<td>发送时间:</td>
+						<td><input class="easyui-textbox" name="sendingtime" id="sendingtime" readonly="readonly"></input>
+						</td>
+					</tr> -->
+					
+   					<tr>
+						<td>咨询师:</td>
+						<td>
+							<select id="no_userid" class="easyui-combobox" name="dept" style="width: 100px">   
+				   			 	<option value="--请选择--">--请选择--</option>
+				   			</select>
+						</td>
+					</tr>
+					<!-- <tr> 
+						<td>接收时间:</td>
+						<td><input class="easyui-textbox" name="receivingtime" id="receivingtime"></input>
+						</td>
+					</tr> -->
+					<tr>
+						<td>消息内容:</td>
+						<td><!-- <input class="easyui-textbox" name="no_content" id="no_content"></input> -->
+							<textarea rows="4" cols="30" name="no_content" id="no_content"></textarea>
+						</td>
+					</tr>
+					<!-- <tr>
+						<td>状态:</td>
+						<td><input class="easyui-textbox" name="no_states"  id="no_state"></input>
+						</td>
+					</tr> -->
+					
+
+				</table>
+			</form>
+			<div style="text-align:center;padding:5px">
+				<a href="javascript:void(0)" class="easyui-linkbutton" type="button" onclick="submitNoticeForm()">发送</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearNoticeForm()">取消</a>
+			</div>
+		</div>
 </body>
 </html>

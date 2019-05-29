@@ -7,7 +7,14 @@
 	</select>
 	<select id="SelectNoticeCount" parameterType="fenye" resultType="int">
 		SELECT count(1) from notice 
-		LIMIT #{page},#{pageSize}
+		<where>
+			<if test="notice.no_userid!='' and notice.no_userid!=null">
+				and  no_userid=#{notice.no_userid}
+			</if>
+			<if test="notice.no_state>=0 and notice.no_state!=null">
+				and  no_state=${notice.no_state}
+			</if>
+		</where>
 	</select>
 	<update id="UpdateNotice" parameterType="notice">
 			update notice
@@ -21,4 +28,7 @@
 		</set>
 			where no_id=#{no_id}
 	</update>
+	<insert id="insertNotice" parameterType="notice">
+		INSERT into notice (username,no_userid,sendingtime,no_content) value(#{username},#{no_userid},now(),#{no_content})
+	</insert>
 </mapper>

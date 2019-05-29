@@ -421,6 +421,24 @@ function lookNotice(index) {
 	
 }  
 
+self.setInterval("Notices()",10000); 
+
+function Notices() {
+	var u_id='${sessionScope.users.u_id}';
+	$.post("SelectNoticeCount", {
+		no_userid:u_id,
+		no_state:0
+				
+},
+function(res) {
+if(res>0) {
+	$("#source").text(res);
+	
+}else{
+	
+}
+}, "json");
+}
 		</script>
 </body>
 	
@@ -431,7 +449,7 @@ function lookNotice(index) {
         	<a id="btn" style="cursor: pointer;" onclick="out()">安全退出</a>
         	<a id="btn" style="cursor: pointer;" onclick="UpdatePassword()">修改密码</a>
         	<a id="qiandao" onclick="qiandao()" class="easyui-linkbutton" value="0" text="签到"></a>
-        	<a style="float:right;margin-top:5px" id="xiaoxi" onclick="xiaoxi()" class="easyui-linkbutton" iconCls="icon-tip"><span style="background-color: red" class="badge">1</span></a>
+        	<a style="float:right;margin-top: 10px" id="xiaoxi" onclick="xiaoxi()" class="easyui-linkbutton" iconCls="icon-tip"><span id="source" style="background-color: red" class="badge"></span></a>
         </div>
          <div id="time">
 			 <script>
@@ -467,7 +485,7 @@ function lookNotice(index) {
     
     <!-- 消息表格  -->
 		  <div id="Notice_window" class="easyui-window" title="消息信息" data-options="closed:true,   
-            left:'1730px',top:'55px'" style="width:390px;height:300px;">
+            left:'1550px',top:'66px'" style="width:365px;height:300px;">
 			<table id="NoticeTab" class="easyui-datagrid">
 				<thead>
 					<tr>
@@ -491,7 +509,7 @@ function lookNotice(index) {
 			</table>
 		  </div>
 		  <!-- Look消息  -->
-		  <div id="LookNotice_window" class="easyui-window" title="消息详情" data-options="closed:true, left:'1730px',top:'55px'" style="width:390px;height:300px;padding:10px;">
+		  <div id="LookNotice_window" class="easyui-window" title="消息详情" data-options="closed:true,left:'1550px',top:'66px'" style="width:360px;height:300px;padding:10px;">
 			<form id="LookNoticeForm" class="easyui-form">
 				<table cellpadding="5">
 					
@@ -522,7 +540,8 @@ function lookNotice(index) {
 					</tr> -->
 					<tr>
 						<td>消息内容:</td>
-						<td><input class="easyui-textbox" name="no_content" id="no_content"></input>
+						<td><!-- <input class="easyui-textbox" name="no_content" id="no_content"></input> -->
+							<textarea rows="4" cols="30" name="no_content" id="no_content"></textarea>
 						</td>
 					</tr>
 					<tr>

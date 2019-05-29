@@ -33,5 +33,11 @@ public class NoticeServiceImpl implements NoticeService {
 		
 		return noticeMapper.UpdateNotice(notice);
 	}
+	
+	@Override
+	public Integer insertNotice(Notice Notice) {
+		// TODO Auto-generated method stub
+		return noticeMapper.insertNotice(Notice);
+	}
 
 }
